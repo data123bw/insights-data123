@@ -1,4 +1,4 @@
 name: insights
-type: duckdb
+type: motherduck
 options:
-  filename: insights.duckdb
+  database: insights
