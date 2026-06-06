@@ -1,0 +1,1 @@
+select * from crime.offence_by_weapon

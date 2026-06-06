@@ -1,0 +1,1 @@
+select * from crime.crime_totals_annual

@@ -1,0 +1,1 @@
+select * from crime.sdg_indicators
