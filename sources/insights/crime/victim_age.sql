@@ -1,0 +1,1 @@
+select * from crime.victim_age_sex

@@ -1,0 +1,1 @@
+select * from crime.perpetrator_marital_status

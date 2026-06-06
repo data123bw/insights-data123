@@ -1,0 +1,1 @@
+select * from crime.offence_point_of_entry

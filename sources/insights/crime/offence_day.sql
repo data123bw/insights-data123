@@ -1,0 +1,1 @@
+select * from crime.offence_time_day
