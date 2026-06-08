@@ -1,32 +1,32 @@
 appearance:
-  default: system
+  default: light
   switcher: true
 
 theme:
     colorPalettes:
       default:
         light:
-          - "#283342"
-          - "#3B82F6"
+          - "#1E3A5F"
           - "#10B981"
-          - "#64748B"
-          - "#F59E0B"
+          - "#F97316"
+          - "#8B5CF6"
+          - "#2563EB"
 
         dark:
           - "#60A5FA"
-          - "#93C5FD"
-          - "#5EEAD4"
-          - "#FCD34D"
+          - "#34D399"
+          - "#FB923C"
           - "#C4B5FD"
+          - "#93C5FD"
           - "#94A3B8"
           - "#F87171"
-          - "#34D399"
+          - "#5EEAD4"
 
     colorScales:
       default:
         light:
           - "#DBEAFE"
-          - "#123B5D"
+          - "#1E3A5F"
 
         dark:
           - "#1E3A8A"
@@ -34,31 +34,31 @@ theme:
 
     colors:
       primary:
-        light: "#123B5D"
+        light: "#1E3A5F"
         dark: "#60A5FA"
 
       accent:
-        light: "#C98B2E"
-        dark: "#FCD34D"
+        light: "#F97316"
+        dark: "#FB923C"
 
       base:
-        light: "#F7F9FB"
+        light: "#F8FAFC"
         dark: "#0B1220"
 
       info:
-        light: "#0284C7"
-        dark: "#38BDF8"
+        light: "#2563EB"
+        dark: "#60A5FA"
 
       positive:
-        light: "#15803D"
-        dark: "#4ADE80"
+        light: "#10B981"
+        dark: "#34D399"
 
       warning:
-        light: "#D97706"
-        dark: "#FBBF24"
+        light: "#F97316"
+        dark: "#FB923C"
 
       negative:
-        light: "#B91C1C"
+        light: "#EF4444"
         dark: "#F87171"
 
 plugins:
@@ -68,7 +68,7 @@ plugins:
     "@evidence-dev/core-components": {}
 
   datasources:
-    # You can add additional datasources here by adding npm packages. 
+    # You can add additional datasources here by adding npm packages.
     # Make to also add them to `package.json`.
     "@evidence-dev/bigquery": { }
     "@evidence-dev/csv": { }

@@ -294,7 +294,7 @@ Across all 11 serious offences, **5,929 victims and 5,766 perpetrators were anal
           series=marital_status
           yFmt='0.0"%"'
           title="Perpetrator marital status by offence"
-          subtitle="Never married 88%+ across virtually all offences"
+          subtitle="Never married dominant — ranges from 52% (TTK) to 100% (MVT)"
           colorPalette={['#1a3260','#0e7490','#b45309','#166534','#6d28d9','#9d174d']}
         />
 
@@ -475,7 +475,7 @@ No other socio-demographic variable correlates as consistently with perpetrator 
 </Grid>
 
 <Alert status=warning>
-  **The policy implication:** If unemployment is the strongest cross-crime predictor, then crime prevention strategies focused exclusively on policing and enforcement are addressing the symptom rather than the cause. **Economic inclusion programmes, youth employment initiatives, and vocational training targeting the 21–35 male age group are likely to have a measurable impact on serious crime rates.** The data provides the empirical basis for this argument — 77% or more of perpetrators across the most prevalent crime categories are unemployed. The correlation is too consistent to be coincidental.
+  **The policy implication:** If unemployment is the strongest cross-crime predictor, then crime prevention strategies focused exclusively on policing and enforcement are addressing the symptom rather than the cause. **Economic inclusion programmes, youth employment initiatives, and vocational training targeting the 21–35 male age group are likely to have a measurable impact on serious crime rates.** The data provides the empirical basis for this argument — 77% or more of perpetrators across all six property crime categories are unemployed, with rates reaching 91% for breaking offences. The correlation is too consistent to be coincidental.
 </Alert>
 
 
@@ -628,7 +628,7 @@ order by indicator_key, year
 
 <Tabs color=primary fullWidth=true>
     <Tab label="TNDP II performance indicators">
-        The Botswana Police Service reports against the Transitional National Development Plan II (TNDP II). **Three of the four primary indicators improved in 2024**, continuing a trend established in 2023. The only worsening indicator is the intentional homicide rate — reflecting the sustained increase in murder cases.
+        The Botswana Police Service reports against the Transitional National Development Plan II (TNDP II). **Three of the four primary indicators improved in 2024.** The GBV and road fatality rates have improved consistently across all three years. The violent and serious crime rate recovered sharply in 2024 (68.2 to 57.4 per 10,000) after a 2023 increase — its three-year direction is improvement, though not unbroken. The only worsening indicator is the intentional homicide rate — reflecting the sustained increase in murder cases.
 
         <LineChart
           data={tndp_normalised}
@@ -709,7 +709,7 @@ limit 1
 
 **5 — Women bear a disproportionate burden.** 85% of all serious crime victims are female. 99.2% of rape victims are female. 99.9% of defilement victims are female. The GBV rate declined from 19.3 to 17.3 per 10,000 in 2024 — a positive trend, but still over 12 GBV incidents per day.
 
-**6 — Unemployment is the strongest cross-crime predictor.** Over 70% of perpetrators are unemployed in every serious crime category except human trafficking. This consistency points to economic exclusion as a structural driver that policing alone cannot address.
+**6 — Unemployment is the strongest cross-crime predictor.** In 10 of 11 serious crime categories, over 60% of perpetrators are unemployed — from 60.5% for threat to kill to 91.4% for store breaking. All six property crime categories exceed 77%. Human trafficking is the outlier at 32%, consistent with its more organised perpetrator profile. This consistency points to economic exclusion as a structural driver that policing alone cannot address.
 
 **7 — Secondary-educated individuals dominate both profiles.** Both victims and perpetrators are predominantly secondary-educated. Crime is not driven by educational exclusion — it is driven by the failure to translate education into economic participation.
 
