@@ -1,11 +1,14 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
 
   export let data = [];
   export let areaCol = 'district_name';
   export let value = 'total_views';
   export let geoJsonUrl = '/maps/botswana_districts.json';
   export let height = 500;
+  export let title = '';
+  export let subtitle = '';
+  export let roam = false;
 
   let container;
   let chart;
@@ -17,34 +20,43 @@
     const geoJson = await fetch(geoJsonUrl).then(r => r.json());
     echarts.registerMap('Botswana', geoJson);
 
+    await tick();
     chart = echarts.init(container);
 
     chart.setOption({
+      title: {
+        text: title,
+        subtext: subtitle,
+        left: 'left'
+      },
       tooltip: {
         trigger: 'item',
-        formatter: p => `<b>${p.name}</b><br/>${p.value?.toLocaleString() ?? 'No data'}`
+        formatter: p => `<b>${p.name}</b><br/>Crime Cases: ${p.value?.toLocaleString() ?? 'No data'}`
       },
       visualMap: {
-        min: 0,
-        max: Math.max(...data.map(d => d[value] ?? 0)),
+        type: 'continuous',
+        left: 'right',
+        min: Math.min(...data.map(d => d[value] ?? 0)),
+        max: Math.max(...data.map(d => d[value] ?? 0), 1),
         inRange: {
-          color: ['#EEEDFE','#AFA9EC','#7F77DD','#534AB7','#3C3489','#26215C']
+          color: ['#2E7D32','#66BB6A','#FDD835','#FB8C00','#C62828']
         },
         text: ['High', 'Low'],
-        calculable: true,
-        right: 12,
-        bottom: 40
+        calculable: false
       },
       series: [{
         type: 'map',
         map: 'Botswana',
-        roam: true,
+        roam,
         zoom: 1.2,
         layoutCenter: ['50%', '50%'],
-        layoutSize: '80%',
+        layoutSize: '90%',
         emphasis: {
-          itemStyle: { areaColor: '#EF9F27' },
-          label: { show: true }
+          itemStyle: { areaColor: '#90CAF9' },
+          label: {
+            show: true,
+            color: '#0f172a'
+          }
         },
         data: data.map(row => ({
           name: row[areaCol],
