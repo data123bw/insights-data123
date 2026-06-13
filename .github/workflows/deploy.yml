@@ -21,11 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Evidence site
-        run: npm run build
-        env:
-          EVIDENCE_SOURCE__insights__token: ${{ secrets.MOTHERDUCK_TOKEN }}
-
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -34,4 +29,6 @@ jobs:
           action: "upload"
           app_location: "/"
           output_location: "build"
-          skip_app_build: true
+          app_build_command: "npm run sources && npm run build"
+        env:
+          EVIDENCE_SOURCE__insights__token: ${{ secrets.MOTHERDUCK_TOKEN }}
