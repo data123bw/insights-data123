@@ -1,6 +1,5 @@
 ---
 sidebar_position: 2
-description: Intelligence analysis of 11 serious offences in Botswana 2024 — patterns, drivers, and policy implications
 ---
 
 <style>
@@ -10,9 +9,13 @@ description: Intelligence analysis of 11 serious offences in Botswana 2024 — p
     color: #fff;
     padding: 52px 40px 140px;
     border-radius: 12px;
+    margin-top: -26px; /* cancel the layout's top gap so the hero starts at the top */
     margin-bottom: 0;
     position: relative;
     overflow: hidden;
+}
+@media (max-width: 639px) {
+    .report-hero { margin-top: -16px; }
 }
 .report-hero::after {
     content: '';
@@ -168,11 +171,6 @@ description: Intelligence analysis of 11 serious offences in Botswana 2024 — p
 }
 
 /* ── Key Findings ─────────────────────────────────────────── */
-.findings-list { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 56px; }
-.finding-row { padding: 22px 32px 22px 0; border-bottom: 1px solid #e2e8f0; display: flex; gap: 18px; align-items: flex-start; }
-.finding-row:nth-child(odd) { padding-right: 36px; border-right: 1px solid #e2e8f0; }
-.finding-row:nth-child(even) { padding-left: 36px; padding-right: 0; }
-.finding-row:nth-child(n+3) { border-bottom: none; padding-top: 22px; }
 .finding-accent { width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; }
 .fa-danger  { background: #fef2f2; color: #DC2626; }
 .fa-green   { background: #ecfdf5; color: #3EC58E; }
@@ -405,21 +403,67 @@ description: Intelligence analysis of 11 serious offences in Botswana 2024 — p
 .cross-title { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; color: #0f172a; }
 .cross-sub { font-size: 14px; color: #64748b; margin-top: 4px; line-height: 1.6; max-width: 72ch; }
 
-/* ── Bold tab headings ───────────────────────────────────── */
-:global([role="tab"]) { font-weight: 700; }
-
-/* ── Ring KPI cards ──────────────────────────────────────── */
-.o-ring-card {
+/* ── Offence tabs — segmented control ────────────────────── */
+.so-tabs :global(section > nav) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: #E9EDF6;
+    border: 1px solid #dde2f0 !important;
     border-radius: 14px;
-    padding: 8px 4px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 6px;
+    margin: 0 0 24px !important;
 }
-.o-ring-red    { background: #ffffff; border: 1px solid #fecaca; }
-.o-ring-amber  { background: #ffffff; border: 1px solid #fed7aa; }
-.o-ring-purple { background: #ffffff; border: 1px solid #ddd6fe; }
-.o-ring-blue   { background: #ffffff; border: 1px solid #bfdbfe; }
-.o-ring-green  { background: #ffffff; border: 1px solid #a7f3d0; }
+.so-tabs :global(section > nav > button) {
+    flex: 1;
+    margin: 0 !important;
+    padding: 11px 14px;
+    border: none !important;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #718096;
+    background: transparent;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+}
+.so-tabs :global(section > nav > button:hover) {
+    color: #2D3748;
+    background: rgba(255,255,255,0.65);
+}
+.so-tabs :global(section > nav > button.border-b-2) {
+    background: linear-gradient(135deg, #0042A0 0%, #1E3A5F 100%);
+    color: #fff !important;
+    box-shadow: 0 6px 18px rgba(0,66,160,0.35);
+}
+
+/* ── Chart card ──────────────────────────────────────────── */
+.chart-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.cc-head { padding: 16px 20px 4px; }
+.cc-title { font-size: 13px; font-weight: 700; color: #0f172a; margin: 0 0 2px; }
+.cc-sub { font-size: 11px; color: #94a3b8; margin: 0 0 4px; }
+.chart-card.center { max-width: 720px; margin: 0 auto 16px; }
+
+/* ── Policy in-grid card ─────────────────────────────────── */
+.policy-card {
+  border-left: 4px solid #FF9F43;
+  padding: 20px 24px;
+  background: rgba(255,159,67,0.06);
+  border-radius: 0 12px 12px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ── Text KPI card (ring cards live in GaugeKPI.svelte) ──── */
 .o-text-card {
     border: 1px solid #e2e8f0;
     background: #f8fafc;
@@ -449,7 +493,6 @@ description: Intelligence analysis of 11 serious offences in Botswana 2024 — p
 /* ── Hover Effects ───────────────────────────────────────── */
 .murder-card,
 .kpi-item,
-.o-ring-card,
 .o-text-card,
 .o-kpi {
     transition: transform 0.18s ease, box-shadow 0.18s ease;
@@ -474,8 +517,7 @@ description: Intelligence analysis of 11 serious offences in Botswana 2024 — p
 .kpi-item.mint:hover   { filter: brightness(1.07); }
 .kpi-item.purple:hover { filter: brightness(1.07); }
 
-/* Offence profile gauge + text cards */
-.o-ring-card:hover,
+/* Offence profile text cards */
 .o-text-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 22px rgba(0,0,0,0.10);
@@ -491,6 +533,114 @@ description: Intelligence analysis of 11 serious offences in Botswana 2024 — p
 .intel-dark:hover { filter: brightness(1.09); }
 .intel-blue:hover { filter: brightness(1.09); }
 .intel-light:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.10); }
+
+/* ── Mobile — ≤ 768px ──────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Hero: kill the overlap bottom padding on mobile */
+  .report-hero {
+    padding: 28px 18px 32px;
+    border-radius: 8px;
+  }
+  .report-hero h1 { font-size: 24px; }
+  .hero-summary { font-size: 13px; }
+  .hero-eyebrow { font-size: 9px; letter-spacing: 0.12em; }
+
+  /* KPI zone: cancel overlap, stack vertically */
+  .kpi-zone {
+    grid-template-columns: 1fr;
+    margin-top: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-secondary { padding: 0; }
+  .murder-number { font-size: 48px; }
+  .kpi-num { font-size: 22px; }
+  .murder-card { border-radius: 12px; }
+
+  /* Findings cards: single column */
+  .findings-grid { grid-template-columns: 1fr; }
+
+  /* Treemap: shorten, always show % labels */
+  .landscape-card { padding: 16px 14px; }
+  .treemap { height: 160px; }
+  .treemap-hdr-title { font-size: 15px; }
+  .tm-cell::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.65);
+    font-size: 14px;
+  }
+  .tm-legend { gap: 12px; }
+  .tm-legend-item { font-size: 10px; }
+
+  /* Gauge KPI row: 3 across (from 5) */
+  .o-kpis { grid-template-columns: repeat(3, 1fr); }
+
+  /* Offence header: stack label + number above delta */
+  .offence-hed {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .offence-right { text-align: left; }
+  .offence-num { font-size: 38px; }
+
+  /* Intel panels: stack */
+  .intel-block { grid-template-columns: 1fr; }
+  .intel-dark, .intel-blue, .intel-light { padding: 20px 18px; }
+
+  /* Tabs: allow wrapping */
+  .so-tabs :global(section > nav > button) { flex: 1 1 30%; }
+
+  /* Trafficking special report */
+  .trafficking-card { padding: 22px 18px; border-radius: 10px; }
+  .tc-stats { grid-template-columns: 1fr; gap: 0; }
+  .tc-stat {
+    padding: 0 0 18px 0;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 18px;
+  }
+  .tc-stat + .tc-stat { padding-left: 0; }
+  .tc-stat:last-child { border-bottom: none; margin-bottom: 0; }
+  .tc-num { font-size: 48px; }
+  .tc-num-accent { font-size: 54px; }
+  .tc-insight-card { padding: 20px 18px; height: auto; }
+  .tc-insight-stat { font-size: 44px; }
+
+  /* Takeaway section */
+  .takeaway { padding: 24px 18px; border-radius: 10px; }
+  .takeaway-title { font-size: 19px; margin-bottom: 20px; }
+  .t-items { grid-template-columns: 1fr; gap: 18px 0; }
+  .t-item.wide { grid-column: 1; }
+  .t-num { font-size: 28px; width: 30px; }
+}
+
+/* ── Small phones — ≤ 480px ────────────────────────────── */
+@media (max-width: 480px) {
+  .o-kpis { grid-template-columns: repeat(2, 1fr); }
+  .kpi-secondary { grid-template-columns: 1fr 1fr; }
+  .treemap { height: 130px; }
+  .tm-name { font-size: 8px; }
+  .tm-val { font-size: 11px; }
+  .report-hero h1 { font-size: 21px; }
+  .hero-alert { font-size: 11px; }
+}
+.page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+}
+@media (max-width: 768px) {
+    .page-nav { flex-direction: column; align-items: stretch; }
+    .page-nav a {
+        width: 100%;
+        display: inline-flex;
+        justify-content: center;
+        text-align: center;
+    }
+}
 </style>
 
 ```sql serious_summary
@@ -561,22 +711,22 @@ from insights.offence_day where offence='murder' order by time_band, day_of_week
 ```
 
 ```sql murder_motive
-select motive, cases, percentage
+select replace(motive,'_',' ') as motive, cases, percentage
 from insights.offence_motive where offence='murder' order by cases desc
 ```
 
 ```sql murder_relationship
-select relationship_type, count, percentage
+select replace(relationship_type,'_',' ') as relationship_type, count, percentage
 from insights.offence_relationship where offence='murder' order by count desc
 ```
 
 ```sql murder_victim_age
 select age_group, male_count, female_count, total, percentage
-from insights.victim_age where offence='murder' order by age_group
+from insights.victim_age where offence='murder' order by total desc limit 6
 ```
 
 ```sql murder_perp_employment
-select employment_status, count, percentage
+select replace(employment_status,'_',' ') as employment_status, count, percentage
 from insights.perpetrator_employment where offence='murder' order by count desc
 ```
 
@@ -609,13 +759,13 @@ from insights.offence_month where offence='threat_to_kill' order by month_number
 ```
 
 ```sql ttk_relationship
-select relationship_type, count, percentage
+select replace(relationship_type,'_',' ') as relationship_type, count, percentage
 from insights.offence_relationship where offence='threat_to_kill' order by count desc
 ```
 
 ```sql ttk_motive
-select motive, cases, percentage
-from insights.offence_motive where offence='threat_to_kill' order by cases desc
+select replace(motive,'_',' ') as motive, cases, percentage
+from insights.offence_motive where offence='threat_to_kill' order by cases desc limit 3
 ```
 
 ```sql rape_metrics
@@ -647,13 +797,13 @@ from insights.offence_month where offence='rape' order by month_number
 ```
 
 ```sql rape_relationship
-select relationship_type, count, percentage
+select replace(relationship_type,'_',' ') as relationship_type, count, percentage
 from insights.victim_relo where offence='rape' order by count desc
 ```
 
 ```sql rape_victim_age
 select age_group, female_count, total, percentage
-from insights.victim_age where offence='rape' order by age_group
+from insights.victim_age where offence='rape' order by total desc limit 10
 ```
 
 ```sql defilement_metrics
@@ -687,13 +837,13 @@ from insights.offence_month where offence='defilement' order by month_number
 ```
 
 ```sql defilement_relationship
-select relationship_type, count, percentage
+select replace(relationship_type,'_',' ') as relationship_type, count, percentage
 from insights.offence_relationship where offence='defilement' order by count desc
 ```
 
 ```sql defilement_perp_age
 select age_group, male_count, total, percentage
-from insights.perpetrator_age where offence='defilement' order by age_group
+from insights.perpetrator_age where offence='defilement' order by total desc limit 6
 ```
 
 ```sql robbery_metrics
@@ -730,12 +880,12 @@ from insights.offence_month where offence='robbery' order by month_number
 ```
 
 ```sql robbery_weapon
-select weapon_type, cases, percentage
+select replace(weapon_type,'_',' ') as weapon_type, cases, percentage
 from insights.offence_weapon where offence='robbery' order by cases desc
 ```
 
 ```sql robbery_location
-select location_label, cases, percentage
+select replace(location_label,'_',' ') as location_label, cases, percentage
 from insights.offence_location where offence='robbery' and taxonomy='robbery' order by cases desc
 ```
 
@@ -770,11 +920,11 @@ from insights.offence_month where offence='stock_theft' order by month_number
 ```
 
 ```sql stock_by_division
-select division, cases from insights.serious_crime_div where offence='Stock Theft' order by cases desc
+select division, cases from insights.serious_offence_division where offence='Stock Theft' order by cases desc
 ```
 
 ```sql stock_location
-select location_label, cases, percentage
+select replace(location_label,'_',' ') as location_label, cases, percentage
 from insights.offence_location where offence='stock_theft' and taxonomy='stock_theft' order by cases desc
 ```
 
@@ -802,14 +952,14 @@ from insights.victim_age where offence='human_trafficking' order by age_group
 ```
 
 ```sql unemployment_cross
-select offence, percentage as pct_unemployed
+select replace(offence,'_',' ') as offence, percentage as pct_unemployed
 from insights.perpetrator_employment
 where lower(employment_status)='unemployed'
 order by percentage desc
 ```
 
 ```sql relationship_cross
-select offence, sum(percentage) as known_pct
+select replace(offence,'_',' ') as offence, sum(percentage) as known_pct
 from insights.offence_relationship
 where lower(relationship_type) not in ('unknown','stranger','not applicable')
 group by offence
@@ -835,13 +985,13 @@ order by known_pct desc
 <!-- ═══════════════════════════════════════════════════════════
      KPI ZONE — Murder dominant
 ════════════════════════════════════════════════════════════ -->
-{#if serious_summary.ready && murder_metrics.ready}
+{#if serious_summary.ready && murder_metrics.ready && perpetrator_count.ready}
 <div class="kpi-zone">
 <div class="murder-card">
 <div class="murder-label">Critical Alert</div>
-<div class="murder-number">{murder_metrics[0].total_cases}</div>
+<div class="murder-number">{murder_metrics[0]?.total_cases ?? '—'}</div>
 <div class="murder-title">Murder Cases Recorded</div>
-<div class="murder-badge">▲ +{murder_metrics[0].change_pct}% from 2023</div>
+<div class="murder-badge">▲ +{murder_metrics[0]?.change_pct ?? 0}% from 2023</div>
 <div class="murder-note">Fourth consecutive annual increase since 2020</div>
 </div>
 <div class="kpi-secondary">
@@ -896,7 +1046,7 @@ order by known_pct desc
 <div class="finding-accent fa-amber">%</div>
 <div class="finding-body">
 <div class="finding-head">Unemployment is the dominant perpetrator characteristic</div>
-<div class="finding-text">Over 70% of profiled perpetrators across all serious offence categories were unemployed at time of offence — appearing consistently across property, violent, and sexual crime.</div>
+<div class="finding-text">In 10 of the 11 serious offence categories, over 60% of profiled perpetrators were unemployed at the time of offence — exceeding 90% for housebreaking, store breaking, and motor vehicle theft.</div>
 </div>
 </div>
 </div>
@@ -992,6 +1142,7 @@ order by known_pct desc
 ════════════════════════════════════════════════════════════ -->
 <span class="so-section-label">Offence Intelligence Profiles</span>
 
+<div class="so-tabs">
 <Tabs color=primary>
 
 <Tab label="Murder">
@@ -999,36 +1150,26 @@ order by known_pct desc
 <div class="offence-hed">
 <div>
 <div class="offence-lbl">Crime Intelligence Profile · Murder</div>
-<div class="offence-num">{murder_metrics[0].total_cases}</div>
+<div class="offence-num">{murder_metrics[0]?.total_cases ?? '—'}</div>
 <div class="offence-sub">Murder cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta up">▲ +{murder_metrics[0].change_pct}%</div>
+<div class="offence-delta up">▲ +{murder_metrics[0]?.change_pct ?? 0}%</div>
 <div class="offence-delta-note">Fourth consecutive annual increase<br>Highest level since 2018</div>
 </div>
 </div>
 
 <div class="o-kpis">
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:murder_metrics[0]?.night_pct??0,name:'Night incidents'}]}]}} height=180px />
-</div>
+<GaugeKPI value={murder_metrics[0]?.night_pct??0} name={'Night incidents'} color=red />
 
-<div class="o-ring-card o-ring-amber">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#FF9F43'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fed7aa']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:murder_metrics[0]?.weekend_pct??0,name:'Weekend incidents'}]}]}} height=180px />
-</div>
+<GaugeKPI value={murder_metrics[0]?.weekend_pct??0} name={'Weekend incidents'} color=amber />
 
-<div class="o-ring-card o-ring-purple">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#9A67FD'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#ede9fe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:37.1,name:'Romantic link'}]}]}} height=180px />
-</div>
+<GaugeKPI value={37.1} name={'Romantic link'} color=purple />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:33.8,name:'Jealousy motive'}]}]}} height=180px />
-</div>
+<GaugeKPI value={33.8} name={'Jealousy motive'} color=red />
 
-<div class="o-ring-card o-ring-blue">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#0042A0'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#bfdbfe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:26.4,name:'Arguments motive'}]}]}} height=180px />
-</div>
+<GaugeKPI value={26.4} name={'Arguments motive'} color=blue />
 
 </div>
 
@@ -1047,85 +1188,105 @@ order by known_pct desc
 
 <Grid cols=2>
 
-  <BarChart
-    data={murder_month}
-    x=month_name
-    y=cases
-    title="Murder by month — 2024"
-    subtitle="Seasonal distribution across 12 months"
-    colorPalette={['#0042A0']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={murder_month}
+      x=month_name
+      y=cases
+      title="Murder by Month — 2024"
+      subtitle="337 murder cases · monthly distribution"
+      colorPalette={['#7c3aed']}
+      swapXY=true
+      labels=true
+    downloadableData=false
   />
+  </div>
 
-  <Heatmap
-    data={murder_time_day}
-    x=day_of_week
-    y=time_band
-    value=count
-    title="Time and day of incident"
-    subtitle="When murders concentrate — by hour band and day of week"
-    colorScale={['#f0f5ff','#0042A0']}
+  <div class="chart-card">
+    <Heatmap
+      data={murder_time_day}
+      x=day_of_week
+      y=time_band
+      value=count
+      title="Time and day of incident"
+      subtitle="When murders concentrate — by hour band and day of week"
+      colorScale={['#f0f5ff','#0042A0']}
+    downloadableData=false
   />
+  </div>
 
 </Grid>
 
 <Grid cols=2>
 
-  <BarChart
-    data={murder_motive}
-    x=motive
-    y=percentage
-    yFmt='0.0"%"'
-    title="Motive breakdown"
-    subtitle="Recorded motives — 337 murder cases"
-    swapXY=true
-    colorPalette={['#DC2626']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={murder_motive}
+      x=motive
+      y=percentage
+      yFmt='0.0"%"'
+      title="Motive breakdown"
+      subtitle="Recorded motives — 337 murder cases"
+      swapXY=true
+      colorPalette={['#DC2626']}
+      labels=true
+    downloadableData=false
   />
+  </div>
 
-  <BarChart
-    data={murder_relationship}
-    x=relationship_type
-    y=percentage
-    yFmt='0.0"%"'
-    title="Victim–perpetrator relationship"
-    subtitle="Nature of relationship at time of offence"
-    swapXY=true
-    colorPalette={['#9A67FD']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={murder_perp_employment}
+      x=employment_status
+      y=percentage
+      yFmt='0.0"%"'
+      title="Perpetrator employment status"
+      subtitle="Employment profile at time of offence"
+      swapXY=true
+      colorPalette={['#FF9F43']}
+      labels=true
+    downloadableData=false
   />
+  </div>
 
 </Grid>
 
 <Grid cols=2>
 
+  <div class="chart-card">
+    <BarChart
+      data={murder_relationship}
+      x=relationship_type
+      y=percentage
+      yFmt='0.0"%"'
+      title="Victim–perpetrator relationship"
+      subtitle="Nature of relationship at time of offence"
+      swapXY=true
+      colorPalette={['#9A67FD']}
+      labels=true
+    downloadableData=false
+  />
+  </div>
+
+  <div class="policy-card">
+    <div class="policy-eye">Policy Implication</div>
+    <p class="policy-txt">The concentration of murders around jealousy, arguments and intimate partner relationships suggests that <strong>domestic violence interventions, conflict resolution programmes and community-level prevention strategies</strong> may deliver greater impact than enforcement-focused responses alone. The Friday–Sunday night concentration provides a clear operational window for targeted patrol deployment.</p>
+  </div>
+
+</Grid>
+
+<div class="chart-card" style="margin-bottom:28px">
   <BarChart
     data={murder_victim_age}
     x=age_group
     y={['male_count','female_count']}
-    title="Victim age and sex"
-    subtitle="Age group distribution — murder 2024"
+    title="Victim age and sex — top 6 groups"
+    subtitle="Top 6 age groups by volume · murder 2024"
     colorPalette={['#0042A0','#9A67FD']}
-    labels=false
-  />
-
-  <BarChart
-    data={murder_perp_employment}
-    x=employment_status
-    y=percentage
-    yFmt='0.0"%"'
-    title="Perpetrator employment status"
-    subtitle="Employment profile at time of offence"
     swapXY=true
-    colorPalette={['#FF9F43']}
-    labels=true
+    labels=false
+    downloadableData=false
   />
-
-</Grid>
-
-<div class="policy-strip">
-<div class="policy-eye">Policy Implication</div>
-<p class="policy-txt">The concentration of murders around jealousy, arguments and intimate partner relationships suggests that <strong>domestic violence interventions, conflict resolution programmes and community-level prevention strategies</strong> may deliver greater impact than enforcement-focused responses alone. The Friday–Sunday night concentration provides a clear operational window for targeted patrol deployment.</p>
 </div>
 
 </Tab>
@@ -1135,32 +1296,24 @@ order by known_pct desc
 <div class="offence-hed">
 <div>
 <div class="offence-lbl">Crime Intelligence Profile · Threat to Kill</div>
-<div class="offence-num">{ttk_metrics[0].total_cases}</div>
+<div class="offence-num">{ttk_metrics[0]?.total_cases ?? '—'}</div>
 <div class="offence-sub">Threat to Kill cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {ttk_metrics[0].change_pct}%</div>
+<div class="offence-delta dn">↓ {ttk_metrics[0]?.change_pct ?? 0}%</div>
 <div class="offence-delta-note">Declined from 913 in 2023<br>GBV indicator — 87% female victims</div>
 </div>
 </div>
 
 <div class="o-kpis">
 
-<div class="o-ring-card o-ring-purple">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#9A67FD'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#ede9fe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:ttk_metrics[0]?.female_victim_pct??0,name:'Female victims'}]}]}} height=180px />
-</div>
+<GaugeKPI value={ttk_metrics[0]?.female_victim_pct??0} name={'Female victims'} color=purple />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:ttk_metrics[0]?.romantic_link_pct??0,name:'Romantic link'}]}]}} height=180px />
-</div>
+<GaugeKPI value={ttk_metrics[0]?.romantic_link_pct??0} name={'Romantic link'} color=red />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',clockwise:false,startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>'↓ '+v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:Math.abs(ttk_metrics[0]?.change_pct??0),name:'YoY change'}]}]}} height=180px />
-</div>
+<GaugeKPI value={Math.abs(ttk_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<div class="o-ring-card o-ring-blue">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#0042A0'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#bfdbfe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:64.4,name:'Jealousy motive'}]}]}} height=180px />
-</div>
+<GaugeKPI value={64.4} name={'Jealousy motive'} color=blue />
 
 <div class="o-text-card">
 <div class="o-text-val">26–30</div>
@@ -1184,50 +1337,60 @@ order by known_pct desc
 
 <Grid cols=2>
 
-  <BarChart
-    data={ttk_month}
-    x=month_name
-    y=cases
-    title="Threat to Kill by month — 2024"
-    subtitle="845 cases — seasonal distribution"
-    colorPalette={['#0042A0']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={ttk_month}
+      x=month_name
+      y=cases
+      title="Threat to Kill by Month — 2024"
+      subtitle="845 cases · monthly distribution"
+      colorPalette={['#7c3aed']}
+      swapXY=true
+      labels=true
+    downloadableData=false
   />
+  </div>
 
-  <BarChart
-    data={ttk_motive}
-    x=motive
-    y=percentage
-    yFmt='0.0"%"'
-    title="Motive breakdown"
-    subtitle="Jealousy dominant at 64.4%"
-    swapXY=true
-    colorPalette={['#DC2626']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={ttk_motive}
+      x=motive
+      y=percentage
+      yFmt='0.0"%"'
+      title="Motive breakdown — top 3"
+      subtitle="Jealousy dominant at 64.4%"
+      swapXY=true
+      colorPalette={['#DC2626']}
+      labels=true
+    downloadableData=false
   />
+  </div>
 
 </Grid>
 
 <Grid cols=2>
 
-  <BarChart
-    data={ttk_relationship}
-    x=relationship_type
-    y=percentage
-    yFmt='0.0"%"'
-    title="Victim–perpetrator relationship"
-    subtitle="845 cases — romantic link dominant at 70.9%"
-    swapXY=true
-    colorPalette={['#9A67FD']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={ttk_relationship}
+      x=relationship_type
+      y=percentage
+      yFmt='0.0"%"'
+      title="Victim–perpetrator relationship"
+      subtitle="845 cases — romantic link dominant at 70.9%"
+      swapXY=true
+      colorPalette={['#9A67FD']}
+      labels=true
+    downloadableData=false
   />
+  </div>
+
+  <div class="policy-card">
+    <div class="policy-eye">Policy Implication</div>
+    <p class="policy-txt">With 87% of victims female and over 70% of cases linked to romantic relationships, Threat to Kill is primarily a gender-based violence indicator. <strong>Early warning systems, civil protection order enforcement, counselling services, and survivor support infrastructure</strong> are the most effective interventions. Enforcement-only responses miss the structural driver entirely.</p>
+  </div>
 
 </Grid>
-
-<div class="policy-strip">
-<div class="policy-eye">Policy Implication</div>
-<p class="policy-txt">With 87% of victims female and over 70% of cases linked to romantic relationships, Threat to Kill is primarily a gender-based violence indicator. <strong>Early warning systems, civil protection order enforcement, counselling services, and survivor support infrastructure</strong> are the most effective interventions. Enforcement-only responses miss the structural driver entirely.</p>
-</div>
 
 </Tab>
 
@@ -1236,32 +1399,24 @@ order by known_pct desc
 <div class="offence-hed">
 <div>
 <div class="offence-lbl">Crime Intelligence Profile · Rape</div>
-<div class="offence-num">{rape_metrics[0].total_cases.toLocaleString('en-US')}</div>
+<div class="offence-num">{(rape_metrics[0]?.total_cases ?? 0).toLocaleString('en-US')}</div>
 <div class="offence-sub">Rape cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {rape_metrics[0].change_pct}%</div>
+<div class="offence-delta dn">↓ {rape_metrics[0]?.change_pct ?? 0}%</div>
 <div class="offence-delta-note">Declined from 2,296 in 2023<br>99.2% of victims are female</div>
 </div>
 </div>
 
 <div class="o-kpis">
 
-<div class="o-ring-card o-ring-purple">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#9A67FD'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#ede9fe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:rape_metrics[0]?.female_victim_pct??0,name:'Female victims'}]}]}} height=180px />
-</div>
+<GaugeKPI value={rape_metrics[0]?.female_victim_pct??0} name={'Female victims'} color=purple />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:rape_metrics[0]?.stranger_pct??0,name:'Stranger perp'}]}]}} height=180px />
-</div>
+<GaugeKPI value={rape_metrics[0]?.stranger_pct??0} name={'Stranger perp'} color=red />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',clockwise:false,startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>'↓ '+v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:Math.abs(rape_metrics[0]?.change_pct??0),name:'YoY change'}]}]}} height=180px />
-</div>
+<GaugeKPI value={Math.abs(rape_metrics[0]?.change_pct??0)} name={'YoY change'} color=red invert=true prefix="↓ " />
 
-<div class="o-ring-card o-ring-blue">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#0042A0'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#bfdbfe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:40,name:'Bushy area or perp home'}]}]}} height=180px />
-</div>
+<GaugeKPI value={40} name={'Bushy area or perp home'} color=blue />
 
 <div class="o-text-card">
 <div class="o-text-val">0–20</div>
@@ -1285,48 +1440,59 @@ order by known_pct desc
 
 <Grid cols=2>
 
-  <BarChart
-    data={rape_month}
-    x=month_name
-    y=cases
-    title="Rape by month — 2024"
-    subtitle="2,018 cases — seasonal distribution"
-    colorPalette={['#9A67FD']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={rape_month}
+      x=month_name
+      y=cases
+      title="Rape by Month — 2024"
+      subtitle="2,018 cases · monthly distribution"
+      colorPalette={['#7c3aed']}
+      swapXY=true
+      labels=true
+    downloadableData=false
   />
+  </div>
 
-  <BarChart
-    data={rape_relationship}
-    x=relationship_type
-    y=percentage
-    yFmt='0.0"%"'
-    title="Victim–perpetrator relationship"
-    subtitle="Rape 2024 — stranger perpetrator dominant"
-    swapXY=true
-    colorPalette={['#9A67FD']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={rape_relationship}
+      x=relationship_type
+      y=percentage
+      yFmt='0.0"%"'
+      title="Victim–perpetrator relationship"
+      subtitle="Rape 2024 — stranger perpetrator dominant"
+      swapXY=true
+      colorPalette={['#9A67FD']}
+      labels=true
+    downloadableData=false
   />
+  </div>
 
 </Grid>
 
 <Grid cols=2>
 
-  <BarChart
-    data={rape_victim_age}
-    x=age_group
-    y=total
-    title="Victim age distribution"
-    subtitle="2,018 victims — 99.2% female"
-    colorPalette={['#9A67FD']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={rape_victim_age}
+      x=age_group
+      y=total
+      title="Victim age distribution — top 10 age groups"
+      subtitle="2,018 victims — 99.2% female"
+      colorPalette={['#9A67FD']}
+      swapXY=true
+      labels=true
+    downloadableData=false
   />
+  </div>
+
+  <div class="policy-card">
+    <div class="policy-eye">Policy Implication</div>
+    <p class="policy-txt">The dominant stranger-perpetrator profile and outdoor/public location pattern suggest that rape prevention requires a <strong>situational and public-space focused strategy</strong>. School-based awareness, environmental design in high-risk areas, survivor support pathways, and accessible reporting systems are the priority interventions. These figures represent a floor — GBV is consistently under-reported nationally.</p>
+  </div>
 
 </Grid>
-
-<div class="policy-strip">
-<div class="policy-eye">Policy Implication</div>
-<p class="policy-txt">The dominant stranger-perpetrator profile and outdoor/public location pattern suggest that rape prevention requires a <strong>situational and public-space focused strategy</strong>. School-based awareness, environmental design in high-risk areas, survivor support pathways, and accessible reporting systems are the priority interventions. These figures represent a floor — GBV is consistently under-reported nationally.</p>
-</div>
 
 </Tab>
 
@@ -1335,32 +1501,24 @@ order by known_pct desc
 <div class="offence-hed">
 <div>
 <div class="offence-lbl">Crime Intelligence Profile · Defilement</div>
-<div class="offence-num">{defilement_metrics[0].total_cases.toLocaleString('en-US')}</div>
+<div class="offence-num">{(defilement_metrics[0]?.total_cases ?? 0).toLocaleString('en-US')}</div>
 <div class="offence-sub">Defilement cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {defilement_metrics[0].change_pct}%</div>
+<div class="offence-delta dn">↓ {defilement_metrics[0]?.change_pct ?? 0}%</div>
 <div class="offence-delta-note">Declined from 1,754 in 2023<br>99.8% perpetrators are male</div>
 </div>
 </div>
 
 <div class="o-kpis">
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:defilement_metrics[0]?.romantic_link_pct??0,name:'Romantic link'}]}]}} height=180px />
-</div>
+<GaugeKPI value={defilement_metrics[0]?.romantic_link_pct??0} name={'Romantic link'} color=red />
 
-<div class="o-ring-card o-ring-amber">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#FF9F43'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fed7aa']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:defilement_metrics[0]?.perp_home_pct??0,name:"At perp's home"}]}]}} height=180px />
-</div>
+<GaugeKPI value={defilement_metrics[0]?.perp_home_pct??0} name={"At perp's home"} color=amber />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',clockwise:false,startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>'↓ '+v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:Math.abs(defilement_metrics[0]?.change_pct??0),name:'YoY change'}]}]}} height=180px />
-</div>
+<GaugeKPI value={Math.abs(defilement_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<div class="o-ring-card o-ring-purple">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#9A67FD'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#ede9fe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:99.8,name:'Male perpetrators'}]}]}} height=180px />
-</div>
+<GaugeKPI value={99.8} name={'Male perpetrators'} color=purple />
 
 <div class="o-text-card">
 <div class="o-text-val">16–30</div>
@@ -1384,48 +1542,59 @@ order by known_pct desc
 
 <Grid cols=2>
 
-  <BarChart
-    data={defilement_month}
-    x=month_name
-    y=cases
-    title="Defilement by month — 2024"
-    subtitle="1,666 cases — seasonal distribution"
-    colorPalette={['#7b4dd4']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={defilement_month}
+      x=month_name
+      y=cases
+      title="Defilement by Month — 2024"
+      subtitle="1,666 cases · monthly distribution"
+      colorPalette={['#7b4dd4']}
+      swapXY=true
+      labels=true
+    downloadableData=false
   />
+  </div>
 
-  <BarChart
-    data={defilement_relationship}
-    x=relationship_type
-    y=percentage
-    yFmt='0.0"%"'
-    title="Victim–perpetrator relationship"
-    subtitle="Defilement 2024 — romantic link dominant at 79.2%"
-    swapXY=true
-    colorPalette={['#9A67FD']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={defilement_relationship}
+      x=relationship_type
+      y=percentage
+      yFmt='0.0"%"'
+      title="Victim–perpetrator relationship"
+      subtitle="Defilement 2024 — romantic link dominant at 79.2%"
+      swapXY=true
+      colorPalette={['#9A67FD']}
+      labels=true
+    downloadableData=false
   />
+  </div>
 
 </Grid>
 
 <Grid cols=2>
 
-  <BarChart
-    data={defilement_perp_age}
-    x=age_group
-    y=total
-    title="Perpetrator age — defilement"
-    subtitle="1,059 perpetrators — 99.8% male"
-    colorPalette={['#7b4dd4']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={defilement_perp_age}
+      x=age_group
+      y=total
+      title="Perpetrator age — top 6 age groups"
+      subtitle="1,059 perpetrators — 99.8% male"
+      colorPalette={['#7b4dd4']}
+      swapXY=true
+      labels=true
+    downloadableData=false
   />
+  </div>
+
+  <div class="policy-card">
+    <div class="policy-eye">Policy Implication</div>
+    <p class="policy-txt">The domestic, known-perpetrator profile of defilement points unambiguously to the need for <strong>school-based relationship and consent education, child protection outreach, and community-level early warning systems</strong> targeting young males aged 16–30. This is a preventable offence type with predictable risk patterns. The 5% year-on-year decline indicates policy-responsive potential.</p>
+  </div>
 
 </Grid>
-
-<div class="policy-strip">
-<div class="policy-eye">Policy Implication</div>
-<p class="policy-txt">The domestic, known-perpetrator profile of defilement points unambiguously to the need for <strong>school-based relationship and consent education, child protection outreach, and community-level early warning systems</strong> targeting young males aged 16–30. This is a preventable offence type with predictable risk patterns. The 5% year-on-year decline indicates policy-responsive potential.</p>
-</div>
 
 </Tab>
 
@@ -1434,36 +1603,26 @@ order by known_pct desc
 <div class="offence-hed">
 <div>
 <div class="offence-lbl">Crime Intelligence Profile · Robbery</div>
-<div class="offence-num">{robbery_metrics[0].total_cases}</div>
+<div class="offence-num">{robbery_metrics[0]?.total_cases ?? '—'}</div>
 <div class="offence-sub">Robbery cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {robbery_metrics[0].change_pct}%</div>
+<div class="offence-delta dn">↓ {robbery_metrics[0]?.change_pct ?? 0}%</div>
 <div class="offence-delta-note">Strongest single-year decline in series<br>Edge weapons in 77.3% of cases</div>
 </div>
 </div>
 
 <div class="o-kpis">
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',clockwise:false,startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>'↓ '+v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:Math.abs(robbery_metrics[0]?.change_pct??0),name:'YoY change'}]}]}} height=180px />
-</div>
+<GaugeKPI value={Math.abs(robbery_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:robbery_metrics[0]?.street_pct??0,name:'Street robbery'}]}]}} height=180px />
-</div>
+<GaugeKPI value={robbery_metrics[0]?.street_pct??0} name={'Street robbery'} color=red />
 
-<div class="o-ring-card o-ring-amber">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#FF9F43'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fed7aa']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:robbery_metrics[0]?.edge_weapon_pct??0,name:'Edge weapons'}]}]}} height=180px />
-</div>
+<GaugeKPI value={robbery_metrics[0]?.edge_weapon_pct??0} name={'Edge weapons'} color=amber />
 
-<div class="o-ring-card o-ring-blue">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#0042A0'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#bfdbfe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:44.9,name:'Knives specifically'}]}]}} height=180px />
-</div>
+<GaugeKPI value={44.9} name={'Knives specifically'} color=blue />
 
-<div class="o-ring-card o-ring-purple">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#9A67FD'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#ede9fe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(0)+'%+',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:70,name:'Perps unemployed'}]}]}} height=180px />
-</div>
+<GaugeKPI value={85.7} name={'Perps unemployed'} color=purple />
 
 </div>
 
@@ -1482,16 +1641,37 @@ order by known_pct desc
 
 <Grid cols=2>
 
-  <BarChart
-    data={robbery_month}
-    x=month_name
-    y=cases
-    title="Robbery by month — 2024"
-    subtitle="981 cases — seasonal distribution"
-    colorPalette={['#0042A0']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={robbery_month}
+      x=month_name
+      y=cases
+      title="Robbery by Month — 2024"
+      subtitle="981 cases · monthly distribution"
+      colorPalette={['#0042A0']}
+      swapXY=true
+      labels=true
+    downloadableData=false
   />
+  </div>
 
+  <div class="chart-card">
+    <BarChart
+      data={robbery_location}
+      x=location_label
+      y=cases
+      title="Location of robberies"
+      subtitle="Street robbery — 46.8% of all cases"
+      swapXY=true
+      colorPalette={['#0042A0']}
+      labels=true
+    downloadableData=false
+  />
+  </div>
+
+</Grid>
+
+<div class="chart-card center">
   <BarChart
     data={robbery_weapon}
     x=weapon_type
@@ -1502,28 +1682,13 @@ order by known_pct desc
     swapXY=true
     colorPalette={['#FF9F43']}
     labels=true
+    downloadableData=false
   />
+</div>
 
-</Grid>
-
-<Grid cols=2>
-
-  <BarChart
-    data={robbery_location}
-    x=location_label
-    y=cases
-    title="Location of robberies"
-    subtitle="Street robbery — 46.8% of all cases"
-    swapXY=true
-    colorPalette={['#0042A0']}
-    labels=true
-  />
-
-</Grid>
-
-<div class="policy-strip">
-<div class="policy-eye">Policy Implication</div>
-<p class="policy-txt">Street robbery prevention should prioritise <strong>situational prevention in high-pedestrian areas — improved lighting, CCTV coverage, and targeted patrol in peak locations</strong>. The strong 2024 decline provides a positive trajectory to reinforce. Knife crime specifically warrants a focused community-safety response addressing the combination of unemployment and weapon accessibility among the at-risk population.</p>
+<div class="policy-card">
+  <div class="policy-eye">Policy Implication</div>
+  <p class="policy-txt">Street robbery prevention should prioritise <strong>situational prevention in high-pedestrian areas — improved lighting, CCTV coverage, and targeted patrol in peak locations</strong>. The strong 2024 decline provides a positive trajectory to reinforce. Knife crime specifically warrants a focused community-safety response addressing the combination of unemployment and weapon accessibility among the at-risk population.</p>
 </div>
 
 </Tab>
@@ -1533,32 +1698,24 @@ order by known_pct desc
 <div class="offence-hed">
 <div>
 <div class="offence-lbl">Crime Intelligence Profile · Stock Theft</div>
-<div class="offence-num">{stock_metrics[0].total_cases.toLocaleString('en-US')}</div>
+<div class="offence-num">{(stock_metrics[0]?.total_cases ?? 0).toLocaleString('en-US')}</div>
 <div class="offence-sub">Stock Theft cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {stock_metrics[0].change_pct}%</div>
+<div class="offence-delta dn">↓ {stock_metrics[0]?.change_pct ?? 0}%</div>
 <div class="offence-delta-note">Third most prevalent serious crime<br>Concentrated in rural divisions</div>
 </div>
 </div>
 
 <div class="o-kpis">
 
-<div class="o-ring-card o-ring-amber">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#FF9F43'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fed7aa']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:stock_metrics[0]?.grazing_pct??0,name:'Grazing pastures'}]}]}} height=180px />
-</div>
+<GaugeKPI value={stock_metrics[0]?.grazing_pct??0} name={'Grazing pastures'} color=amber />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:stock_metrics[0]?.unemployed_pct??0,name:'Perps unemployed'}]}]}} height=180px />
-</div>
+<GaugeKPI value={stock_metrics[0]?.unemployed_pct??0} name={'Perps unemployed'} color=red />
 
-<div class="o-ring-card o-ring-red">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',clockwise:false,startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#DC2626'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#fee2e2']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>'↓ '+v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:Math.abs(stock_metrics[0]?.change_pct??0),name:'YoY change'}]}]}} height=180px />
-</div>
+<GaugeKPI value={Math.abs(stock_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<div class="o-ring-card o-ring-blue">
-<ECharts config={{backgroundColor:'transparent',animationDuration:1000,animationDelay:0,series:[{type:'gauge',startAngle:90,endAngle:-270,min:0,max:100,radius:'70%',progress:{show:true,roundCap:true,width:9,itemStyle:{color:'#0042A0'}},axisLine:{roundCap:true,lineStyle:{width:9,color:[[1,'#bfdbfe']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},detail:{valueAnimation:true,formatter:v=>v.toFixed(1)+'%',fontSize:18,fontWeight:800,color:'#0f172a',offsetCenter:[0,'-10%']},title:{show:true,offsetCenter:[0,'-120%'],fontSize:10,fontWeight:600,color:'#64748b',overflow:'break',width:80},data:[{value:34.5,name:'North Central share'}]}]}} height=180px />
-</div>
+<GaugeKPI value={34.5} name={'North Central share'} color=blue />
 
 <div class="o-text-card">
 <div class="o-text-val">Rural</div>
@@ -1582,16 +1739,38 @@ order by known_pct desc
 
 <Grid cols=2>
 
-  <BarChart
-    data={stock_month}
-    x=month_name
-    y=cases
-    title="Stock Theft by month — 2024"
-    subtitle="2,291 cases — seasonal distribution"
-    colorPalette={['#FF9F43']}
-    labels=true
+  <div class="chart-card">
+    <BarChart
+      data={stock_month}
+      x=month_name
+      y=cases
+      title="Stock Theft by Month — 2024"
+      subtitle="2,291 cases · monthly distribution"
+      colorPalette={['#d97706']}
+      swapXY=true
+      labels=true
+    downloadableData=false
   />
+  </div>
 
+  <div class="chart-card">
+    <BarChart
+      data={stock_location}
+      x=location_label
+      y=percentage
+      yFmt='0.0"%"'
+      title="Location of incidents"
+      subtitle="Grazing pastures and kraals dominant"
+      swapXY=true
+      colorPalette={['#0042A0']}
+      labels=true
+    downloadableData=false
+  />
+  </div>
+
+</Grid>
+
+<div class="chart-card center">
   <BarChart
     data={stock_by_division}
     x=division
@@ -1601,34 +1780,19 @@ order by known_pct desc
     swapXY=true
     colorPalette={['#FF9F43']}
     labels=true
+    downloadableData=false
   />
+</div>
 
-</Grid>
-
-<Grid cols=2>
-
-  <BarChart
-    data={stock_location}
-    x=location_label
-    y=percentage
-    yFmt='0.0"%"'
-    title="Location of incidents"
-    subtitle="Grazing pastures and kraals dominant"
-    swapXY=true
-    colorPalette={['#0042A0']}
-    labels=true
-  />
-
-</Grid>
-
-<div class="policy-strip">
-<div class="policy-eye">Policy Implication</div>
-<p class="policy-txt">Stock theft is fundamentally a rural economic crime. <strong>Community livestock protection schemes, rural patrol reinforcement in North Central Division, and technology-based tracking solutions</strong> for livestock are the highest-impact interventions. The 17.8% decline in 2024 suggests existing rural policing programmes are effective — they should be expanded and sustained.</p>
+<div class="policy-card">
+  <div class="policy-eye">Policy Implication</div>
+  <p class="policy-txt">Stock theft is fundamentally a rural economic crime. <strong>Community livestock protection schemes, rural patrol reinforcement in North Central Division, and technology-based tracking solutions</strong> for livestock are the highest-impact interventions. The 17.8% decline in 2024 suggests existing rural policing programmes are effective — they should be expanded and sustained.</p>
 </div>
 
 </Tab>
 
 </Tabs>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════════
      HUMAN TRAFFICKING — SPECIAL REPORT
@@ -1640,7 +1804,7 @@ order by known_pct desc
 <div class="tc-eyebrow">Special Report · Human Trafficking · Botswana 2024</div>
 <div class="tc-stats">
   <div class="tc-stat">
-    <div class="tc-num">{trafficking_metrics[0].total_cases}</div>
+    <div class="tc-num">{trafficking_metrics[0]?.total_cases ?? '—'}</div>
     <div class="tc-lbl">Reported cases</div>
     <div class="tc-sub">Down from 53 in 2023</div>
   </div>
@@ -1658,22 +1822,25 @@ order by known_pct desc
 </div>
 <div class="tc-caution">
   <div class="tc-caution-icon">⚠</div>
-  <span><strong>Interpret with caution.</strong> Trafficking is chronically under-detected. The year-on-year decline from 53 to {trafficking_metrics[0].total_cases} cases likely reflects changes in detection capacity, not a real reduction in activity. These numbers represent a floor, not a ceiling.</span>
+  <span><strong>Interpret with caution.</strong> Trafficking is chronically under-detected. The year-on-year decline from 53 to {trafficking_metrics[0]?.total_cases ?? '—'} cases likely reflects changes in detection capacity, not a real reduction in activity. These numbers represent a floor, not a ceiling.</span>
 </div>
 </div>
 {/if}
 
 <Grid cols=2>
 
-  <BarChart
-    data={trafficking_victim_age}
-    x=age_group
-    y=total
-    title="Trafficking victim age distribution"
-    subtitle="{trafficking_metrics[0].total_victims} victims identified — children 6–10 the largest group"
-    colorPalette={['#9A67FD']}
-    labels=true
-  />
+  <div class="chart-card">
+    <BarChart
+      data={trafficking_victim_age}
+      x=age_group
+      y=total
+      title="Trafficking victim age distribution"
+      subtitle="{trafficking_metrics[0]?.total_victims ?? ''} victims identified — children 6–10 the largest group"
+      colorPalette={['#9A67FD']}
+      labels=true
+      downloadableData=false
+    />
+  </div>
 
   <div class="tc-insight-card">
     <div class="tc-insight-eye">Key Insight — Perpetrator Profile</div>
@@ -1698,29 +1865,35 @@ order by known_pct desc
 
 <Grid cols=2>
 
-  <BarChart
-    data={unemployment_cross}
-    x=offence
-    y=pct_unemployed
-    yFmt='0.0"%"'
-    title="Unemployment rate among perpetrators"
-    subtitle="% recorded as unemployed at time of offence — by category"
-    swapXY=true
-    colorPalette={['#FF9F43']}
-    labels=true
-  />
+  <div class="chart-card">
+    <BarChart
+      data={unemployment_cross}
+      x=offence
+      y=pct_unemployed
+      yFmt='0.0"%"'
+      title="Unemployment rate among perpetrators"
+      subtitle="% recorded as unemployed at time of offence — by category"
+      swapXY=true
+      colorPalette={['#FF9F43']}
+      labels=true
+      downloadableData=false
+    />
+  </div>
 
-  <BarChart
-    data={relationship_cross}
-    x=offence
-    y=known_pct
-    yFmt='0.0"%"'
-    title="Known victim–perpetrator relationship"
-    subtitle="% of cases with a prior relationship — by category"
-    swapXY=true
-    colorPalette={['#9A67FD']}
-    labels=true
-  />
+  <div class="chart-card">
+    <BarChart
+      data={relationship_cross}
+      x=offence
+      y=known_pct
+      yFmt='0.0"%"'
+      title="Known victim–perpetrator relationship"
+      subtitle="% of cases with a prior relationship — by category"
+      swapXY=true
+      colorPalette={['#9A67FD']}
+      labels=true
+      downloadableData=false
+    />
+  </div>
 
 </Grid>
 
@@ -1743,7 +1916,7 @@ order by known_pct desc
 </div>
 <div class="t-item">
 <div class="t-num">03</div>
-<div class="t-txt"><strong>Unemployment is a structural driver, not a coincidence.</strong> It appears in 70%+ of perpetrator profiles across property, violent, and sexual crime. Employment and crime policy cannot be treated as separate domains if the underlying driver is to be addressed.</div>
+<div class="t-txt"><strong>Unemployment is a structural driver, not a coincidence.</strong> In 10 of 11 offence categories over 60% of perpetrators are unemployed, rising past 90% for the major breaking offences. Employment and crime policy cannot be treated as separate domains if the underlying driver is to be addressed.</div>
 </div>
 <div class="t-item">
 <div class="t-num">04</div>
@@ -1758,7 +1931,8 @@ order by known_pct desc
 
 <LastRefreshed prefix="Data last updated"/>
 
-<Grid cols=2>
-  <LinkButton url="/crime-statistics-2024/overview">← National Overview</LinkButton>
-  <LinkButton url="/crime-statistics-2024/profiles">District Profiles →</LinkButton>
-</Grid>
+
+<div class="page-nav">
+  <LinkButton url="/crime-statistics-2024/overview">← Page 1: National Overview</LinkButton>
+  <LinkButton url="/crime-statistics-2024/crime-profiles">Page 3: Crime Profiles →</LinkButton>
+</div>

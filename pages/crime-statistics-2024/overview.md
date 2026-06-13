@@ -1,5 +1,4 @@
 ---
-title: Overview and National Trends
 sidebar_position: 1
 ---
 
@@ -10,7 +9,11 @@ sidebar_position: 1
     color: white;
     padding: 40px 32px 120px;
     border-radius: 12px;
-    margin-bottom: 32px;
+    margin-top: -26px; /* cancel the layout's top gap so the hero starts at the top */
+    margin-bottom: 0px;
+}
+@media (max-width: 639px) {
+    .hero { margin-top: -16px; }
 }
 
 .hero-meta {
@@ -129,6 +132,44 @@ sidebar_position: 1
 
 .danger .snapshot-value {
     color: #dc2626;
+}
+
+/* ── Data Currency Note ── */
+.currency-note {
+    margin: 24px 24px 0;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #FF9F43;
+    border-radius: 18px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.currency-note .cn-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.currency-note h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+}
+
+.currency-note p {
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: #64748b;
+    margin: 0;
+}
+
+.currency-note a {
+    color: #0042A0;
+    font-weight: 600;
 }
 
 /* ── Section 3 — Executive Summary ── */
@@ -260,24 +301,11 @@ sidebar_position: 1
     box-shadow:
         0 4px 8px rgba(0,0,0,.03),
         0 18px 30px rgba(0,0,0,.04);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-
-.chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
-
-.chart-header h3 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-.chart-header span {
-    font-size: 14px;
-    color: #64748b;
+.trend-chart-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,.05), 0 24px 44px rgba(0,0,0,.08);
 }
 
 .chart-container {
@@ -297,37 +325,16 @@ sidebar_position: 1
     box-shadow:
         0 4px 8px rgba(0,0,0,.03),
         0 18px 30px rgba(0,0,0,.04);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.findings-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,.05), 0 24px 44px rgba(0,0,0,.08);
 }
 
 .finding-item {
     display: flex;
     gap: 16px;
-}
-
-.finding-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.finding-icon.success {
-    background: #ecfdf5;
-    color: #3EC58E;
-}
-
-.finding-icon.primary {
-    background: #eff6ff;
-    color: #0042A0;
-}
-
-.finding-icon.warning {
-    background: #fffbeb;
-    color: #FF9F43;
 }
 
 .finding-item h4 {
@@ -377,6 +384,12 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
     box-shadow:
         0 4px 8px rgba(0,0,0,.03),
         0 18px 30px rgba(0,0,0,.04);
+
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.map-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,.05), 0 24px 44px rgba(0,0,0,.08);
 }
 
 .card-header {
@@ -424,6 +437,12 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
     border-radius: 24px;
 
     padding: 16px 20px;
+
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.geo-highlight:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(0,66,160,0.3);
 }
 
 .geo-rank {
@@ -472,7 +491,13 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
     padding: 12px 16px;
 
     border-left: 4px solid #e2e8f0;
+
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
+.geo-stat:hover { transform: translateY(-3px); }
+.geo-stat.orange:hover { box-shadow: 0 8px 20px rgba(255,159,67,0.2); }
+.geo-stat.purple:hover { box-shadow: 0 8px 20px rgba(154,103,253,0.2); }
+.geo-stat.green:hover  { box-shadow: 0 8px 20px rgba(62,197,142,0.2); }
 
 .geo-stat.orange { border-left-color: #FF9F43; }
 
@@ -513,6 +538,12 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
     line-height: 1.6;
 
     color: #475569;
+
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.geo-story:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(62,197,142,0.15);
 }
 
 /* =====================================================
@@ -616,12 +647,6 @@ SECTION 8 — NATIONAL DEVELOPMENT INDICATORS
     gap:16px;
 }
 
-.indicator-grid.four{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:16px;
-}
-
 .progress-card{
 
     background:white;
@@ -635,6 +660,12 @@ SECTION 8 — NATIONAL DEVELOPMENT INDICATORS
     box-shadow:
         0 4px 8px rgba(0,0,0,.03),
         0 18px 30px rgba(0,0,0,.04);
+
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.progress-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,.05), 0 24px 44px rgba(0,0,0,.08);
 }
 
 .indicator-title{
@@ -781,15 +812,20 @@ SDG ALIGNMENT
     box-shadow:
         0 4px 8px rgba(0,0,0,.03),
         0 18px 30px rgba(0,0,0,.04);
+
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
+.sdg-card:hover { transform: translateY(-3px); }
 
 .sdg-card.positive{
     border-top:4px solid #3EC58E;
 }
+.sdg-card.positive:hover { box-shadow: 0 10px 26px rgba(62,197,142,0.18); }
 
 .sdg-card.negative{
     border-top:4px solid #DC2626;
 }
+.sdg-card.negative:hover { box-shadow: 0 10px 26px rgba(220,38,38,0.15); }
 
 .sdg-top{
 
@@ -902,35 +938,40 @@ SDG ALIGNMENT
     color:#3EC58E;
 }
 
-.card-insight{
-    margin-top:20px;
-    background:#f8fafc;
-    border-left:4px solid #3EC58E;
-    border-radius:14px;
-    padding:14px 16px;
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
+/* ── Indicator tabs — segmented control ── */
+.ov-tabs :global(section > nav) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: #E9EDF6;
+    border: 1px solid #dde2f0 !important;
+    border-radius: 14px;
+    padding: 6px;
+    margin: 0 0 24px !important;
 }
-
-.card-insight .ci-icon{
-    font-size:16px;
-    flex-shrink:0;
-    margin-top:2px;
+.ov-tabs :global(section > nav > button) {
+    flex: 1;
+    margin: 0 !important;
+    padding: 11px 14px;
+    border: none !important;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #718096;
+    background: transparent;
+    transition: all 0.18s ease;
+    white-space: nowrap;
 }
-
-.card-insight h4{
-    font-size:13px;
-    font-weight:700;
-    margin-bottom:4px;
-    color:#0f172a;
+.ov-tabs :global(section > nav > button:hover) {
+    color: #2D3748;
+    background: rgba(255,255,255,0.65);
 }
-
-.card-insight p{
-    font-size:12px;
-    line-height:1.6;
-    color:#64748b;
-    margin:0;
+.ov-tabs :global(section > nav > button.border-b-2) {
+    background: linear-gradient(135deg, #0042A0 0%, #1E3A5F 100%);
+    color: #fff !important;
+    box-shadow: 0 6px 18px rgba(0,66,160,0.35);
 }
 
 /* =====================================================
@@ -1050,6 +1091,91 @@ SECTION 9 — EXECUTIVE CONCLUSION
 
     max-width:900px;
 }
+/* ── Page navigation ── */
+.page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+}
+
+/* =====================================================
+MOBILE RESPONSIVENESS
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ── Hero ── */
+    .hero { padding: 32px 20px 110px; }
+    .hero h1 { font-size: 24px; }
+    .hero-summary { font-size: 14.5px; }
+
+    /* ── Snapshot cards ── */
+    .snapshot-section { padding: 0 14px; }
+    .snapshot-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .snapshot-card { padding: 18px 16px; border-radius: 16px; }
+    .snapshot-value, .snapshot-trend { font-size: 24px; }
+    .snapshot-label { white-space: normal; font-size: 11px; }
+
+    /* ── Key Findings: one card per row, no icons ── */
+    .insights-grid { grid-template-columns: 1fr; }
+    .executive-summary .insight-icon { display: none; }
+    .executive-summary .insight-card { grid-template-columns: 1fr; }
+    .executive-summary .insight-card h3 { grid-column: 1; }
+
+    /* ── Plots: no side-by-side grids, every card standalone ── */
+    .trend-layout,
+    .geo-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .trend-section, .geo-section, .crime-structure,
+    .indicator-section, .conclusion-section { padding: 12px 0; }
+    .trend-chart-card, .findings-card, .map-card, .structure-card { padding: 20px 16px; }
+
+    /* let the chart card hug its plot — no stretched whitespace below */
+    .trend-chart-card { display: block; }
+    .chart-container { flex: none; min-height: unset; }
+
+    /* horizontal bar chart: guarantee plot room, swipe sideways if needed */
+    .chart-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .chart-scroll-inner { min-width: 560px; }
+
+    /* ── National Development Indicators: one card per row ── */
+    .indicator-grid.three,
+    .indicator-grid.four,
+    .sdg-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* ── Navigation buttons: full width, centered ── */
+    .page-nav { flex-direction: column; align-items: stretch; }
+    .page-nav a {
+        width: 100%;
+        display: inline-flex;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* ── Conclusion: policy tag on top, text below ── */
+    .conclusion-card { padding: 24px 20px 18px; border-radius: 24px; }
+    .conclusion-card h2 { font-size: 22px; }
+    .policy-panel {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .policy-tag { white-space: normal; }
+
+}
 </style>
 
 ```sql pub_header
@@ -1083,12 +1209,6 @@ select
   ), 1)                                                                    as murder_change_pct
 from insights.serious_crime
 where year in (2023, 2024)
-```
-
-```sql victim_kpi
-select
-  round(100.0 * sum(female_count) / nullif(sum(total), 0), 1) as female_victim_pct
-from insights.victims_ageoverall
 ```
 
 ```sql district_kpi
@@ -1142,80 +1262,12 @@ select
 from insights.national_trend
 ```
 
-```sql growth_rates
-select
-  case year
-    when 2020 then '2019→20'
-    when 2021 then '2020→21'
-    when 2022 then '2021→22'
-    when 2023 then '2022→23'
-    when 2024 then '2023→24'
-  end as period,
-  growth_pct
-from insights.national_trend
-where year >= 2020
-order by year
-```
-
-```sql divisions_list
-select division, sort_order
-from insights.division_filter
-order by sort_order, division
-```
-
-```sql crime_by_division
-select
-  division,
-  sum(total) as total_offences,
-  round(100.0 * sum(total) / sum(sum(total)) over (), 1) as share_pct
-from insights.division_totals
-where year = 2024
-  and (division = '${inputs.selectedDivision}' or '${inputs.selectedDivision}' = 'All Divisions')
-group by division
-order by total_offences desc
-```
-
-```sql crime_by_district
-select
-  district_number,
-  district_name,
-  total,
-  relative_value_pct,
-  penal_code,
-  other_statutes
-from insights.district_crime
-order by total desc
-```
-
-```sql district_trend
-select
-  d.district_name,
-  d.year,
-  d.total,
-  d.total_growth_pct
-from insights.district_trend d
-where d.year in (2023, 2024)
-order by d.district_number, d.year
-```
-
 ```sql district_count
 select
   sum(case when total_growth_pct < 0 then 1 else 0 end)::int as improved,
   count(*)::int                                                as total
 from insights.district_trend
 where year = 2024
-```
-
-```sql district_table
-select
-  district_number  as "#",
-  district_name    as "District",
-  penal_code       as "Penal Code",
-  other_statutes   as "Other statutes",
-  total            as "Total",
-  relative_value_pct as "Share %"
-from insights.district_crime
-order by total desc
 ```
 
 ```sql penal_categories
@@ -1229,49 +1281,6 @@ where year = 2024
   and crime_category not in ('Total')
 order by cases desc
 limit 6
-```
-
-```sql penal_trend
-select
-  crime_category,
-  year,
-  cases
-from insights.penal_code_cat
-where year in (2022, 2023, 2024)
-  and crime_category not in ('Total')
-order by year, cases desc
-```
-
-```sql road_traffic
-select
-  traffic_offence,
-  cases,
-  change_pct
-from insights.traffic_offence
-where year = 2024
-  and traffic_offence != 'Total'
-order by cases desc
-```
-
-```sql road_totals
-select
-  year,
-  sum(cases) as total_cases
-from insights.traffic_offence
-where traffic_offence = 'Total'
-group by year
-order by year
-```
-
-```sql tndp
-select
-  indicator_key,
-  indicator_description,
-  year,
-  rate
-from insights.tndp
-where year in (2022, 2023, 2024)
-order by indicator_key, year
 ```
 
 ```sql tndp_2024
@@ -1329,6 +1338,7 @@ order by
   {/if}
   <div class="hero-tags">
     <span class="hero-tag">Reference period: 1 Jan – 31 Dec 2024</span>
+    <span class="hero-tag">Latest available official data: 2024</span>
     <span class="hero-tag">Population: 2,540,215</span>
     <span class="hero-tag">Source: Botswana Police Service</span>
     <span class="hero-tag">A DATA 123 Intelligence Publication</span>
@@ -1375,6 +1385,14 @@ order by
     </div>
 </section>
 {/if}
+
+<div class="currency-note">
+    <div class="cn-icon">📅</div>
+    <div>
+        <h4>Data Vintage: 2024 — the Latest Official Statistics Available</h4>
+        <p>The Annual Crime Statistics Report 2024 is the most recent crime statistics release by the Botswana Police Service. The 2025 statistics report has not yet been published — this dashboard will be updated within weeks of its official release. See the <a href="/crime-statistics-2024/methodology">Methodology</a> page for the full update cycle.</p>
+    </div>
+</div>
 
 
 <span class="section-label">Key Findings</span>
@@ -1456,11 +1474,13 @@ SECTION 4 — NATIONAL CRIME TREND
                     title="Total offences 2019–2024"
                     subtitle="All categories including traffic"
                     labels=false
+                    showAllXAxisLabels=true
                     colorPalette={['#0042A0','#3EC58E']}
+                    downloadableData=false
                     />
 
             </div>
-            <h3 style="font-size: 10px; font-weight: 300; color: #0f172a; margin: -5 0 0px 0;">
+            <h3 style="font-size: 10px; font-weight: 300; color: #0f172a; margin: -5px 0 0;">
                 The Penal Code is Botswana's official rulebook that clearly explains what actions are considered crimes against people, property, or the public. It also states the exact punishments people will face if they break these laws to keep the country safe and fair
             </h3>
 
@@ -1559,139 +1579,38 @@ SECTION 4 — NATIONAL CRIME TREND
 
 </section>
 
-
-
-
-```sql district_map
-with district_map as (
-
-    -- Gaborone stands alone
-    select 'GABORONE' as district_name,
-           sum(total) as total
-    from insights.district_crime
-    where district_name = 'Gaborone'
-
-    union all
-
-    -- Mogoditshane + Ramotswa (South East)
-    select 'SOUTH EAST',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Mogoditshane'
-
-    union all
-
-    -- Francistown + Kutlwano
-    select 'FRANCISTOWN',
-           sum(total)
-    from insights.district_crime
-    where district_name in ('Francistown','Kutlwano')
-
-    union all
-
-    -- Masunga (North East)
-    select 'NORTH EAST',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Francistown'
-
-    union all
-
-    select 'LOBATSE',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Lobatse'
-
-    union all
-
-    select 'SELIBE PHIKWE',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'S/Phikwe'
-
-    union all
-
-    select 'CHOBE',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Kasane'
-
-    union all
-
-    select 'GHANZI',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Gantsi'
-
-    union all
-
-    select 'KGALAGADI',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Tsabong'
-
-    union all
-
-    select 'KGATLENG',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Mochudi'
-
-    union all
-
-    select 'KWENENG',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Molepolole'
-
-    union all
-
-    select 'SOUTHERN',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Kanye'
-
-    union all
-
-    select 'SOWA TOWN',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Kanye'
-
-    union all
-
-    select 'NORTH WEST',
-           sum(total)
-    from insights.district_crime
-    where district_name in ('Maun','Shakawe')
-
-    union all
-
-    select 'CENTRAL',
-           sum(total)
-    from insights.district_crime
-    where district_name in ('Palapye','Mahalapye','Letlhakane')
-
-    union all
-
-    select 'JWANENG',
-           sum(total)
-    from insights.district_crime
-    where district_name = 'Letlhakane'
-
-)
-
-select *
-from district_map
-order by total desc
-
+```sql map_two
+select
+    case district_name
+        when 'Kutlwano' then 'No.01 Kutlwano'
+        when 'Palapye' then 'No.02 Palapye'
+        when 'Gaborone' then 'No.03 Gaborone'
+        when 'Lobatse' then 'No.04 Lobatse'
+        when 'Maun' then 'No.05 Maun'
+        when 'Gantsi' then 'No.06 Gantsi'
+        when 'Kasane' then 'No.07 Kasane'
+        when 'Letlhakane' then 'No.08 Letlhakane'
+        when 'Tsabong' then 'No.09 Tsabong'
+        when 'S/Phikwe' then 'No.10 Selebi Phikwe'
+        when 'Molepolole' then 'No.11 Molepolole'
+        when 'Mochudi' then 'No.12 Mochudi'
+        when 'Mogoditshane' then 'No.13 Mogoditshane'
+        when 'Kanye' then 'No.14 Kanye'
+        when 'Francistown' then 'No.15 Francistown'
+        when 'Mahalapye' then 'No.16 Mahalapye'
+        when 'Shakawe' then 'No.17 Shakawe'
+    end as district_name,
+    sum(total) as total
+from insights.district_crime
+group by district_name
+order by district_name
 ```
 
 
 <!-- =====================================================
 SECTION 5 — GEOGRAPHIC INTELLIGENCE
 ===================================================== -->
-<span class="section-label">NGEOGRAPHIC INTELLIGENCE</span>
+<span class="section-label">Geographic Intelligence</span>
 <section class="geo-section">
 
     <div class="section-heading">
@@ -1711,7 +1630,7 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
             <div class="card-header">
 
                 <h3 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 0px 0;">
-                Crime Distribution by District
+                Crime Distribution by Police District
             </h3>
 
                 <span>
@@ -1721,9 +1640,9 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
             </div>
 
             
-            {#if district_map.ready}
-            <BotswanaMap
-                data={district_map}
+            {#if map_two.ready}
+            <BwpoliceMap
+                data={map_two}
                 areaCol='district_name'
                 value='total'
                 height={600}
@@ -1849,15 +1768,21 @@ SECTION 6 — CRIME STRUCTURE
 
         </div>
 
+        <div class="chart-scroll">
+        <div class="chart-scroll-inner">
         <BarChart
             data={penal_categories}
             x=crime_category
             y=cases
             yFmt='#,##0'
             swapXY=true
+            showAllXAxisLabels=true
             colorPalette={['#0042A0','#3EC58E','#9A67FD','#FF9F43','#DC2626']}
             labels=false
+            downloadableData=false
         />
+        </div>
+        </div>
 
     </div>
 
@@ -1900,7 +1825,8 @@ SECTION 8 — NATIONAL DEVELOPMENT INDICATORS
         </span>
     </div>
 
-    <Tabs fullWidth=true>
+    <div class="ov-tabs">
+    <Tabs id="indicators-tabs">
 
     <Tab label="TNDP II Indicators">
 
@@ -2132,6 +2058,7 @@ SECTION 8 — NATIONAL DEVELOPMENT INDICATORS
     </Tab>
 
     </Tabs>
+    </div>
 
 </section>
 
@@ -2148,7 +2075,7 @@ SECTION 9 — EXECUTIVE CONCLUSION
             EXECUTIVE CONCLUSION
         </div>
 
-        <h2 style="font-size: 20px; font-weight: 700; color: #e9edf9; margin: 5 0 0px 0;">
+        <h2 style="font-size: 20px; font-weight: 700; color: #e9edf9; margin: 5px 0 0;">
             Botswana Is Becoming Safer —
             But Not In Every Category
         </h2>
@@ -2174,7 +2101,7 @@ SECTION 9 — EXECUTIVE CONCLUSION
                 POLICY IMPLICATION
             </div>
 
-            <p style="font-size: 15px; font-weight: 400; color: #e9edf9; margin: 5 0 0px 0;">
+            <p style="font-size: 15px; font-weight: 400; color: #e9edf9; margin: 5px 0 0;">
                 Murder has risen every year since 2020 from
                 221 to 337 cases and is now at its highest
                 recorded level. This is not a spike; it is a trend.
@@ -2195,3 +2122,8 @@ SECTION 9 — EXECUTIVE CONCLUSION
 
 </section>
  
+<div class="page-nav">
+  <LinkButton url="/crime-statistics-2024/serious-offences">Page 2: Serious Offences →</LinkButton>
+  <LinkButton url="/crime-statistics-2024/crime-profiles">Page 3: Crime Profiles →</LinkButton>
+</div>
+
