@@ -1,1 +1,0 @@
-select * from crime.v_victim_gender_ratio
