@@ -1,10 +1,24 @@
 <script>
+	import { onDestroy } from 'svelte';
+	import { page } from '$app/stores';
+
 	let open = false;
 	let question = '';
 	let messages = [];
 	let loading = false;
+	let showTooltip = false;
+	let hovered = false;
+	let tooltipTimer;
 
 	const API_URL = 'https://data123-ai-dmf6dsffakcdapgp.southafricanorth-01.azurewebsites.net/api/ask';
+
+	$: if ($page.url.pathname.startsWith('/crime-statistics-2024') && !$page.url.pathname.includes('methodology')) {
+		showTooltip = true;
+		clearTimeout(tooltipTimer);
+		tooltipTimer = setTimeout(() => { showTooltip = false; }, 4000);
+	}
+
+	onDestroy(() => clearTimeout(tooltipTimer));
 
 	async function sendQuestion() {
 		const q = question.trim();
@@ -20,10 +34,13 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ question: q })
 			});
+
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
 			const data = await res.json();
 			messages = [...messages, { role: 'ai', text: data.answer || data.error }];
-		} catch {
-			messages = [...messages, { role: 'ai', text: 'Something went wrong. Please try again.' }];
+		} catch (err) {
+			messages = [...messages, { role: 'ai', text: 'Unable to reach the AI. Please try again shortly.' }];
 		} finally {
 			loading = false;
 		}
@@ -37,8 +54,21 @@
 	}
 </script>
 
+{#if $page.url.pathname.startsWith('/crime-statistics-2024') && !$page.url.pathname.includes('methodology')}
+
+<!-- Tooltip -->
+{#if (showTooltip || hovered) && !open}
+	<div class="chat-tooltip">Chat with the report</div>
+{/if}
+
 <!-- Floating button -->
-<button class="chat-fab" on:click={() => (open = !open)} aria-label="Ask AI">
+<button
+	class="chat-fab"
+	on:click={() => { open = !open; showTooltip = false; }}
+	on:mouseenter={() => (hovered = true)}
+	on:mouseleave={() => (hovered = false)}
+	aria-label="Ask AI"
+>
 	{#if open}
 		<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 	{:else}
@@ -93,7 +123,42 @@
 	</div>
 {/if}
 
+{/if}
+
 <style>
+	.chat-tooltip {
+		position: fixed;
+		bottom: 38px;
+		right: 90px;
+		background: #1E3A5F;
+		color: white;
+		font-size: 13px;
+		font-weight: 600;
+		padding: 8px 14px;
+		border-radius: 20px;
+		white-space: nowrap;
+		z-index: 1001;
+		box-shadow: 0 4px 16px rgba(30,58,95,0.3);
+		animation: fadeIn 0.3s ease;
+		pointer-events: none;
+	}
+
+	.chat-tooltip::after {
+		content: '';
+		position: absolute;
+		right: -6px;
+		top: 50%;
+		transform: translateY(-50%);
+		border: 6px solid transparent;
+		border-right: none;
+		border-left-color: #1E3A5F;
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; transform: translateX(6px); }
+		to { opacity: 1; transform: translateX(0); }
+	}
+
 	.chat-fab {
 		position: fixed;
 		bottom: 28px;
@@ -294,6 +359,10 @@
 		.chat-fab {
 			right: 16px;
 			bottom: 20px;
+		}
+		.chat-tooltip {
+			right: 78px;
+			bottom: 32px;
 		}
 	}
 </style>
