@@ -2,6 +2,7 @@
 	import '@evidence-dev/tailwind/fonts.css';
 	import '../app.css';
 	import { EvidenceDefaultLayout } from '@evidence-dev/core-components';
+	import AiChat from '../components/AiChat.svelte';
 	export let data;
 </script>
 
@@ -45,6 +46,8 @@
 		</footer>
 	</div>
 </EvidenceDefaultLayout>
+
+<AiChat />
 
 <style>
 	.site-footer {
