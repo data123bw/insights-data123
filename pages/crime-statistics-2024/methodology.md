@@ -1,4 +1,6 @@
 ---
+title: Methodology
+hide_title: true
 sidebar_position: 4
 ---
 

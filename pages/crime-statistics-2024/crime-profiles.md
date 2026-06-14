@@ -1,4 +1,6 @@
 ---
+title: Crime profiles
+hide_title: true
 sidebar_position: 3
 ---
 

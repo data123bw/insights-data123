@@ -3,11 +3,19 @@
 	import '../app.css';
 	import { EvidenceDefaultLayout } from '@evidence-dev/core-components';
 	import AiChat from '../components/AiChat.svelte';
+	import { navigating } from '$app/stores';
 	export let data;
 </script>
 
+{#if $navigating}
+	<div id="nav-loader">
+		<div id="nav-loader-bar"></div>
+	</div>
+{/if}
+
 <EvidenceDefaultLayout
 	{data}
+	logo="/logo.png"
 	lightLogo="/logo-light.png"
 	darkLogo="/logo-dark.png"
 	hideBreadcrumbs= {true}
@@ -151,6 +159,28 @@
 		font-size: 11.5px;
 		line-height: 1.7;
 		color: rgba(255, 255, 255, 0.45);
+	}
+
+	#nav-loader {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 3px;
+		z-index: 99999;
+		background: rgba(108, 44, 144, 0.15);
+	}
+
+	#nav-loader-bar {
+		height: 100%;
+		background: #6c2c90;
+		animation: nav-progress 1.5s ease-in-out infinite;
+	}
+
+	@keyframes nav-progress {
+		0% { width: 0%; opacity: 1; }
+		70% { width: 85%; opacity: 1; }
+		100% { width: 100%; opacity: 0; }
 	}
 
 	@media (max-width: 640px) {
