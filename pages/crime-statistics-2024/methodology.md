@@ -1247,6 +1247,6 @@ SECTION 10 — ABOUT DATA 123
     ← Page 2: Serious Offences
   </LinkButton>
   <LinkButton url="/crime-statistics-2024/crime-profiles">
-    ← Page 3: District Profiles
+    ← Page 3: Crime Profiles
   </LinkButton>
 </div>

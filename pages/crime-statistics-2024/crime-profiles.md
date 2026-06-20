@@ -2044,10 +2044,10 @@ Three of the four SDG-linked indicators improved against the 2022 baseline. The 
 </Note>
 
 <div class="page-nav">
-  <LinkButton url="/crime-statistics-2024/overview">
-    ← Page 1: National Overview
-  </LinkButton>
   <LinkButton url="/crime-statistics-2024/serious-offences">
-    Page 2: Serious Offences →
+    ← Page 2: Serious Offences
+  </LinkButton>
+  <LinkButton url="/crime-statistics-2024/methodology">
+    Page 4: Methodology →
   </LinkButton>
 </div>
