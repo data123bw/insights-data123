@@ -11,6 +11,9 @@
 	<div id="nav-loader">
 		<div id="nav-loader-bar"></div>
 	</div>
+	<div id="nav-logo-badge">
+		<img src="/icon.svg" alt="DATA 123" />
+	</div>
 {/if}
 
 <EvidenceDefaultLayout
@@ -181,6 +184,48 @@
 		0% { width: 0%; opacity: 1; }
 		70% { width: 85%; opacity: 1; }
 		100% { width: 100%; opacity: 0; }
+	}
+
+	#nav-logo-badge {
+		position: fixed;
+		top: 14px;
+		right: 18px;
+		z-index: 99999;
+		width: 38px;
+		height: 38px;
+		border-radius: 50%;
+		background: #fff;
+		box-shadow: 0 2px 12px rgba(108, 44, 144, 0.18);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		animation: badge-in 0.2s ease-out;
+	}
+
+	#nav-logo-badge::before {
+		content: '';
+		position: absolute;
+		inset: -4px;
+		border-radius: 50%;
+		border: 2px solid #6c2c90;
+		animation: badge-pulse 1.2s ease-out infinite;
+	}
+
+	#nav-logo-badge img {
+		width: 26px;
+		height: 26px;
+		object-fit: contain;
+	}
+
+	@keyframes badge-in {
+		from { opacity: 0; transform: scale(0.7); }
+		to   { opacity: 1; transform: scale(1); }
+	}
+
+	@keyframes badge-pulse {
+		0%   { transform: scale(1);    opacity: 0.8; }
+		70%  { transform: scale(1.55); opacity: 0; }
+		100% { transform: scale(1.55); opacity: 0; }
 	}
 
 	@media (max-width: 640px) {

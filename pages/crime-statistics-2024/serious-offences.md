@@ -406,6 +406,8 @@ sidebar_position: 2
 .cross-sub { font-size: 14px; color: #64748b; margin-top: 4px; line-height: 1.6; max-width: 72ch; }
 
 /* ── Offence tabs — segmented control ────────────────────── */
+/* FRAGILE: targets Evidence internal Tab markup (section > nav > button.border-b-2).
+   If tabs break after an Evidence upgrade, check whether this selector still matches. */
 .so-tabs :global(section > nav) {
     display: flex;
     flex-wrap: wrap;
@@ -788,7 +790,7 @@ cross join (
 ) g
 cross join (
   select percentage
-  from insights.victim_relo
+  from insights.offence_relationship
   where offence = 'rape' and lower(relationship_type) = 'stranger'
 ) s
 ```
@@ -800,12 +802,18 @@ from insights.offence_month where offence='rape' order by month_number
 
 ```sql rape_relationship
 select replace(relationship_type,'_',' ') as relationship_type, count, percentage
-from insights.victim_relo where offence='rape' order by count desc
+from insights.offence_relationship where offence='rape' order by count desc
 ```
 
 ```sql rape_victim_age
 select age_group, female_count, total, percentage
 from insights.victim_age where offence='rape' order by total desc limit 10
+```
+
+```sql rape_bushy_area
+select round(sum(percentage), 1) as pct
+from insights.offence_location
+where offence='rape' and location_key in ('bushy_area', 'perpetrators_home')
 ```
 
 ```sql defilement_metrics
@@ -846,6 +854,11 @@ from insights.offence_relationship where offence='defilement' order by count des
 ```sql defilement_perp_age
 select age_group, male_count, total, percentage
 from insights.perpetrator_age where offence='defilement' order by total desc limit 6
+```
+
+```sql defilement_male_pct
+select round(100.0 * sum(male_count) / nullif(sum(total), 0), 1) as pct
+from insights.perpetrator_age where offence='defilement'
 ```
 
 ```sql robbery_metrics
@@ -922,7 +935,8 @@ from insights.offence_month where offence='stock_theft' order by month_number
 ```
 
 ```sql stock_by_division
-select division, cases from insights.serious_offence_division where offence='Stock Theft' order by cases desc
+select division, cases, round(100.0 * cases / sum(cases) over(), 1) as pct
+from insights.serious_offence_division where offence='Stock Theft' order by cases desc
 ```
 
 ```sql stock_location
@@ -933,6 +947,10 @@ from insights.offence_location where offence='stock_theft' and taxonomy='stock_t
 ```sql trafficking_metrics
 select
   c.total_cases,
+  -- change_pct is hardcoded: offence_by_month has no year column (single-year snapshot),
+  -- and serious_offences_trend does not include human_trafficking.
+  -- Prior-year count (53 cases in 2023) is not available in the warehouse.
+  -- Update this value manually when 2025 data is loaded.
   -58.5                                                                        as change_pct,
   v.total_victims,
   v.children_6_10_pct
@@ -1161,19 +1179,21 @@ order by known_pct desc
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={murder_metrics[0]?.night_pct??0} name={'Night incidents'} color=red />
 
 <GaugeKPI value={murder_metrics[0]?.weekend_pct??0} name={'Weekend incidents'} color=amber />
 
-<GaugeKPI value={37.1} name={'Romantic link'} color=purple />
+<GaugeKPI value={murder_relationship.find(r => r.relationship_type === 'romantic link')?.percentage ?? 37.1} name={'Romantic link'} color=purple />
 
-<GaugeKPI value={33.8} name={'Jealousy motive'} color=red />
+<GaugeKPI value={murder_motive.find(r => r.motive === 'jealousy')?.percentage ?? 33.8} name={'Jealousy motive'} color=red />
 
-<GaugeKPI value={26.4} name={'Arguments motive'} color=blue />
+<GaugeKPI value={murder_motive.find(r => r.motive === 'arguments')?.percentage ?? 26.4} name={'Arguments motive'} color=blue />
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1302,11 +1322,12 @@ order by known_pct desc
 <div class="offence-sub">Threat to Kill cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {ttk_metrics[0]?.change_pct ?? 0}%</div>
+<div class="offence-delta dn">↓ {Math.abs(ttk_metrics[0]?.change_pct ?? 0)}%</div>
 <div class="offence-delta-note">Declined from 913 in 2023<br>GBV indicator — 87% female victims</div>
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={ttk_metrics[0]?.female_victim_pct??0} name={'Female victims'} color=purple />
@@ -1315,7 +1336,7 @@ order by known_pct desc
 
 <GaugeKPI value={Math.abs(ttk_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<GaugeKPI value={64.4} name={'Jealousy motive'} color=blue />
+<GaugeKPI value={ttk_motive.find(r => r.motive === 'jealousy')?.percentage ?? 64.4} name={'Jealousy motive'} color=blue />
 
 <div class="o-text-card">
 <div class="o-text-val">26–30</div>
@@ -1323,6 +1344,7 @@ order by known_pct desc
 </div>
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1405,20 +1427,21 @@ order by known_pct desc
 <div class="offence-sub">Rape cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {rape_metrics[0]?.change_pct ?? 0}%</div>
+<div class="offence-delta dn">↓ {Math.abs(rape_metrics[0]?.change_pct ?? 0)}%</div>
 <div class="offence-delta-note">Declined from 2,296 in 2023<br>99.2% of victims are female</div>
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={rape_metrics[0]?.female_victim_pct??0} name={'Female victims'} color=purple />
 
 <GaugeKPI value={rape_metrics[0]?.stranger_pct??0} name={'Stranger perp'} color=red />
 
-<GaugeKPI value={Math.abs(rape_metrics[0]?.change_pct??0)} name={'YoY change'} color=red invert=true prefix="↓ " />
+<GaugeKPI value={Math.abs(rape_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<GaugeKPI value={40} name={'Bushy area or perp home'} color=blue />
+<GaugeKPI value={rape_bushy_area[0]?.pct ?? 40} name={'Bushy area or perp home'} color=blue />
 
 <div class="o-text-card">
 <div class="o-text-val">0–20</div>
@@ -1426,6 +1449,7 @@ order by known_pct desc
 </div>
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1507,11 +1531,12 @@ order by known_pct desc
 <div class="offence-sub">Defilement cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {defilement_metrics[0]?.change_pct ?? 0}%</div>
+<div class="offence-delta dn">↓ {Math.abs(defilement_metrics[0]?.change_pct ?? 0)}%</div>
 <div class="offence-delta-note">Declined from 1,754 in 2023<br>99.8% perpetrators are male</div>
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={defilement_metrics[0]?.romantic_link_pct??0} name={'Romantic link'} color=red />
@@ -1520,7 +1545,7 @@ order by known_pct desc
 
 <GaugeKPI value={Math.abs(defilement_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<GaugeKPI value={99.8} name={'Male perpetrators'} color=purple />
+<GaugeKPI value={defilement_male_pct[0]?.pct ?? 99.8} name={'Male perpetrators'} color=purple />
 
 <div class="o-text-card">
 <div class="o-text-val">16–30</div>
@@ -1528,6 +1553,7 @@ order by known_pct desc
 </div>
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1614,6 +1640,7 @@ order by known_pct desc
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={Math.abs(robbery_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
@@ -1622,11 +1649,12 @@ order by known_pct desc
 
 <GaugeKPI value={robbery_metrics[0]?.edge_weapon_pct??0} name={'Edge weapons'} color=amber />
 
-<GaugeKPI value={44.9} name={'Knives specifically'} color=blue />
+<GaugeKPI value={robbery_weapon.find(r => r.weapon_type === 'knives')?.percentage ?? 44.9} name={'Knives specifically'} color=blue />
 
-<GaugeKPI value={85.7} name={'Perps unemployed'} color=purple />
+<GaugeKPI value={unemployment_cross.find(r => r.offence === 'robbery')?.pct_unemployed ?? 85.7} name={'Perps unemployed'} color=purple />
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1704,11 +1732,12 @@ order by known_pct desc
 <div class="offence-sub">Stock Theft cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {stock_metrics[0]?.change_pct ?? 0}%</div>
+<div class="offence-delta dn">↓ {Math.abs(stock_metrics[0]?.change_pct ?? 0)}%</div>
 <div class="offence-delta-note">Third most prevalent serious crime<br>Concentrated in rural divisions</div>
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={stock_metrics[0]?.grazing_pct??0} name={'Grazing pastures'} color=amber />
@@ -1717,7 +1746,7 @@ order by known_pct desc
 
 <GaugeKPI value={Math.abs(stock_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<GaugeKPI value={34.5} name={'North Central share'} color=blue />
+<GaugeKPI value={stock_by_division.find(r => r.division === 'North Central')?.pct ?? 34.5} name={'North Central share'} color=blue />
 
 <div class="o-text-card">
 <div class="o-text-val">Rural</div>
@@ -1725,6 +1754,7 @@ order by known_pct desc
 </div>
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1829,6 +1859,7 @@ order by known_pct desc
 </div>
 {/if}
 
+{#if trafficking_metrics.ready}
 <Grid cols=2>
 
   <div class="chart-card">
@@ -1854,6 +1885,7 @@ order by known_pct desc
   </div>
 
 </Grid>
+{/if}
 
 <!-- ═══════════════════════════════════════════════════════════
      CROSS-CRIME INTELLIGENCE
