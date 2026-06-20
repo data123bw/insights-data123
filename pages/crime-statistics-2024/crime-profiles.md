@@ -577,6 +577,8 @@ sidebar_position: 3
 .p3-gov-chip.down  .p3-gov-chip-num { color: #F87171; }
 
 /* ── Framework tabs — segmented control restyle ── */
+/* FRAGILE: targets Evidence internal Tab markup (section > nav > button.border-b-2).
+   If tabs break after an Evidence upgrade, check whether this selector still matches. */
 .p3-fw { margin-bottom: 6px; }
 .p3-fw :global(section > nav) {
   display: flex;
@@ -1165,7 +1167,7 @@ select
   max(case when relationship_type = 'acquaintance'  then percentage end) as acquaintance,
   max(case when relationship_type = 'relative'      then percentage end) as relative,
   max(case when relationship_type = 'friend'        then percentage end) as friend
-from insights.victim_relo
+from insights.offence_relationship
 group by 1
 order by "romantic link" desc nulls last
 ```
@@ -2044,10 +2046,10 @@ Three of the four SDG-linked indicators improved against the 2022 baseline. The 
 </Note>
 
 <div class="page-nav">
-  <LinkButton url="/crime-statistics-2024/overview">
-    ← Page 1: National Overview
-  </LinkButton>
   <LinkButton url="/crime-statistics-2024/serious-offences">
-    Page 2: Serious Offences →
+    ← Page 2: Serious Offences
+  </LinkButton>
+  <LinkButton url="/crime-statistics-2024/methodology">
+    Page 4: Methodology →
   </LinkButton>
 </div>

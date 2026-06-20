@@ -589,8 +589,7 @@ SECTION 6 — CRIME STRUCTURE
     gap: 18px;
 }
 
-.insight-icon {
-
+.si-icon {
     font-size: 26px;
 }
 
@@ -941,6 +940,8 @@ SDG ALIGNMENT
 }
 
 /* ── Indicator tabs — segmented control ── */
+/* FRAGILE: targets Evidence internal Tab markup (section > nav > button.border-b-2).
+   If tabs break after an Evidence upgrade, check whether this selector still matches. */
 .ov-tabs :global(section > nav) {
     display: flex;
     flex-wrap: wrap;
@@ -1643,12 +1644,14 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
 
             
             {#if map_two.ready}
+            <LazyChart height={600}>
             <BwpoliceMap
                 data={map_two}
                 areaCol='district_name'
                 value='total'
                 height={600}
             />
+            </LazyChart>
             {/if}
 
         </div>
@@ -1791,7 +1794,7 @@ SECTION 6 — CRIME STRUCTURE
 
     <div class="structure-insight">
 
-        <div class="insight-icon">
+        <div class="si-icon">
             ⚡
         </div>
 
@@ -1941,7 +1944,7 @@ SECTION 8 — NATIONAL DEVELOPMENT INDICATORS
         </div>
 
         <div class="structure-insight">
-            <div class="insight-icon">⚡</div>
+            <div class="si-icon">⚡</div>
             <div>
                 <h4>TNDP II Summary</h4>
                 <p>All three TNDP II indicators improved in 2024. GBV fell {Math.abs(tndp_2024[0].three_year_change_pct)}%, road fatalities declined {Math.abs(tndp_2024[1].three_year_change_pct)}% to a three-year low, and violent crime dropped sharply after a 2023 spike — placing Botswana on track against its national development targets.</p>
@@ -2047,7 +2050,7 @@ SECTION 8 — NATIONAL DEVELOPMENT INDICATORS
         </div>
 
         <div class="structure-insight">
-            <div class="insight-icon">⚡</div>
+            <div class="si-icon">⚡</div>
             <div>
                 <h4>SDG 2030 Summary</h4>
                 <p>Road fatalities and violence exposure declined for a third consecutive year, each reaching multi-year lows. Human trafficking fell sharply from a 2023 spike ({sdg_2024.ready ? sdg_2024[0].rate_2023 : '2.1'} → {sdg_2024.ready ? sdg_2024[0].rate_2024 : '0.9'}) but remains above the 2022 baseline, leaving its three-year trend elevated. Intentional homicide is the only indicator to worsen in every year since 2022, rising to {sdg_2024.ready ? sdg_2024[3].rate_2024 : '13.3'} per 100,000 and demanding focused policy intervention to protect SDG 16 targets.</p>
