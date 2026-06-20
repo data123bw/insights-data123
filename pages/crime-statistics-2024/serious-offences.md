@@ -1128,6 +1128,7 @@ order by known_pct desc
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={murder_metrics[0]?.night_pct??0} name={'Night incidents'} color=red />
@@ -1141,6 +1142,7 @@ order by known_pct desc
 <GaugeKPI value={murder_motive.find(r => r.motive === 'arguments')?.percentage ?? 26.4} name={'Arguments motive'} color=blue />
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1274,6 +1276,7 @@ order by known_pct desc
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={ttk_metrics[0]?.female_victim_pct??0} name={'Female victims'} color=purple />
@@ -1290,6 +1293,7 @@ order by known_pct desc
 </div>
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1377,6 +1381,7 @@ order by known_pct desc
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={rape_metrics[0]?.female_victim_pct??0} name={'Female victims'} color=purple />
@@ -1393,6 +1398,7 @@ order by known_pct desc
 </div>
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1479,6 +1485,7 @@ order by known_pct desc
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={defilement_metrics[0]?.romantic_link_pct??0} name={'Romantic link'} color=red />
@@ -1495,6 +1502,7 @@ order by known_pct desc
 </div>
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1581,6 +1589,7 @@ order by known_pct desc
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={Math.abs(robbery_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
@@ -1594,6 +1603,7 @@ order by known_pct desc
 <GaugeKPI value={unemployment_cross.find(r => r.offence === 'robbery')?.pct_unemployed ?? 85.7} name={'Perps unemployed'} color=purple />
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">
@@ -1676,6 +1686,7 @@ order by known_pct desc
 </div>
 </div>
 
+<LazyChart height={180}>
 <div class="o-kpis">
 
 <GaugeKPI value={stock_metrics[0]?.grazing_pct??0} name={'Grazing pastures'} color=amber />
@@ -1692,6 +1703,7 @@ order by known_pct desc
 </div>
 
 </div>
+</LazyChart>
 
 <div class="intel-block">
 <div class="intel-light">

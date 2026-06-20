@@ -1642,12 +1642,14 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
 
             
             {#if map_two.ready}
+            <LazyChart height={600}>
             <BwpoliceMap
                 data={map_two}
                 areaCol='district_name'
                 value='total'
                 height={600}
             />
+            </LazyChart>
             {/if}
 
         </div>
