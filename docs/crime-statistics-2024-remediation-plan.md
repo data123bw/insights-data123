@@ -14,8 +14,8 @@
 
 | ID | Phase | File | Status |
 |----|-------|------|--------|
-| C-01 | 0 | pages/crime-statistics-2024/methodology.md | ⬜ TODO |
-| C-02 | 0 | pages/crime-statistics-2024/serious-offences.md | ⬜ TODO |
+| C-01 | 0 | pages/crime-statistics-2024/methodology.md | ✅ DONE — pub_totals + pub_districts live; 4 stats remain documented literals |
+| C-02 | 0 | pages/crime-statistics-2024/serious-offences.md | ✅ DONE — change_pct stays hardcoded; offence_by_month has no year col, trafficking not in serious_offences_trend. Comment added. |
 | C-03 | — | pages/crime-statistics-2024/overview.md | ✅ N/A — `crime_by_district` has no year column; single-year snapshot table, 17 rows |
 | H-01 | 1 | sources/insights/crime/ | ⬜ TODO |
 | H-02 | 1 | components/BwpoliceMap.svelte | ⬜ TODO |
