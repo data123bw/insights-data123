@@ -1425,7 +1425,7 @@ order by known_pct desc
 
 <GaugeKPI value={rape_metrics[0]?.stranger_pct??0} name={'Stranger perp'} color=red />
 
-<GaugeKPI value={Math.abs(rape_metrics[0]?.change_pct??0)} name={'YoY change'} color=red invert=true prefix="↓ " />
+<GaugeKPI value={Math.abs(rape_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
 <GaugeKPI value={40} name={'Bushy area or perp home'} color=blue />
 
