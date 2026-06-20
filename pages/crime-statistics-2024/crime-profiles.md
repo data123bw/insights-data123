@@ -1165,7 +1165,7 @@ select
   max(case when relationship_type = 'acquaintance'  then percentage end) as acquaintance,
   max(case when relationship_type = 'relative'      then percentage end) as relative,
   max(case when relationship_type = 'friend'        then percentage end) as friend
-from insights.victim_relo
+from insights.offence_relationship
 group by 1
 order by "romantic link" desc nulls last
 ```

@@ -1,1 +1,0 @@
-select * from crime.victim_relationship

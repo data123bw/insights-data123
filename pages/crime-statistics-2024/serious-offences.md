@@ -788,7 +788,7 @@ cross join (
 ) g
 cross join (
   select percentage
-  from insights.victim_relo
+  from insights.offence_relationship
   where offence = 'rape' and lower(relationship_type) = 'stranger'
 ) s
 ```
@@ -800,7 +800,7 @@ from insights.offence_month where offence='rape' order by month_number
 
 ```sql rape_relationship
 select replace(relationship_type,'_',' ') as relationship_type, count, percentage
-from insights.victim_relo where offence='rape' order by count desc
+from insights.offence_relationship where offence='rape' order by count desc
 ```
 
 ```sql rape_victim_age
@@ -1306,7 +1306,7 @@ order by known_pct desc
 <div class="offence-sub">Threat to Kill cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {ttk_metrics[0]?.change_pct ?? 0}%</div>
+<div class="offence-delta dn">↓ {Math.abs(ttk_metrics[0]?.change_pct ?? 0)}%</div>
 <div class="offence-delta-note">Declined from 913 in 2023<br>GBV indicator — 87% female victims</div>
 </div>
 </div>
@@ -1409,7 +1409,7 @@ order by known_pct desc
 <div class="offence-sub">Rape cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {rape_metrics[0]?.change_pct ?? 0}%</div>
+<div class="offence-delta dn">↓ {Math.abs(rape_metrics[0]?.change_pct ?? 0)}%</div>
 <div class="offence-delta-note">Declined from 2,296 in 2023<br>99.2% of victims are female</div>
 </div>
 </div>
@@ -1511,7 +1511,7 @@ order by known_pct desc
 <div class="offence-sub">Defilement cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {defilement_metrics[0]?.change_pct ?? 0}%</div>
+<div class="offence-delta dn">↓ {Math.abs(defilement_metrics[0]?.change_pct ?? 0)}%</div>
 <div class="offence-delta-note">Declined from 1,754 in 2023<br>99.8% perpetrators are male</div>
 </div>
 </div>
@@ -1708,7 +1708,7 @@ order by known_pct desc
 <div class="offence-sub">Stock Theft cases recorded in 2024</div>
 </div>
 <div class="offence-right">
-<div class="offence-delta dn">↓ {stock_metrics[0]?.change_pct ?? 0}%</div>
+<div class="offence-delta dn">↓ {Math.abs(stock_metrics[0]?.change_pct ?? 0)}%</div>
 <div class="offence-delta-note">Third most prevalent serious crime<br>Concentrated in rural divisions</div>
 </div>
 </div>
@@ -1833,6 +1833,7 @@ order by known_pct desc
 </div>
 {/if}
 
+{#if trafficking_metrics.ready}
 <Grid cols=2>
 
   <div class="chart-card">
@@ -1858,6 +1859,7 @@ order by known_pct desc
   </div>
 
 </Grid>
+{/if}
 
 <!-- ═══════════════════════════════════════════════════════════
      CROSS-CRIME INTELLIGENCE
