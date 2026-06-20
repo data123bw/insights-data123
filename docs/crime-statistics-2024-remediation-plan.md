@@ -1,81 +1,92 @@
 # Crime Statistics 2024 — Remediation Plan
 
-**Audit ref:** `crime-statistics-2024-audit-report.md`  
+**Audit ref:** `docs/crime-statistics-2024-audit-report.md`  
 **Created:** 2026-06-20  
-**Stages:** 0 → 1 → 2 → 3
+**Branch:** `remediation/crime-statistics-2024-architecture`  
+**Evidence version:** `@evidence-dev/evidence ^40.1.8`  
+**Repo root:** `evidence/` (all file paths below are relative to this root)
+
+> Each phase is self-contained. A new AI session can pick up any single phase without reading prior phases. Start each phase by reading the full target file before making any edits.
 
 ---
 
 ## Status table
 
-| ID | Stage | File | Status |
+| ID | Phase | File | Status |
 |----|-------|------|--------|
-| C-01 | 0 | methodology.md | ⬜ TODO |
-| C-02 | 0 | serious-offences.md | ⬜ TODO |
-| C-03 | 0 | overview.md | ✅ N/A — schema confirmed single-year |
+| C-01 | 0 | pages/crime-statistics-2024/methodology.md | ⬜ TODO |
+| C-02 | 0 | pages/crime-statistics-2024/serious-offences.md | ⬜ TODO |
+| C-03 | — | pages/crime-statistics-2024/overview.md | ✅ N/A — `crime_by_district` has no year column; single-year snapshot table, 17 rows |
 | H-01 | 1 | sources/insights/crime/ | ⬜ TODO |
-| H-02 | 1 | BwpoliceMap.svelte | ⬜ TODO |
-| H-03 | 1 | BwpoliceMap.svelte | ⬜ TODO |
-| H-04 | 1 | serious-offences.md | ⬜ TODO |
-| H-05 | 1 | serious-offences.md | ⬜ TODO |
-| M-01 | 2 | serious-offences.md | ⬜ TODO |
-| M-02 | 2 | serious-offences.md | ⬜ TODO |
-| M-03 | 2 | overview.md | ⬜ TODO |
-| M-04 | 2 | methodology.md | ⬜ TODO |
-| M-05 | 2 | crime-profiles.md | ⬜ TODO |
-| L-01 | 3 | source SQL files | ⬜ TODO |
-| L-02 | 3 | serious-offences.md | ⬜ TODO |
-| L-03 | 3 | all pages | ⬜ TODO |
-| L-04 | 3 | GaugeKPI.svelte | ⬜ TODO |
-| V-01 | 3 | overview.md + GeoJSON | ⬜ TODO |
-| V-02 | 3 | all pages | ⬜ TODO |
-| V-03 | 3 | serious-offences.md | ⬜ TODO |
-| V-04 | 3 | AiChat.svelte | ⬜ TODO |
-| V-05 | 3 | overview.md + pages | ⬜ TODO |
+| H-02 | 1 | components/BwpoliceMap.svelte | ⬜ TODO |
+| H-03 | 1 | components/BwpoliceMap.svelte | ⬜ TODO |
+| H-04 | 1 | pages/crime-statistics-2024/serious-offences.md | ⬜ TODO |
+| H-05 | 1 | pages/crime-statistics-2024/serious-offences.md | ⬜ TODO |
+| M-01 | 2 | pages/crime-statistics-2024/serious-offences.md | ⬜ TODO |
+| M-02 | 2 | pages/crime-statistics-2024/serious-offences.md | ⬜ TODO |
+| M-03 | 2 | pages/crime-statistics-2024/overview.md | ⬜ TODO |
+| M-04 | 2 | pages/crime-statistics-2024/methodology.md | ⬜ TODO |
+| M-05 | 2 | pages/crime-statistics-2024/crime-profiles.md | ⬜ TODO |
+| L-01 | 3 | sources/insights/crime/*.sql | ⬜ TODO |
+| L-02 | 3 | pages/crime-statistics-2024/serious-offences.md | ⬜ TODO (covered by H-04) |
+| L-03 | 3 | pages/ (3 files) | ⬜ TODO |
+| V-01 | 3 | pages/crime-statistics-2024/overview.md | ⬜ TODO |
+| V-02 | 3 | pages/ (3 files) | ⬜ TODO |
+| V-03 | 3 | pages/crime-statistics-2024/serious-offences.md | ⬜ TODO |
+| V-04 | 3 | components/AiChat.svelte | ⬜ TODO |
+| V-05 | 3 | pages/ (3 files) | ⬜ TODO |
 
 ---
 
-## Stage 0 — Data correctness (CRITICAL)
+## Confirmed schema (MotherDuck — verified 2026-06-20)
 
-**Goal:** Eliminate silently wrong numbers. These fixes must land before any public data refresh.
+**`crime.crime_totals_annual`** → `insights.crime_totals`  
+Columns: `year` (INTEGER PK), `penal_code` (INTEGER), `other_statutes` (INTEGER), `total` (INTEGER), `growth_pct` (DECIMAL 6,1)
 
-**Schema confirmed (2026-06-20):**
-
-`crime_totals` columns: `year`, `penal_code`, `other_statutes`, `total`, `growth_pct`  
-`crime_by_district` columns: `district_number` (PK), `district_name`, `penal_code`, `other_statutes`, `total`, `relative_value_pct` — **no `year` column**
+**`crime.crime_by_district`** → `insights.district_crime`  
+Columns: `district_number` (INTEGER PK), `district_name` (VARCHAR), `penal_code` (INTEGER), `other_statutes` (INTEGER), `total` (INTEGER), `relative_value_pct` (DECIMAL 5,2)  
+**No `year` column** — single-year snapshot, 17 rows.
 
 ---
 
-### C-01 · Fix `pub_facts` — source what you can from live data, document the rest
+## Phase 0 — Data correctness (CRITICAL)
 
-**File:** `evidence/pages/crime-statistics-2024/methodology.md`
+**Goal:** Replace silently wrong hardcoded values with live-queried data.  
+**Files touched:** `methodology.md`, `serious-offences.md`  
+**Commit message when done:** `fix: source pub_facts from live queries, compute trafficking change_pct — C-01, C-02`
 
-**Schema reality:** `crime_totals` only exposes `year`, `penal_code`, `other_statutes`, `total`, `growth_pct`. The other six stats (`serious_offences`, `victims_analysed`, `perpetrators_analysed`, `police_districts`, `serious_offences_analysed`, `population_2024`) do not exist in this table and cannot be sourced from it.
+---
 
-**What can be live-sourced immediately:**
+### C-01 · `pub_facts` — split into live queries + documented literals
 
-| Stat | Source |
-|------|--------|
-| `total_offences` | `insights.crime_totals.total WHERE year = 2024` |
-| `police_districts` | `COUNT(*) FROM insights.district_crime` (confirmed 17 rows, no year column) |
-| `serious_offences` | `SUM(cases_2024) FROM insights.serious_crime WHERE year = 2024` — verify column name |
-| `growth_pct` | `insights.crime_totals.growth_pct WHERE year = 2024` — available if needed |
+**File:** `pages/crime-statistics-2024/methodology.md`
 
-**What requires a new MotherDuck view or separate source:**
+**Context:** The `pub_facts` SQL block (lines 643–655) selects seven hardcoded integer literals and uses `FROM insights.crime_totals` only as a row generator. Schema confirms `crime_totals` only has `year`, `penal_code`, `other_statutes`, `total`, `growth_pct`. Only `total_offences` and `police_districts` can be sourced live. The other five remain as documented literals. The snapshot cards that use `pub_facts[0].*` (lines 683–717) must also be updated for the two fields that move to live queries.
 
-- `victims_analysed` (5929) — check `insights.offence_relationship` for a victim count; may need `COUNT(DISTINCT victim_id)` or a dedicated summary table
-- `perpetrators_analysed` (5766) — same
-- `serious_offences_analysed` (11) — this is a count of offence categories, can be hardcoded safely since it changes only when the report scope changes (not annually)
-- `population_2024` (2540215) — not in any current source; either add a `population` source table or keep as a documented literal
+**Step 1 — Replace the query block (lines 643–655)**
 
-**Recommended split query approach:**
+Find exactly:
+```
+```sql pub_facts
+select
+  146529  as total_offences,
+  14560   as serious_offences,
+  5929    as victims_analysed,
+  5766    as perpetrators_analysed,
+  17      as police_districts,
+  11      as serious_offences_analysed,
+  2540215 as population_2024
+from insights.crime_totals
+where year = 2024
+limit 1
+```
+```
 
-Replace the single `pub_facts` block with two queries:
-
+Replace with:
+```
 ```sql pub_totals
 select
-  total          as total_offences,
-  growth_pct
+  total as total_offences
 from insights.crime_totals
 where year = 2024
 limit 1
@@ -86,290 +97,550 @@ select count(*) as police_districts
 from insights.district_crime
 ```
 
-Keep the remaining four stats as documented literals in a comment block above the query explaining why they are hardcoded (sourced from BPS analytical report, not from a queryable column):
-
-```sql pub_facts_static
+```sql pub_facts
 select
   14560   as serious_offences,
   5929    as victims_analysed,
   5766    as perpetrators_analysed,
   11      as serious_offences_analysed,
   2540215 as population_2024
+from (select 1) dummy
+```
 ```
 
-Then update the methodology KPI strip to read `pub_totals[0]?.total_offences` and `pub_districts[0]?.police_districts` from live queries, and the remaining four from `pub_facts_static`.
+> `pub_facts` is kept as the query name so the `{#if pub_facts.ready}` guard and all existing `.serious_offences`, `.victims_analysed`, `.perpetrators_analysed`, `.serious_offences_analysed`, `.population_2024` bindings remain unchanged. Only `total_offences` and `police_districts` move to live queries.
 
-**Verify:** `total_offences` on the methodology page should match `national_kpi.total` on the overview page for 2024.
+**Step 2 — Update the Total Offences card binding (line 689)**
+
+Find exactly:
+```
+            <div class="snapshot-value">{pub_facts[0].total_offences.toLocaleString('en-US')}</div>
+```
+
+Replace with:
+```
+            <div class="snapshot-value">{pub_totals[0]?.total_offences.toLocaleString('en-US') ?? '—'}</div>
+```
+
+**Step 3 — Update the Districts card binding (line 713)**
+
+Find exactly:
+```
+            <div class="snapshot-value">{pub_facts[0].police_districts}</div>
+```
+
+Replace with:
+```
+            <div class="snapshot-value">{pub_districts[0]?.police_districts ?? '—'}</div>
+```
+
+**Verify:** Run `npm run dev`. On the Methodology page, the Total Offences card should show `146,529` (from `crime_totals.total WHERE year = 2024`) and the Districts card should show `17` (count of rows in `district_crime`). The other three cards are unchanged.
 
 ---
 
-### C-02 · Calculate `change_pct` live in `trafficking_metrics` (serious-offences.md)
+### C-02 · `trafficking_metrics` — compute `change_pct` from data, add year filters
 
-**File:** `evidence/pages/crime-statistics-2024/serious-offences.md`
+**File:** `pages/crime-statistics-2024/serious-offences.md`
 
-Find this section in the `trafficking_metrics` SQL block:
-```sql
-  -58.5  as change_pct,
+**Context:** The `trafficking_metrics` SQL block (lines 933–949) hardcodes `change_pct` as `-58.5`. It also queries `insights.offence_month` without a year filter, summing all years. Both issues are fixed together.
+
+**Find exactly (lines 933–949):**
+```
+```sql trafficking_metrics
+select
+  c.total_cases,
+  -58.5                                                                        as change_pct,
+  v.total_victims,
+  v.children_6_10_pct
+from (
+  select sum(cases) as total_cases
+  from insights.offence_month where offence = 'human_trafficking'
+) c
+cross join (
+  select
+    sum(total)                                                                 as total_victims,
+    max(case when age_group = '06-10' then percentage end)                     as children_6_10_pct
+  from insights.victim_age where offence = 'human_trafficking'
+) v
+```
 ```
 
-Replace by computing it from the source data. The exact fix depends on what columns `insights.serious_crime` exposes. If it has `year` + `cases` per offence:
-
-```sql
-  round(
-    100.0 * (
-      sum(case when year = 2024 then cases end) -
-      sum(case when year = 2023 then cases end)
-    ) / nullif(sum(case when year = 2023 then cases end), 0),
-    1
-  ) as change_pct,
+Replace with:
+```
+```sql trafficking_metrics
+select
+  c.total_cases,
+  round(100.0 * (c.total_cases - p.prev_cases) / nullif(p.prev_cases, 0), 1) as change_pct,
+  v.total_victims,
+  v.children_6_10_pct
+from (
+  select sum(cases) as total_cases
+  from insights.offence_month where offence = 'human_trafficking' and year = 2024
+) c
+cross join (
+  select sum(cases) as prev_cases
+  from insights.offence_month where offence = 'human_trafficking' and year = 2023
+) p
+cross join (
+  select
+    sum(total)                                                                 as total_victims,
+    max(case when age_group = '06-10' then percentage end)                     as children_6_10_pct
+  from insights.victim_age where offence = 'human_trafficking'
+) v
+```
 ```
 
-If the `trafficking_metrics` block uses a different source table, apply the same year-over-year formula to whichever table carries prior year case counts.
-
-**Verify:** Rendered value should equal `-58.5` for the current 2024 data. If it doesn't match, there is a discrepancy between the hardcoded figure and the actual data — investigate the source.
+**Verify:** The trafficking card on the Serious Offences page should display a computed `change_pct` that matches the previously hardcoded `-58.5`. If it does not match, run `DESCRIBE insights.offence_month` in MotherDuck to confirm the year column name (may be `report_year` instead of `year`) and adjust accordingly.
 
 ---
 
-### C-03 · CANCELLED — `crime_by_district` is a single-year snapshot table
+## Phase 1 — Silent failures and misleading output (HIGH)
 
-**Schema confirmed:** `crime_by_district` has no `year` column. Its primary key is `district_number` only, meaning it holds exactly one row per district (17 rows total). There is no risk of multi-year aggregation.
-
-- `district_kpi` — `COUNT(*)` correctly returns 17 ✅
-- `urban_kpi` — `MAX(relative_value_pct)` correctly returns the single value per district ✅
-- `map_two` — `SUM(total)` correctly aggregates penal_code + other_statutes for each district ✅
-
-**No changes required to overview.md for this finding.**
-
-> Note: The `relative_value_pct` column represents each district's share of national total. Verify in MotherDuck that this is recalculated correctly when the underlying fact table is updated for a new year.
+**Goal:** Fix issues that produce wrong or confusing UI without throwing errors.  
+**Files touched:** `sources/insights/crime/victim_relo.sql`, `components/BwpoliceMap.svelte`, `pages/crime-statistics-2024/serious-offences.md`  
+**Commit message when done:** `fix: remove duplicate source, add map error handling, fix delta sign display — H-01 to H-05`
 
 ---
 
-## Stage 1 — Silent failures and misleading output (HIGH)
+### H-01 · Delete duplicate source `victim_relo.sql` and consolidate references
 
-**Goal:** Fix errors that produce confusing or incorrect UI without throwing. Complete after Stage 0 is verified.
+**Context:** `sources/insights/crime/victim_relo.sql` and `sources/insights/crime/offence_relationship.sql` both contain `select * from crime.victim_relationship`. This creates two identical Evidence source tables. `victim_relo` is used in `serious-offences.md` and `crime-profiles.md`; consolidate all references to `offence_relationship`.
 
----
-
-### H-01 · Remove duplicate source — delete `victim_relo.sql`
-
-**File:** `evidence/sources/insights/crime/victim_relo.sql`  
-**Also:** `evidence/pages/crime-statistics-2024/serious-offences.md`, `evidence/pages/crime-statistics-2024/crime-profiles.md`
-
-**Step 1:** Delete `sources/insights/crime/victim_relo.sql`.
-
-**Step 2:** In `serious-offences.md` and `crime-profiles.md`, find all references to `insights.victim_relo` and replace with `insights.offence_relationship`.
-
-Exact replacements in `serious-offences.md`:
+**Step 1 — Delete the file:**
 ```
-FROM insights.victim_relo  →  FROM insights.offence_relationship
-from insights.victim_relo  →  from insights.offence_relationship
+sources/insights/crime/victim_relo.sql
 ```
 
-**Step 3:** Standardise `relationship_type` case handling. All queries currently use one of:
-- `relationship_type = 'stranger'`
-- `lower(relationship_type) = 'stranger'`
+**Step 2 — In `pages/crime-statistics-2024/serious-offences.md`:**
 
-Pick one form and apply it consistently across all queries that filter on `relationship_type`. Prefer `lower()` if the source data casing is not guaranteed.
+Find: `from insights.victim_relo`  
+Replace all: `from insights.offence_relationship`
 
-**Verify:** Run `evidence sources` and confirm no errors. Check that rape metrics and crime-profiles relationship tab still load correctly.
+Find: `FROM insights.victim_relo`  
+Replace all: `FROM insights.offence_relationship`
+
+**Step 3 — In `pages/crime-statistics-2024/crime-profiles.md`:**
+
+Find: `from insights.victim_relo`  
+Replace all: `from insights.offence_relationship`
+
+Find: `FROM insights.victim_relo`  
+Replace all: `FROM insights.offence_relationship`
+
+**Step 4 — Standardise `relationship_type` case filtering.** Search both pages for filters on `relationship_type` that do not use `lower()`. Replace any bare string comparison with the `lower()` form:
+
+Find: `relationship_type = 'stranger'`  
+Replace with: `lower(relationship_type) = 'stranger'`
+
+**Verify:** Run `npm run dev`. The Rape tab victim relationship chart and the Crime Profiles relationship tab should still populate correctly with no data errors in the browser console.
 
 ---
 
-### H-02 · Add error handling to GeoJSON fetch (BwpoliceMap.svelte)
+### H-02 · Add try/catch to GeoJSON fetch in `BwpoliceMap.svelte`
 
-**File:** `evidence/components/BwpoliceMap.svelte`
+**File:** `components/BwpoliceMap.svelte`
 
-Find the `onMount` async block. Wrap the entire body in try/catch:
+**Context:** The `onMount` async body has no error handling. A failed fetch of `/maps/bps_district.geojson` (404, network error, malformed JSON) causes a silent unhandled rejection and an empty map div.
 
-```javascript
-onMount(async () => {
-  try {
-    const echartsModule = await import('echarts');
-    const echarts = echartsModule.default ?? echartsModule;
+Read the full file. Locate `onMount(async () => {`. Wrap its entire body:
 
+**Find:**
+```
+  onMount(async () => {
+```
+Add `try {` as the first line inside the block.
+
+**Find the fetch line (will look like):**
+```
+    const geoJson = await fetch(geoJsonUrl).then(r => r.json());
+```
+
+Replace with:
+```
     const res = await fetch(geoJsonUrl);
-    if (!res.ok) throw new Error(`GeoJSON ${res.status}: ${geoJsonUrl}`);
+    if (!res.ok) throw new Error(`GeoJSON fetch failed: ${res.status} ${geoJsonUrl}`);
     const geoJson = await res.json();
-
-    echarts.registerMap('BotswanaBPS', geoJson);
-    // ... rest of chart initialisation unchanged
-  } catch (err) {
-    console.error('[BwpoliceMap] failed to load:', err);
-    // optionally set a reactive error state to render a fallback message
-  }
-});
 ```
 
-**Verify:** Temporarily rename `/static/maps/bps_district.geojson` to test the error path. Confirm the page does not crash and the error is logged to the console.
+**Find the closing `});` of the onMount block and insert catch before it:**
+```
+  });
+```
+
+Replace with:
+```
+    } catch (err) {
+      console.error('[BwpoliceMap] failed to initialise:', err);
+    }
+  });
+```
+
+**Verify:** Temporarily rename `static/maps/bps_district.geojson` to `.bak`. Load the Overview page — it should not crash; the console should log `[BwpoliceMap] failed to initialise:`. Rename the file back and confirm the map renders.
 
 ---
 
-### H-03 · Fix default `value` prop in BwpoliceMap.svelte
+### H-03 · Fix default `value` prop in `BwpoliceMap.svelte`
 
-**File:** `evidence/components/BwpoliceMap.svelte`
+**File:** `components/BwpoliceMap.svelte`
 
-Find:
-```javascript
+Find exactly:
+```
 export let value = 'total_views';
 ```
-Replace:
-```javascript
+
+Replace with:
+```
 export let value = 'total';
 ```
 
-**Verify:** Map still renders. No functional change expected since all call sites already pass `value='total'` explicitly.
+**Verify:** Map renders correctly. No visible change expected since all call sites already pass `value='total'` explicitly.
 
 ---
 
 ### H-04 · Fix double-negative delta display — TTK, Rape, Defilement, Stock Theft
 
-**File:** `evidence/pages/crime-statistics-2024/serious-offences.md`
+**File:** `pages/crime-statistics-2024/serious-offences.md`
 
-For each declining offence delta that shows a raw negative `change_pct`, wrap with `Math.abs()`.
+**Context:** `change_pct` is already negative for declining offences. `↓ {change_pct}%` renders as "↓ -7.5%". The arrow already conveys direction. Apply `Math.abs()` to all four declining offence delta badges. (Murder and robbery already handle this correctly.)
 
-Find and replace each of these four patterns:
+Four exact find/replace pairs — apply all four:
 
-| Find | Replace |
-|------|---------|
-| `↓ {ttk_metrics[0]?.change_pct ?? 0}%` | `↓ {Math.abs(ttk_metrics[0]?.change_pct ?? 0)}%` |
-| `↓ {rape_metrics[0]?.change_pct ?? 0}%` | `↓ {Math.abs(rape_metrics[0]?.change_pct ?? 0)}%` |
-| `↓ {defilement_metrics[0]?.change_pct ?? 0}%` | `↓ {Math.abs(defilement_metrics[0]?.change_pct ?? 0)}%` |
-| `↓ {stock_metrics[0]?.change_pct ?? 0}%` | `↓ {Math.abs(stock_metrics[0]?.change_pct ?? 0)}%` |
+**TTK (line 1305)**  
+Find: `<div class="offence-delta dn">↓ {ttk_metrics[0]?.change_pct ?? 0}%</div>`  
+Replace: `<div class="offence-delta dn">↓ {Math.abs(ttk_metrics[0]?.change_pct ?? 0)}%</div>`
 
-**Verify:** All four declining offence delta badges should read "↓ 7.5%", "↓ 5.0%", etc. — no minus sign.
+**Rape (line 1408)**  
+Find: `<div class="offence-delta dn">↓ {rape_metrics[0]?.change_pct ?? 0}%</div>`  
+Replace: `<div class="offence-delta dn">↓ {Math.abs(rape_metrics[0]?.change_pct ?? 0)}%</div>`
+
+**Defilement (line 1510)**  
+Find: `<div class="offence-delta dn">↓ {defilement_metrics[0]?.change_pct ?? 0}%</div>`  
+Replace: `<div class="offence-delta dn">↓ {Math.abs(defilement_metrics[0]?.change_pct ?? 0)}%</div>`
+
+**Stock Theft (line 1707)**  
+Find: `<div class="offence-delta dn">↓ {stock_metrics[0]?.change_pct ?? 0}%</div>`  
+Replace: `<div class="offence-delta dn">↓ {Math.abs(stock_metrics[0]?.change_pct ?? 0)}%</div>`
+
+**Verify:** Each declining offence header badge reads "↓ 7.5%", "↓ 14.0%", etc. — no minus sign after the arrow.
 
 ---
 
-### H-05 · Wrap trafficking victim chart in `{#if trafficking_metrics.ready}`
+### H-05 · Wrap trafficking BarChart in `{#if trafficking_metrics.ready}`
 
-**File:** `evidence/pages/crime-statistics-2024/serious-offences.md`
+**File:** `pages/crime-statistics-2024/serious-offences.md`
 
-Locate the `BarChart` (or other chart component) that uses `trafficking_metrics` for victim age breakdown but sits outside the existing `{#if}` guard. Wrap it:
+**Context:** The trafficking stats card (lines 1804–1830) is correctly inside `{#if trafficking_metrics.ready}`. The `<Grid cols=2>` and `BarChart` that follow at line 1832 use `trafficking_metrics` in the chart `subtitle` but are outside any ready guard.
 
-```svelte
+Find exactly (line 1832):
+```
+<Grid cols=2>
+
+  <div class="chart-card">
+    <BarChart
+      data={trafficking_victim_age}
+```
+
+Replace with:
+```
 {#if trafficking_metrics.ready}
-  <!-- chart component here -->
+<Grid cols=2>
+
+  <div class="chart-card">
+    <BarChart
+      data={trafficking_victim_age}
+```
+
+Then find the `</Grid>` that closes this 2-column block (it is the next `</Grid>` after line 1832 in the file). Add `{/if}` on the line immediately after it:
+
+Find:
+```
+</Grid>
+```
+(the specific one closing the trafficking chart grid — check surrounding context to confirm it is the right one)
+
+Replace with:
+```
+</Grid>
 {/if}
 ```
 
-**Verify:** Confirm the chart renders correctly and does not flash an empty subtitle on page load.
+**Verify:** The trafficking chart section loads after data is ready. No empty subtitle flash on page load.
 
 ---
 
-## Stage 2 — Code quality and maintainability (MEDIUM)
+## Phase 2 — Hardcoded values and UI text fixes (MEDIUM)
 
-**Goal:** Eliminate hardcoded values and fix UI text/navigation errors. Complete after Stage 1 is verified in preview.
+**Goal:** Replace hardcoded treemap HTML and GaugeKPI values with live data; fix nav labels and CSS collision.  
+**Files touched:** `serious-offences.md`, `overview.md`, `methodology.md`, `crime-profiles.md`  
+**Commit message when done:** `fix: data-drive treemap and gauges, fix nav labels and CSS collision — M-01 to M-05`
 
 ---
 
-### M-01 · Replace hardcoded treemap HTML with data-driven component
+### M-01 · Replace hardcoded treemap HTML with dynamic `{#each}` render
 
-**File:** `evidence/pages/crime-statistics-2024/serious-offences.md`
+**File:** `pages/crime-statistics-2024/serious-offences.md`
 
-The treemap section (approximately lines 1078–1140) is fully static HTML. Replace with a dynamic render using the `serious_2024` query:
+**Context:** The "Serious Crime Landscape" treemap is pure static HTML (~12 `tm-cell` divs with hardcoded counts and percentages). The page already has a `serious_2024` query. The CSS rules for `.tm-grid`, `.tm-cell`, `.tm-name`, `.tm-val` already exist in the `<style>` block — only the HTML generation changes.
+
+**Step 1 — Confirm the case-count column name in `serious_2024`.** Find the `serious_2024` SQL block earlier in the file and note whether the case count column is named `cases_2024` or `total_2024`. Use that name in the template below (shown as `cases_2024`).
+
+**Step 2 — Find the static treemap block.** It opens with:
+```
+<div class="tm-grid">
+```
+and contains approximately 12 children each starting with `<div class="tm-cell"`. The block ends with the closing `</div>` after the last `tm-cell`.
+
+Replace the entire `<div class="tm-grid">...</div>` block with:
 
 ```svelte
 {#if serious_2024.ready}
-  {@const total = serious_2024.reduce((s, r) => s + r.cases_2024, 0)}
+  {@const tm_total = serious_2024.reduce((s, r) => s + (r.cases_2024 ?? 0), 0)}
   <div class="tm-grid">
     {#each serious_2024 as row}
-      {@const pct = (row.cases_2024 / total * 100).toFixed(1)}
+      {@const pct = tm_total > 0 ? (row.cases_2024 / tm_total * 100).toFixed(1) : '0.0'}
       <div
         class="tm-cell"
-        style="flex:{Math.round(row.cases_2024 / total * 100)}"
+        style="flex:{tm_total > 0 ? Math.round(row.cases_2024 / tm_total * 100) : 1}"
         data-pct="{pct}%"
       >
-        <div class="tm-name">{row.offence.replace(/_/g, ' ')}</div>
-        <div class="tm-val">{row.cases_2024.toLocaleString()}</div>
+        <div class="tm-name">{String(row.offence ?? '').replace(/_/g, ' ')}</div>
+        <div class="tm-val">{(row.cases_2024 ?? 0).toLocaleString()}</div>
       </div>
     {/each}
   </div>
 {/if}
 ```
 
-Adjust field names (`cases_2024`, `offence`) to match the actual `serious_2024` query columns. Keep the existing CSS rules for `.tm-grid`, `.tm-cell`, `.tm-name`, `.tm-val` — only the HTML generation changes.
+> If the column is `total_2024`, replace both occurrences of `cases_2024` in the template.
 
-**Verify:** Treemap renders 11 cells. Cell sizes are proportional to case counts. Hover labels appear with correct percentages.
+**Verify:** Treemap renders 11 cells proportionally sized. Hover each cell — the `data-pct` label appears via `::after`. Sum of all displayed counts equals the national total on the Overview page.
 
 ---
 
-### M-02 · Replace hardcoded GaugeKPI values with live query fields
+### M-02 · Replace 9 hardcoded GaugeKPI values with live query fields
 
-**File:** `evidence/pages/crime-statistics-2024/serious-offences.md`
+**File:** `pages/crime-statistics-2024/serious-offences.md`
 
-For each hardcoded gauge, substitute the equivalent live query field. The source queries (`murder_relationship`, `ttk_relationship`, `murder_motive`, etc.) are already present on the page — the gauges just need to read from them.
+**Context:** Nine `GaugeKPI` components have hardcoded `value={}` props. The page has queries (`murder_motive`, `murder_relationship`, `ttk_motive`, `robbery_weapon`, `unemployment_cross`) that supply most values. A few require a new cross join to be added to existing metrics query blocks. Fallback `?? hardcoded` values are retained so the gauges still display if a `.find()` returns undefined.
 
-| Gauge | Current | Replacement |
-|-------|---------|-------------|
-| Murder — Romantic link | `value={37.1}` | `value={murder_relationship.find(r => r.relationship_type === 'romantic_link')?.percentage ?? 0}` |
-| Murder — Jealousy motive | `value={33.8}` | `value={murder_motive.find(r => r.motive === 'jealousy')?.percentage ?? 0}` |
-| Murder — Arguments motive | `value={26.4}` | `value={murder_motive.find(r => r.motive === 'arguments')?.percentage ?? 0}` |
-| TTK — Jealousy motive | `value={64.4}` | `value={ttk_motive.find(r => r.motive === 'jealousy')?.percentage ?? 0}` |
-| Defilement — Male perpetrators | `value={99.8}` | `value={defilement_metrics[0]?.male_perp_pct ?? 0}` |
-| Robbery — Knives specifically | `value={44.9}` | `value={robbery_metrics[0]?.knife_pct ?? 0}` |
-| Robbery — Perps unemployed | `value={85.7}` | `value={robbery_metrics[0]?.unemployed_pct ?? 0}` |
-| Stock Theft — North Central share | `value={34.5}` | `value={stock_metrics[0]?.north_central_pct ?? 0}` |
-| Rape — Bushy area | `value={40}` | `value={rape_metrics[0]?.bushy_area_pct ?? 0}` |
+Apply each replacement independently:
 
-For fields not currently in the relevant query (e.g., `knife_pct`, `unemployed_pct`), add the column to the existing SQL block — do not create new queries.
+---
 
-**Verify:** Each gauge should display the same value as before (within rounding). If a value differs significantly, reconcile with the data source.
+**Murder — Romantic link (line 1170)**  
+Source: `murder_relationship` query — columns `relationship_type` (underscores replaced by spaces), `percentage`.
+
+Find: `<GaugeKPI value={37.1} name={'Romantic link'} color=purple />`  
+Replace: `<GaugeKPI value={murder_relationship.find(r => r.relationship_type === 'romantic link')?.percentage ?? 37.1} name={'Romantic link'} color=purple />`
+
+---
+
+**Murder — Jealousy motive (line 1172)**  
+Source: `murder_motive` query — columns `motive`, `percentage`.
+
+Find: `<GaugeKPI value={33.8} name={'Jealousy motive'} color=red />`  
+Replace: `<GaugeKPI value={murder_motive.find(r => r.motive === 'jealousy')?.percentage ?? 33.8} name={'Jealousy motive'} color=red />`
+
+---
+
+**Murder — Arguments motive (line 1174)**  
+
+Find: `<GaugeKPI value={26.4} name={'Arguments motive'} color=blue />`  
+Replace: `<GaugeKPI value={murder_motive.find(r => r.motive === 'arguments')?.percentage ?? 26.4} name={'Arguments motive'} color=blue />`
+
+---
+
+**TTK — Jealousy motive (line 1318)**  
+Source: `ttk_motive` query — columns `motive`, `percentage`.
+
+Find: `<GaugeKPI value={64.4} name={'Jealousy motive'} color=blue />`  
+Replace: `<GaugeKPI value={ttk_motive.find(r => r.motive === 'jealousy')?.percentage ?? 64.4} name={'Jealousy motive'} color=blue />`
+
+---
+
+**Rape — Bushy area or perp home (line 1421)**  
+Source: not in current queries. Add a cross join to the `rape_metrics` SQL block. Inside `rape_metrics`, after the existing cross joins and before the closing of the FROM clause, add:
+
+```sql
+cross join (
+  select round(sum(percentage), 1) as location_pct
+  from insights.offence_location
+  where offence = 'rape'
+    and lower(location_type) in ('bushy area', 'perpetrator home', 'perp home')
+) loc
+```
+
+Add `loc.location_pct` to the SELECT list of `rape_metrics`.
+
+Then:
+
+Find: `<GaugeKPI value={40} name={'Bushy area or perp home'} color=blue />`  
+Replace: `<GaugeKPI value={rape_metrics[0]?.location_pct ?? 40} name={'Bushy area or perp home'} color=blue />`
+
+> Verify location names first: `SELECT DISTINCT location_type FROM insights.offence_location WHERE offence = 'rape'` in MotherDuck.
+
+---
+
+**Defilement — Male perpetrators (line 1523)**  
+Source: not in current queries. Add to `defilement_metrics`:
+
+```sql
+cross join (
+  select percentage as male_perp_pct
+  from insights.perpetrator_gender
+  where offence = 'defilement' and lower(gender) = 'male'
+  limit 1
+) g
+```
+
+Add `g.male_perp_pct` to the SELECT list.
+
+Find: `<GaugeKPI value={99.8} name={'Male perpetrators'} color=purple />`  
+Replace: `<GaugeKPI value={defilement_metrics[0]?.male_perp_pct ?? 99.8} name={'Male perpetrators'} color=purple />`
+
+> Verify table name: `SHOW TABLES` on `crime` schema in MotherDuck if `perpetrator_gender` does not exist.
+
+---
+
+**Robbery — Knives specifically (line 1625)**  
+Source: `robbery_weapon` query — columns `weapon_type` (underscores replaced by spaces), `percentage`. Verify the exact value: `SELECT DISTINCT weapon_type FROM insights.offence_weapon WHERE offence = 'robbery'` in MotherDuck.
+
+Find: `<GaugeKPI value={44.9} name={'Knives specifically'} color=blue />`  
+Replace: `<GaugeKPI value={robbery_weapon.find(r => r.weapon_type === 'knives')?.percentage ?? 44.9} name={'Knives specifically'} color=blue />`
+
+> Adjust `'knives'` to match the actual transformed value if different.
+
+---
+
+**Robbery — Perps unemployed (line 1627)**  
+Source: `unemployment_cross` query (already on the page) — columns `offence`, `pct_unemployed`.
+
+Find: `<GaugeKPI value={85.7} name={'Perps unemployed'} color=purple />`  
+Replace: `<GaugeKPI value={unemployment_cross.find(r => r.offence === 'robbery')?.pct_unemployed ?? 85.7} name={'Perps unemployed'} color=purple />`
+
+---
+
+**Stock Theft — North Central share (line 1720)**  
+Source: not in current queries. Add a new SQL block in the stock theft section (after the existing `stock_metrics` block):
+
+```sql stock_region
+select
+  replace(division,'_',' ') as division,
+  percentage
+from insights.offence_division
+where offence = 'stock_theft'
+order by percentage desc
+```
+
+Find: `<GaugeKPI value={34.5} name={'North Central share'} color=blue />`  
+Replace: `<GaugeKPI value={stock_region.find(r => r.division === 'North Central')?.percentage ?? 34.5} name={'North Central share'} color=blue />`
+
+> If `insights.offence_division` doesn't exist, verify the correct source by running `SHOW TABLES` on the `crime` schema in MotherDuck.
+
+---
+
+**Verify all M-02 changes:** Each gauge should display the same numerical value it showed before (within ±0.1 rounding). If any gauge shows `0` instead of its fallback, the `.find()` string did not match — check exact values in the source query results via browser DevTools network tab or MotherDuck.
 
 ---
 
 ### M-03 · Fix `.insight-icon` CSS class collision in overview.md
 
-**File:** `evidence/pages/crime-statistics-2024/overview.md`
+**File:** `pages/crime-statistics-2024/overview.md`
 
-In the `<style>` block, find the second `.insight-icon` definition (used for the structure-insight emoji, `font-size: 26px`) and rename it to `.si-icon`:
+**Context:** `.insight-icon` is defined twice in the `<style>` block. The second definition (line 592) sets `font-size: 26px` and overrides the first definition's `font-size: 16px` for all usages, including the coloured icon boxes in the Key Findings grid where 16px is correct.
 
-```css
-/* Before */
+**Step 1 — Rename the duplicate CSS rule (lines 592–595)**
+
+Find exactly:
+```
 .insight-icon {
+
     font-size: 26px;
 }
+```
 
-/* After */
+Replace with:
+```
 .si-icon {
     font-size: 26px;
 }
 ```
 
-Then find the HTML element that uses this class in the structure-insight section:
-```html
-<div class="insight-icon">⚡</div>
+**Step 2 — Rename the three HTML usages of this class**
+
+Find exactly (line 1794):
 ```
-Replace:
-```html
-<div class="si-icon">⚡</div>
+        <div class="insight-icon">
+            ⚡
+        </div>
+```
+Replace with:
+```
+        <div class="si-icon">
+            ⚡
+        </div>
 ```
 
-**Verify:** The coloured icon boxes in the "Key Findings" grid should display at 16px font-size. The emoji icon in the structure-insight should display at 26px.
+Find exactly (line 1944):
+```
+            <div class="insight-icon">⚡</div>
+```
+Replace with:
+```
+            <div class="si-icon">⚡</div>
+```
+
+Find exactly (line 2050):
+```
+            <div class="insight-icon">⚡</div>
+```
+Replace with:
+```
+            <div class="si-icon">⚡</div>
+```
+
+**Verify:** In DevTools, inspect a coloured icon box (↘, ⚠, 📍, 👥) in the Key Findings grid — computed `font-size` should be `16px`. Inspect the ⚡ emoji icons in the structure section — computed `font-size` should be `26px`.
 
 ---
 
-### M-04 · Fix navigation label in methodology.md
+### M-04 · Fix navigation label in methodology.md footer
 
-**File:** `evidence/pages/crime-statistics-2024/methodology.md`
+**File:** `pages/crime-statistics-2024/methodology.md`
 
-Find:
-```svelte
-← Page 3: District Profiles
+Find exactly (line 1241):
 ```
-Replace:
-```svelte
-← Page 3: Crime Profiles
+    ← Page 3: District Profiles
 ```
+
+Replace with:
+```
+    ← Page 3: Crime Profiles
+```
+
+**Verify:** The back-navigation button on the Methodology page reads "← Page 3: Crime Profiles".
 
 ---
 
 ### M-05 · Fix page-nav direction in crime-profiles.md
 
-**File:** `evidence/pages/crime-statistics-2024/crime-profiles.md`
+**File:** `pages/crime-statistics-2024/crime-profiles.md`
 
-Find the footer `<div class="page-nav">` block and replace both `LinkButton` calls so the left button points backward (to Serious Offences) and the right button points forward (to Methodology):
+**Context:** Crime Profiles is Page 3. Its footer shows "Page 2: Serious Offences →" as a forward link from Page 3, which is incorrect. The right-hand button should point forward to Methodology (Page 4).
 
-```svelte
+Find exactly (lines 2046–2052):
+```
+<div class="page-nav">
+  <LinkButton url="/crime-statistics-2024/overview">
+    ← Page 1: National Overview
+  </LinkButton>
+  <LinkButton url="/crime-statistics-2024/serious-offences">
+    Page 2: Serious Offences →
+  </LinkButton>
+</div>
+```
+
+Replace with:
+```
 <div class="page-nav">
   <LinkButton url="/crime-statistics-2024/serious-offences">
     ← Page 2: Serious Offences
@@ -380,105 +651,96 @@ Find the footer `<div class="page-nav">` block and replace both `LinkButton` cal
 </div>
 ```
 
----
-
-## Stage 3 — Polish and browser verification (LOW + VISUAL)
-
-**Goal:** Tidy up minor issues and sign off visually in `npm run preview`. These are low-risk and can be batched into a single PR.
+**Verify:** Crime Profiles footer: left button → Serious Offences, right button → Methodology.
 
 ---
 
-### L-01 · Remove trailing whitespace from source SQL files
+## Phase 3 — Polish and browser sign-off (LOW + VISUAL)
 
-**Files:** `sources/insights/crime/district_crime.sql`, `crime_totals.sql`, `penal_code_cat.sql`
-
-Strip trailing spaces/newlines after the final semicolon or `limit 1` line. Use editor "trim trailing whitespace on save" for the whole `sources/` directory.
-
----
-
-### L-02 · Defilement `change_pct` double-negative (same fix as H-04)
-
-This is already covered by the H-04 fix above. Mark L-02 complete when H-04 is done.
+**Goal:** Tidy minor issues and verify in `npm run preview`.  
+**Commit message when done:** `chore: strip trailing whitespace, document tab selector — L-01 to L-03`
 
 ---
 
-### L-03 · Document fragility of `:global(section > nav > button.border-b-2)` tab selector
+### L-01 · Strip trailing whitespace from source SQL files
 
-**Files:** `overview.md`, `serious-offences.md`, `crime-profiles.md`
+Open each file and remove trailing spaces/newlines after the final SQL statement:
 
-Add a comment above each instance of this selector so future maintainers understand the dependency:
+- `sources/insights/crime/district_crime.sql`
+- `sources/insights/crime/crime_totals.sql`
+- `sources/insights/crime/penal_code_cat.sql`
 
-```css
-/* Targets Evidence Tab active state — check this selector on every Evidence upgrade */
-:global(section > nav > button.border-b-2) { ... }
+No functional change.
+
+---
+
+### L-02 · Defilement double-negative
+
+Covered by H-04. Mark complete when H-04 is done.
+
+---
+
+### L-03 · Document fragile Evidence Tab selector
+
+In each of the three files below, add a comment on the line immediately above each `:global(section > nav > button.border-b-2)` occurrence:
+
+Files: `pages/crime-statistics-2024/overview.md`, `pages/crime-statistics-2024/serious-offences.md`, `pages/crime-statistics-2024/crime-profiles.md`
+
+Find (in each file):
+```
+:global(section > nav > button.border-b-2)
 ```
 
-No functional change. This is documentation only.
-
----
-
-### L-04 · Verify GaugeKPI label rendering at narrow widths
-
-**File:** `evidence/components/GaugeKPI.svelte`
-
-No code change needed unless visual verification reveals clipping. Open `npm run preview`, resize to 480px, and confirm gauge labels in the KPI strip are fully visible. If clipping occurs, increase `offsetCenter` from `[0, '-120%']` or reduce font size.
+Replace with:
+```
+/* Evidence Tab active class — verify selector on every @evidence-dev/core-components upgrade */
+:global(section > nav > button.border-b-2)
+```
 
 ---
 
 ### V-01 · Verify map district names match GeoJSON
 
-Open `npm run preview`. Navigate to Overview → district choropleth map.
+Run `npm run preview`. Navigate to Overview → choropleth map.
 
-- All 17 districts should be coloured (not grey)
-- If any district is grey: run `SELECT DISTINCT district_name FROM insights.district_crime ORDER BY 1` in MotherDuck (no year filter — confirmed single-year table), compare against GeoJSON feature names in `/static/maps/bps_district.geojson`, and correct the CASE WHEN renaming in `map_two`
+All 17 districts should be coloured. If any district is grey:
+1. Run `SELECT DISTINCT district_name FROM insights.district_crime ORDER BY 1` in MotherDuck
+2. Open `static/maps/bps_district.geojson`, check `feature.properties.name` values
+3. Find the mismatch and update the `CASE WHEN` rename block in the `map_two` query in `pages/crime-statistics-2024/overview.md`
 
 ---
 
 ### V-02 · Verify Evidence Tab active styling
 
-Open `npm run preview`. Visit each page with tabs (Overview, Serious Offences, Crime Profiles).
-
-- Active tab should render as the dark blue segmented pill
-- If tabs appear with Evidence's default styling instead: inspect the HTML — if the active class is no longer `.border-b-2`, update the `:global()` selector on all three pages
+Run `npm run preview`. On each page with `<Tabs>`, click each tab. Active tab should render as the dark blue segmented pill. If Evidence default styling appears, inspect DevTools — if the active class is no longer `border-b-2`, update the `:global()` selector in all three pages.
 
 ---
 
-### V-03 · Verify treemap hover labels
+### V-03 · Verify treemap hover labels (after M-01)
 
-Open `npm run preview`. Navigate to Serious Offences → Treemap section.
-
-- Hover each cell — the percentage label should appear via `::after`
-- Test on Chrome, Firefox, and Edge
-- Resize to 768px and 480px — cells should remain hoverable without layout overflow
+Run `npm run preview` after completing M-01. Navigate to Serious Offences → treemap. Hover each cell — the `data-pct` percentage should appear via `::after`. Test on Chrome, Firefox, Edge. Resize to 768px and 480px.
 
 ---
 
-### V-04 · Verify AiChat tooltip and FAB on mobile
+### V-04 · Verify AiChat FAB and tooltip
 
-Open `npm run preview`. Navigate to any crime-statistics page.
-
-- FAB button should appear in the lower-right corner
-- Tooltip ("Ask about Botswana crime data") should appear on page load and disappear after 4 seconds
-- FAB should not overlap important page content at 480px
+Run `npm run preview`. On any `/crime-statistics-2024/` page except `/methodology`: FAB appears bottom-right, tooltip auto-shows on load and hides after 4 seconds, FAB does not overlap key content at 480px.
 
 ---
 
 ### V-05 · Verify stat-strip overlap at 480px
 
-Open `npm run preview`. Resize to 480px.
-
-- Overview, Serious Offences, and Methodology pages all use `margin-top: -90px` on the KPI/snapshot strip
-- Confirm the KPI cards sit within the hero's coloured bottom section without clipping the hero heading or casting box-shadows outside the viewport
+Run `npm run preview` at 480px. On Overview, Serious Offences, and Methodology pages: the KPI/snapshot strip (`margin-top: -90px`) sits cleanly within the hero's lower section without clipping the hero text or overflowing the viewport.
 
 ---
 
 ## Commit strategy
 
-Each stage should land in its own commit with a brief message describing what changed. Do not combine stages.
+All work on branch `remediation/crime-statistics-2024-architecture`. Do not merge to `staging` or `main` until all items in a phase are verified in preview.
 
-| Stage | Suggested commit message |
-|-------|--------------------------|
-| 0 | `fix: split pub_facts into live queries, calculate trafficking change_pct — C-01, C-02` |
-| 1 | `fix: remove duplicate source, add map error handling, fix delta display — H-01 to H-05` |
+| Phase | Commit message |
+|-------|----------------|
+| 0 | `fix: source pub_facts from live queries, compute trafficking change_pct — C-01, C-02` |
+| 1 | `fix: remove duplicate source, add map error handling, fix delta sign display — H-01 to H-05` |
 | 2 | `fix: data-drive treemap and gauges, fix nav labels and CSS collision — M-01 to M-05` |
-| 3 | `chore: strip trailing whitespace, document tab selector fragility — L-01 to L-04` |
+| 3 | `chore: strip trailing whitespace, document tab selector — L-01 to L-03` |
