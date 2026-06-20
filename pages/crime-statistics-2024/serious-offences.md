@@ -933,6 +933,10 @@ from insights.offence_location where offence='stock_theft' and taxonomy='stock_t
 ```sql trafficking_metrics
 select
   c.total_cases,
+  -- change_pct is hardcoded: offence_by_month has no year column (single-year snapshot),
+  -- and serious_offences_trend does not include human_trafficking.
+  -- Prior-year count (53 cases in 2023) is not available in the warehouse.
+  -- Update this value manually when 2025 data is loaded.
   -58.5                                                                        as change_pct,
   v.total_victims,
   v.children_6_10_pct

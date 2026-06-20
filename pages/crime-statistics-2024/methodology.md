@@ -640,18 +640,27 @@ MOBILE RESPONSIVENESS
 }
 </style>
 
-```sql pub_facts
+```sql pub_totals
 select
-  146529  as total_offences,
-  14560   as serious_offences,
-  5929    as victims_analysed,
-  5766    as perpetrators_analysed,
-  17      as police_districts,
-  11      as serious_offences_analysed,
-  2540215 as population_2024
+  total as total_offences
 from insights.crime_totals
 where year = 2024
 limit 1
+```
+
+```sql pub_districts
+select count(*) as police_districts
+from insights.district_crime
+```
+
+```sql pub_facts
+select
+  14560   as serious_offences,
+  5929    as victims_analysed,
+  5766    as perpetrators_analysed,
+  11      as serious_offences_analysed,
+  2540215 as population_2024
+from (select 1) dummy
 ```
 
 ```sql offence_list
@@ -686,7 +695,7 @@ HERO
 
         <!-- Total Offences -->
         <div class="snapshot-card">
-            <div class="snapshot-value">{pub_facts[0].total_offences.toLocaleString('en-US')}</div>
+            <div class="snapshot-value">{pub_totals[0]?.total_offences.toLocaleString('en-US') ?? '—'}</div>
             <div class="snapshot-label">Total Offences Covered</div>
         </div>
 
@@ -710,7 +719,7 @@ HERO
 
         <!-- Districts -->
         <div class="snapshot-card">
-            <div class="snapshot-value">{pub_facts[0].police_districts}</div>
+            <div class="snapshot-value">{pub_districts[0]?.police_districts ?? '—'}</div>
             <div class="snapshot-label">Police Districts</div>
         </div>
 
