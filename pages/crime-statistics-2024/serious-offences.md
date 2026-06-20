@@ -1078,24 +1078,61 @@ order by known_pct desc
 <div class="treemap-hdr-title">Where serious crime concentrates</div>
 <div class="treemap-hdr-sub">Area proportional to case volume · All 11 categories · 2024</div>
 </div>
-{#if serious_2024.ready}
-  {@const s24t = serious_2024.reduce((s, r) => s + (r.cases_2024 ?? 0), 0)}
-  {@const palette = ['#0042A0','#FF9F43','#9A67FD','#1458bb','#2266cc','#7b4dd4','#3d7dd8','#4a8fe6','#DC2626','#3370cc','#94a3b8']}
-  <div class="treemap">
-    {#each serious_2024 as row, i}
-      {@const cases = row.cases_2024 ?? 0}
-      {@const pct = s24t > 0 ? (cases / s24t * 100).toFixed(1) : '0.0'}
-      <div
-        class="tm-cell"
-        style="flex:{s24t > 0 ? Math.round(cases / s24t * 100) : 1};background:{palette[i] ?? '#3370cc'}"
-        data-pct="{pct}%"
-      >
-        <div class="tm-name">{String(row.offence ?? '').replace(/_/g, ' ')}</div>
-        <div class="tm-val">{cases.toLocaleString()}</div>
-      </div>
-    {/each}
-  </div>
-{/if}
+<div class="treemap">
+<div class="tm-col" style="flex:19">
+<div class="tm-cell" style="flex:1;background:#0042A0" data-pct="19.3%">
+<div class="tm-name">House Breaking &amp; Theft</div>
+<div class="tm-val">2,816</div>
+</div>
+</div>
+<div class="tm-col" style="flex:23">
+<div class="tm-cell" style="flex:10;background:#1458bb" data-pct="11.7%">
+<div class="tm-name">Burglary &amp; Theft</div>
+<div class="tm-val">1,714</div>
+</div>
+<div class="tm-cell" style="flex:10;background:#2266cc" data-pct="11.6%">
+<div class="tm-name">Store Breaking &amp; Theft</div>
+<div class="tm-val">1,687</div>
+</div>
+</div>
+<div class="tm-col" style="flex:30">
+<div class="tm-cell" style="flex:11;background:#FF9F43" data-pct="15.7%">
+<div class="tm-name">Stock Theft</div>
+<div class="tm-val">2,291</div>
+</div>
+<div class="tm-cell" style="flex:10;background:#9A67FD" data-pct="13.8%">
+<div class="tm-name">Rape</div>
+<div class="tm-val">2,018</div>
+</div>
+</div>
+<div class="tm-col" style="flex:17">
+<div class="tm-cell" style="flex:13;background:#7b4dd4" data-pct="11.4%">
+<div class="tm-name">Defilement</div>
+<div class="tm-val">1,666</div>
+</div>
+<div class="tm-cell" style="flex:7;background:#4a8fe6" data-pct="5.8%">
+<div class="tm-name">Threat to Kill</div>
+<div class="tm-val">845</div>
+</div>
+</div>
+<div class="tm-col" style="flex:11">
+<div class="tm-cell" style="flex:6;background:#3d7dd8" data-pct="6.7%">
+<div class="tm-name">Robbery</div>
+<div class="tm-val">981</div>
+</div>
+<div class="tm-cell" style="flex:2;background:#DC2626" data-pct="2.3%">
+<div class="tm-name" style="font-size:9px">Murder</div>
+<div class="tm-val" style="font-size:13px">337</div>
+</div>
+<div class="tm-cell" style="flex:1;background:#3370cc" data-pct="1.4%">
+<div class="tm-name" style="font-size:9px">Motor Vehicle</div>
+<div class="tm-val" style="font-size:13px">205</div>
+</div>
+<div class="tm-cell" style="flex:1;background:#94a3b8;justify-content:center" data-pct="0.2%">
+<div class="tm-name" style="font-size:8px">HT 22</div>
+</div>
+</div>
+</div>
 <div class="tm-legend">
 <div class="tm-legend-item"><div class="tm-dot" style="background:#0042A0"></div>Property crime (breaking &amp; entry)</div>
 <div class="tm-legend-item"><div class="tm-dot" style="background:#9A67FD"></div>Gender-based / sexual violence</div>
