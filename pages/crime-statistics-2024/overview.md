@@ -940,6 +940,8 @@ SDG ALIGNMENT
 }
 
 /* ── Indicator tabs — segmented control ── */
+/* FRAGILE: targets Evidence internal Tab markup (section > nav > button.border-b-2).
+   If tabs break after an Evidence upgrade, check whether this selector still matches. */
 .ov-tabs :global(section > nav) {
     display: flex;
     flex-wrap: wrap;

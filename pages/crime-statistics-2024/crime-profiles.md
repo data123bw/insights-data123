@@ -577,6 +577,8 @@ sidebar_position: 3
 .p3-gov-chip.down  .p3-gov-chip-num { color: #F87171; }
 
 /* ── Framework tabs — segmented control restyle ── */
+/* FRAGILE: targets Evidence internal Tab markup (section > nav > button.border-b-2).
+   If tabs break after an Evidence upgrade, check whether this selector still matches. */
 .p3-fw { margin-bottom: 6px; }
 .p3-fw :global(section > nav) {
   display: flex;

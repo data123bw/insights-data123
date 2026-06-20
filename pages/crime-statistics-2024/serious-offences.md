@@ -406,6 +406,8 @@ sidebar_position: 2
 .cross-sub { font-size: 14px; color: #64748b; margin-top: 4px; line-height: 1.6; max-width: 72ch; }
 
 /* ── Offence tabs — segmented control ────────────────────── */
+/* FRAGILE: targets Evidence internal Tab markup (section > nav > button.border-b-2).
+   If tabs break after an Evidence upgrade, check whether this selector still matches. */
 .so-tabs :global(section > nav) {
     display: flex;
     flex-wrap: wrap;
@@ -808,6 +810,12 @@ select age_group, female_count, total, percentage
 from insights.victim_age where offence='rape' order by total desc limit 10
 ```
 
+```sql rape_bushy_area
+select round(sum(percentage), 1) as pct
+from insights.offence_location
+where offence='rape' and location_key in ('bushy_area', 'perpetrators_home')
+```
+
 ```sql defilement_metrics
 select
   t.total_cases,
@@ -846,6 +854,11 @@ from insights.offence_relationship where offence='defilement' order by count des
 ```sql defilement_perp_age
 select age_group, male_count, total, percentage
 from insights.perpetrator_age where offence='defilement' order by total desc limit 6
+```
+
+```sql defilement_male_pct
+select round(100.0 * sum(male_count) / nullif(sum(total), 0), 1) as pct
+from insights.perpetrator_age where offence='defilement'
 ```
 
 ```sql robbery_metrics
@@ -922,7 +935,8 @@ from insights.offence_month where offence='stock_theft' order by month_number
 ```
 
 ```sql stock_by_division
-select division, cases from insights.serious_offence_division where offence='Stock Theft' order by cases desc
+select division, cases, round(100.0 * cases / sum(cases) over(), 1) as pct
+from insights.serious_offence_division where offence='Stock Theft' order by cases desc
 ```
 
 ```sql stock_location
@@ -1427,7 +1441,7 @@ order by known_pct desc
 
 <GaugeKPI value={Math.abs(rape_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<GaugeKPI value={40} name={'Bushy area or perp home'} color=blue />
+<GaugeKPI value={rape_bushy_area[0]?.pct ?? 40} name={'Bushy area or perp home'} color=blue />
 
 <div class="o-text-card">
 <div class="o-text-val">0–20</div>
@@ -1531,7 +1545,7 @@ order by known_pct desc
 
 <GaugeKPI value={Math.abs(defilement_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<GaugeKPI value={99.8} name={'Male perpetrators'} color=purple />
+<GaugeKPI value={defilement_male_pct[0]?.pct ?? 99.8} name={'Male perpetrators'} color=purple />
 
 <div class="o-text-card">
 <div class="o-text-val">16–30</div>
@@ -1732,7 +1746,7 @@ order by known_pct desc
 
 <GaugeKPI value={Math.abs(stock_metrics[0]?.change_pct??0)} name={'YoY change'} color=green invert=true prefix="↓ " />
 
-<GaugeKPI value={34.5} name={'North Central share'} color=blue />
+<GaugeKPI value={stock_by_division.find(r => r.division === 'North Central')?.pct ?? 34.5} name={'North Central share'} color=blue />
 
 <div class="o-text-card">
 <div class="o-text-val">Rural</div>
