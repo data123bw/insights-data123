@@ -247,7 +247,7 @@ sidebar_position: 1
     <div class="cs-pill"><span class="dot"></span> In the Pipeline · DATA123 Insights Hub</div>
     <div class="cs-icon">🏨</div>
     <h1>Tourism &amp; Hospitality <em>Intelligence Report</em></h1>
-    <p class="cs-sub">Arrivals, occupancy, seasonality, and the economic footprint of Botswana's tourism sector — from the Okavango Delta to the Kgalagadi. The full interactive report is currently in production.</p>
+    <p class="cs-sub">Arrivals, occupancy, seasonality, and the economic footprint of Botswana's tourism sector, from the Okavango Delta to the Kgalagadi. The full interactive report is currently in production.</p>
     <div class="cs-eta">
       <span class="cs-eta-label">Expected release</span>
       <span class="cs-eta-value">2026</span>

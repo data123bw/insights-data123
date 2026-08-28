@@ -1,5 +1,5 @@
 ---
-title: Labour Market & Employment — Coming Soon
+title: Agriculture Intelligence Report — Coming Soon
 sidebar_position: 1
 ---
 
@@ -20,7 +20,7 @@ sidebar_position: 1
   position: absolute;
   width: 420px; height: 420px;
   right: -100px; top: -120px;
-  background: #FF9F43;
+  background: #9A67FD;
   opacity: 0.1;
   border-radius: 50%;
   filter: blur(70px);
@@ -41,20 +41,20 @@ sidebar_position: 1
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255,159,67,0.12);
-  border: 1px solid rgba(255,159,67,0.4);
+  background: rgba(154,103,253,0.12);
+  border: 1px solid rgba(154,103,253,0.35);
   border-radius: 999px;
   padding: 7px 16px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #FFC58A;
+  color: #B48EFD;
   margin-bottom: 22px;
 }
 .cs-pill .dot {
   width: 7px; height: 7px;
-  background: #FF9F43;
+  background: #9A67FD;
   border-radius: 50%;
   animation: cs-pulse 1.6s ease-in-out infinite;
 }
@@ -71,7 +71,7 @@ sidebar_position: 1
   line-height: 1.1;
   margin: 0 0 16px;
 }
-.cs-hero h1 em { color: #FF9F43; font-style: normal; }
+.cs-hero h1 em { color: #9A67FD; font-style: normal; }
 .cs-sub {
   font-size: 15px;
   line-height: 1.75;
@@ -99,7 +99,7 @@ sidebar_position: 1
   font-size: 18px;
   font-weight: 900;
   font-family: ui-monospace, 'Cascadia Code', 'Courier New', monospace;
-  color: #FF9F43;
+  color: #9A67FD;
 }
 
 /* ── Build progress ── */
@@ -118,7 +118,7 @@ sidebar_position: 1
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .cs-step:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.08); }
-.cs-step.active  { border-top-color: #FF9F43; }
+.cs-step.active  { border-top-color: #9A67FD; }
 .cs-step.pending { opacity: 0.65; }
 .cs-step-num {
   font-size: 10px;
@@ -128,10 +128,10 @@ sidebar_position: 1
   color: #94A3B8;
   margin-bottom: 4px;
 }
-.cs-step.active .cs-step-num { color: #92400e; }
+.cs-step.active .cs-step-num { color: #5b21b6; }
 .cs-step-name { font-size: 13px; font-weight: 800; color: #2D3748; }
 .cs-step-state { font-size: 10.5px; color: #718096; margin-top: 3px; }
-.cs-step.active .cs-step-state { color: #92400e; font-weight: 700; }
+.cs-step.active .cs-step-state { color: #5b21b6; font-weight: 700; }
 
 /* ── Coverage cards ── */
 .cs-section-label {
@@ -199,7 +199,7 @@ sidebar_position: 1
 .cs-cta-sub { font-size: 13px; color: rgba(255,255,255,0.6); margin: 0; }
 .cs-cta-btn {
   display: inline-block;
-  background: #FF9F43;
+  background: #9A67FD;
   color: #0B2545;
   font-size: 13px;
   font-weight: 800;
@@ -211,7 +211,7 @@ sidebar_position: 1
 }
 .cs-cta-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(255,159,67,0.4);
+  box-shadow: 0 8px 22px rgba(154,103,253,0.4);
   text-decoration: none;
 }
 
@@ -245,9 +245,9 @@ sidebar_position: 1
   <div class="cs-orb-b"></div>
   <div class="cs-inner">
     <div class="cs-pill"><span class="dot"></span> In the Pipeline · DATA123 Insights Hub</div>
-    <div class="cs-icon">💼</div>
-    <h1>Labour Market &amp; Employment <em>Intelligence Report</em></h1>
-    <p class="cs-sub">Employment, unemployment, wages, and workforce trends across sectors, regions, and demographics: Botswana's labour market viewed as one body of evidence. The full interactive report is currently in production.</p>
+    <div class="cs-icon">🌾</div>
+    <h1>Agriculture <em>Intelligence Report</em></h1>
+    <p class="cs-sub">Production, livestock, rainfall patterns, and food security indicators for Botswana's agricultural sector. The full interactive report is currently in production.</p>
     <div class="cs-eta">
       <span class="cs-eta-label">Expected release</span>
       <span class="cs-eta-value">2026</span>
@@ -282,24 +282,24 @@ sidebar_position: 1
 
 <div class="cs-grid">
   <div class="cs-card blue">
-    <div class="cs-card-icon">📊</div>
-    <h3>Unemployment &amp; Participation</h3>
-    <p>National and regional unemployment rates, labour force participation, and how both have moved over time.</p>
-  </div>
-  <div class="cs-card orange">
-    <div class="cs-card-icon">🧑‍🎓</div>
-    <h3>Youth Employment</h3>
-    <p>The 15–35 cohort in focus — education-to-work transitions, youth unemployment, and the skills mismatch driving economic exclusion.</p>
+    <div class="cs-card-icon">🌱</div>
+    <h3>Crop &amp; Livestock Production</h3>
+    <p>Crop production and output trends, livestock numbers, and agricultural input and productivity trends across Botswana's farming sector.</p>
   </div>
   <div class="cs-card green">
-    <div class="cs-card-icon">💵</div>
-    <h3>Wages &amp; Earnings</h3>
-    <p>Earnings by sector, occupation, and gender — including formal versus informal employment dynamics.</p>
+    <div class="cs-card-icon">🌧️</div>
+    <h3>Rainfall &amp; Climate Conditions</h3>
+    <p>Rainfall patterns, seasonal conditions, and drought and other climate-related pressures affecting agricultural activity.</p>
+  </div>
+  <div class="cs-card orange">
+    <div class="cs-card-icon">🍽️</div>
+    <h3>Food Security &amp; Market Pressures</h3>
+    <p>Food security indicators alongside the market and production pressures farmers face from season to season.</p>
   </div>
   <div class="cs-card purple">
-    <div class="cs-card-icon">🏭</div>
-    <h3>Sectors &amp; Regions</h3>
-    <p>Where the jobs are: workforce distribution across industries and districts, and the sectors creating — or shedding — employment.</p>
+    <div class="cs-card-icon">📊</div>
+    <h3>Regional &amp; Long-Term Trends</h3>
+    <p>Livestock health and mortality trends, regional or district differences, and longer-term agricultural trends, where the underlying data allows.</p>
   </div>
 </div>
 
@@ -308,7 +308,7 @@ sidebar_position: 1
     <p class="cs-cta-title">Want to know the moment it goes live?</p>
     <p class="cs-cta-sub">Get notified on release, or commission a custom intelligence publication for your sector.</p>
   </div>
-  <a class="cs-cta-btn" href="mailto:info@data123.online?subject=Notify%20me%20—%20Labour%20Market%20Intelligence%20Report">Notify me →</a>
+  <a class="cs-cta-btn" href="mailto:info@data123.online?subject=Notify%20me%20-%20Agriculture%20Intelligence%20Report">Notify me →</a>
 </div>
 
 <div class="page-nav">

@@ -499,6 +499,12 @@ COMING SOON GRID
     box-shadow: 0 10px 22px rgba(114,52,149,0.35);
 }
 
+.pub-card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none !important;
+}
+
 /* =====================================================
 HOW IT WORKS
 ===================================================== */
@@ -707,7 +713,7 @@ HERO
 <div class="hub-hero">
     <div class="hub-hero-badge">⬡ &nbsp;Insights Hub · Open Intelligence Series</div>
     <h1>Intelligence for <span class="accent">decision-makers</span> in Botswana.</h1>
-    <p class="hub-hero-summary">Annual reports, live dashboards, and analytical commentary — published openly so that organisations across Botswana can make better decisions.</p>
+    <p class="hub-hero-summary">Annual reports, live dashboards, and analytical commentary, published openly so that organisations across Botswana can make better decisions.</p>
     <div class="hub-hero-actions">
         <a class="hub-cta" href="/crime-statistics-2024/overview">Explore the 2024 Crime Intelligence Dashboard →</a>
         <a class="hub-cta-ghost" href="https://www.data123.online">About Data 123</a>
@@ -758,7 +764,7 @@ LIVE NOW
         <div class="featured-body">
             <span class="live-pill"><span class="live-dot"></span> Live</span>
             <h2>Crime &amp; Public Safety Intelligence 2024</h2>
-            <p>A complete interactive analysis of Botswana's national crime landscape — national trends since 2019, geographic distribution across all 17 police districts, deep profiles of 11 serious offences, and alignment with TNDP II and SDG 2030 development indicators. Built on official Botswana Police Service data.</p>
+            <p>A complete interactive analysis of crime in Botswana: national trends since 2019, geographic distribution across all 17 police districts, deep profiles of 11 serious offences, and alignment with TNDP II and SDG 2030 development indicators. Built on official Botswana Police Service data.</p>
             <div class="featured-meta">
                 <span class="featured-tag">4 interactive pages</span>
                 <span class="featured-tag">17 police districts</span>
@@ -807,12 +813,14 @@ COMING SOON
 
     <div class="pubs-grid">
 
+        <a class="pub-card-link" href="/tourism-2025/coming-soon">
         <div class="pub-card c-blue">
             <span class="soon-pill">Coming Soon</span>
             <div class="pub-icon">🏨</div>
             <h3>Tourism &amp; Hospitality Intelligence Report</h3>
             <p>Arrivals, occupancy, seasonality, and the economic footprint of Botswana's tourism sector — from the Delta to the Kgalagadi.</p>
         </div>
+        </a>
 
         <div class="pub-card c-purple">
             <span class="soon-pill">Coming Soon</span>
@@ -821,12 +829,14 @@ COMING SOON
             <p>Connectivity, mobile penetration, internet adoption, and the digital infrastructure shaping Botswana's economy.</p>
         </div>
 
+        <a class="pub-card-link" href="/Labour-market-2025/coming-soon">
         <div class="pub-card c-teal">
             <span class="soon-pill">Coming Soon</span>
             <div class="pub-icon">💼</div>
             <h3>Labour Market &amp; Employment Intelligence Report</h3>
             <p>Employment, unemployment, wages, and workforce trends across sectors, regions, and demographics.</p>
         </div>
+        </a>
 
         <div class="pub-card c-purple">
             <span class="soon-pill">Coming Soon</span>
@@ -835,12 +845,14 @@ COMING SOON
             <p>Enrolment, attainment, performance, and resourcing across Botswana's primary, secondary, and tertiary education system.</p>
         </div>
 
+        <a class="pub-card-link" href="/agriculture-2025/coming-soon">
         <div class="pub-card c-blue">
             <span class="soon-pill">Coming Soon</span>
             <div class="pub-icon">🌾</div>
             <h3>Agriculture Intelligence Report</h3>
             <p>Production, livestock, rainfall patterns, and food security indicators for Botswana's agricultural sector.</p>
         </div>
+        </a>
 
         <div class="pub-card c-teal">
             <span class="soon-pill">Your Sector?</span>
@@ -902,16 +914,14 @@ ABOUT DATA 123
 
         <span class="about-label">WHO WE ARE</span>
 
-        <h2>Precise, actionable insights that fuel growth and empower data-driven decisions.</h2>
+        <h2>Data, analytics, and market research for organisations across Botswana.</h2>
 
         <p class="about-text">
-            At Data 123, we stand out as a premier provider of data analytics,
-            business intelligence, and market research services in Botswana.
-            Our expertise lies in delivering precise and actionable insights
-            that fuel growth and empower well-informed, data-driven decisions.
-            With our dedicated focus on accuracy and excellence, we help
-            businesses unlock their true potential and stay ahead in a rapidly
-            evolving market landscape.
+            Data 123 provides data analytics, business intelligence, and
+            market research services to organisations across Botswana. We
+            focus on accuracy, turning raw data into insights that hold up,
+            so clients can make informed decisions and stay competitive in
+            a changing market.
         </p>
 
         <div class="about-divider"></div>
@@ -919,11 +929,10 @@ ABOUT DATA 123
         <div class="vision-panel">
             <div class="vision-tag">OUR VISION</div>
             <p>
-                To be the trusted partner for businesses seeking to leverage data
-                analytics and market research to gain a competitive advantage.
-                We strive to deliver tailored solutions that enable our clients
-                to optimise their strategies, innovate with confidence, and
-                achieve their business objectives.
+                To be the trusted partner for businesses that want to use
+                data analytics and market research to gain a competitive
+                edge. We aim to deliver solutions that help our clients
+                sharpen their strategy and meet their objectives.
             </p>
         </div>
 

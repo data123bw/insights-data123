@@ -1484,7 +1484,7 @@ SECTION 4 — NATIONAL CRIME TREND
 
             </div>
             <h3 style="font-size: 10px; font-weight: 300; color: #0f172a; margin: -5px 0 0;">
-                The Penal Code is Botswana's official rulebook that clearly explains what actions are considered crimes against people, property, or the public. It also states the exact punishments people will face if they break these laws to keep the country safe and fair
+                The Penal Code defines offences against people, property, and public order, and sets out the penalties for each.
             </h3>
 
         </div>
@@ -1725,9 +1725,9 @@ SECTION 5 — GEOGRAPHIC INTELLIGENCE
 
             <div class="geo-story">
 
-                Urban districts continue to dominate
-                Botswana's crime landscape, accounting
-                for {urban_kpi[0].combined_pct}% of all offences.
+                Urban districts continue to dominate Botswana's
+                crime figures: {urban_kpi[0].combined_pct}% of all
+                offences occur there.
                 {district_count[0].improved} of {district_count[0].total} districts recorded fewer
                 offences in 2024 vs 2023; Kanye,
                 Lobatse, Shakawe and Kasane were
@@ -2088,14 +2088,12 @@ SECTION 9 — EXECUTIVE CONCLUSION
  
 
         <p class="conclusion-insight">
-            Botswana recorded broad improvements across
-            most major crime indicators in 2024.
-            National crime declined, serious offences fell,
-            most districts improved, and key development
-            indicators showed positive movement.
-            However, the continued rise in murder remains
-            a significant warning signal and suggests that
-            violent crime requires targeted intervention.
+            Botswana recorded broad improvements across most major crime
+            indicators in 2024: national crime declined, serious offences
+            fell, most districts improved, and key development indicators
+            moved in the right direction. The continued rise in murder is
+            the exception, and it points to a need for targeted
+            intervention in violent crime.
         </p>
 
         <div class="conclusion-divider"></div>
@@ -2115,7 +2113,7 @@ SECTION 9 — EXECUTIVE CONCLUSION
                 early intervention, and community conflict
                 mediation in high-risk areas. <br>
                 
-                Property crime reductions show that targeted policing works that same resourcing discipline must now shift
+                Property crime reductions show that targeted policing works. That same resourcing discipline must now shift
                 toward violent crime.<br>
                 
                 Kanye, Lobatse, Shakawe, and Kasane require dedicated district-level reviews before the 2025 planning cycle closes.
