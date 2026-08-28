@@ -29,6 +29,6 @@ jobs:
           action: "upload"
           app_location: "/"
           output_location: "build"
-          app_build_command: "npm run sources && npm run build"
+          app_build_command: "npm run sources && npm run build && npm run compress-wasm"
         env:
           EVIDENCE_SOURCE__insights__token: ${{ secrets.MOTHERDUCK_TOKEN }}

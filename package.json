@@ -9,7 +9,8 @@
     "test": "evidence build",
     "sources": "evidence sources",
     "sources:strict": "evidence sources --strict",
-    "preview": "evidence preview"
+    "preview": "evidence preview",
+    "compress-wasm": "node scripts/compress-wasm.cjs"
   },
   "engines": {
     "npm": ">=7.0.0",
