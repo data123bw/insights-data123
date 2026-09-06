@@ -1,0 +1,4 @@
+name: bse
+type: duckdb
+options:
+  filename: ./bse_stack.duckdb

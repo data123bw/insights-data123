@@ -813,6 +813,15 @@ COMING SOON
 
     <div class="pubs-grid">
 
+        <a class="pub-card-link" href="/bse-2025/overview">
+        <div class="pub-card c-blue">
+            <span class="soon-pill">In Review</span>
+            <div class="pub-icon">📈</div>
+            <h3>Botswana Stock Exchange — Integrated Report FY2025</h3>
+            <p>Market performance, securities and participation, Group financials, the 10X by 2030 strategy, governance and the October outage. Canonical release under review — not yet production-approved.</p>
+        </div>
+        </a>
+
         <a class="pub-card-link" href="/tourism-2025/coming-soon">
         <div class="pub-card c-blue">
             <span class="soon-pill">Coming Soon</span>
