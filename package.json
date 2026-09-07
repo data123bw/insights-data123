@@ -9,6 +9,7 @@
     "test": "evidence build",
     "sources": "evidence sources",
     "sources:strict": "evidence sources --strict",
+    "bse:local-review": "node scripts/bse-local-review.mjs",
     "preview": "evidence preview",
     "compress-wasm": "node scripts/compress-wasm.cjs"
   },
