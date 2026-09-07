@@ -13,6 +13,11 @@ sidebar_position: 4
 .bse-nav{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;margin:-52px 0 34px;position:relative}
 .bse-nav a{background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:6px 14px;color:#1E3A5F;text-decoration:none;font-weight:600}
 .src{font-size:12px;color:#64748b;border-top:1px solid #edf0f4;margin-top:26px;padding-top:12px}
+@media(max-width:639px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
+  .table-container{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .table-container table{display:table;white-space:nowrap;min-width:max-content}
+}
 </style>
 
 <div class="bse-hero">

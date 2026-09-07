@@ -19,6 +19,11 @@ sidebar_position: 1
 .bse-card .d{font-size:13px;margin-top:4px}
 .up{color:#0e7a4f}.down{color:#b42318}
 .src{font-size:12px;color:#64748b;border-top:1px solid #edf0f4;margin-top:26px;padding-top:12px}
+@media(max-width:639px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
+  .table-container{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .table-container table{display:table;white-space:nowrap;min-width:max-content}
+}
 </style>
 
 <div class="bse-hero">
