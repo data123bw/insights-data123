@@ -13,7 +13,8 @@ sidebar_position: 6
 .bse-nav{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;margin:-52px 0 34px;position:relative}
 .bse-nav a{background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:6px 14px;color:#1E3A5F;text-decoration:none;font-weight:600}
 .vfp{display:inline-block;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:6px}
-.a2v{display:inline-block;background:#DCFCE7;border:1px solid #16A34A;color:#166534;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:6px}
+.a2v{display:inline-block;max-width:100%;white-space:normal;overflow-wrap:break-word;line-height:1.35;background:#DCFCE7;border:1px solid #16A34A;color:#166534;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:6px}
+@media(max-width:639px){.a2v{display:block;font-size:10px;letter-spacing:.02em;padding:4px 8px}}
 .src{font-size:12px;color:#64748b;border-top:1px solid #edf0f4;margin-top:26px;padding-top:12px}
 @media(max-width:639px){
   table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
