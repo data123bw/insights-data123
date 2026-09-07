@@ -56,8 +56,11 @@ Canonical release <b><code>bse_canonical_v1_0_2</code></b> — database status <
 <b>approved_by = null</b>. The <em>input workbook</em> is owner-approved for local implementation;
 the <em>database release</em> stays in review because independent technical / subject-matter
 sign-off (GATE A) and production authorisation (GATE B) are outstanding. The batch-05 / batch-06
-structured disclosures behind Pages 5 &amp; 6 are <span class="vfp">visual first pass</span> and
-must pass a 100% critical-disclosure review (GATE A2) before production.
+structured disclosures behind Pages 5 &amp; 6 <b>passed the GATE A2 evidence review on
+2026-09-07</b> — 186 substantive rows visually verified against the source report, 13 control /
+staging / manifest rows accepted as <code>NOT_APPLICABLE</code>, 0 findings.
+<code>bse_disc_release.status</code> is now <code>A2_VERIFIED</code> (formerly
+<code>VISUAL_FIRST_PASS</code>). Production still requires <b>GATE B</b>.
 </Alert>
 
 ## Canonical vs public — what the two views mean

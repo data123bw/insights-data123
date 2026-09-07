@@ -13,6 +13,7 @@ sidebar_position: 5
 .bse-nav{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;margin:-52px 0 34px;position:relative}
 .bse-nav a{background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:6px 14px;color:#1E3A5F;text-decoration:none;font-weight:600}
 .vfp{display:inline-block;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:6px}
+.a2v{display:inline-block;background:#DCFCE7;border:1px solid #16A34A;color:#166534;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:6px}
 .src{font-size:12px;color:#64748b;border-top:1px solid #edf0f4;margin-top:26px;padding-top:12px}
 @media(max-width:639px){
   table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
@@ -34,11 +35,14 @@ completed activity is not the same as a long-term outcome.</p>
 </div>
 
 <Alert status=warning>
-<span class="vfp">Visual first pass</span> &nbsp; The strategy register, scorecard, pillars and
-public-value items on this page are a <b>first-pass structured extraction</b> of the Integrated
-Report (batch-05), <b>pending independent evidence review</b> (GATE A2). They are not
-production-verified. Numeric market / financial figures elsewhere in the dashboard come from the
-governed canonical model.
+<span class="a2v">GATE A2 EVIDENCE VERIFIED — NOT PRODUCTION APPROVED</span> &nbsp; The strategy
+register, scorecard, pillars, public-value items, execution horizons and strategy identity on
+this page were <b>visually verified against the source Integrated Report</b> in the GATE A2
+evidence review, completed <b>2026-09-07</b>: 186 substantive disclosure rows verified across
+Pages 5 &amp; 6, 13 control / staging / manifest rows accepted as <code>NOT_APPLICABLE</code>,
+0 findings. <b>GATE B and production authorisation remain outstanding</b> — this layer is not
+yet production-approved. Numeric market / financial figures elsewhere come from the governed
+canonical model.
 </Alert>
 
 ## Commitment status — BSE self-assessment
@@ -149,6 +153,9 @@ from bse.commitments_2026 order by commitment_id
 
 Management expectations — clearly separated from FY2025 results.
 
-<p class="src"><span class="vfp">Visual first pass</span> Source: BSE Integrated Report 2025,
-batch-05 structured extraction (`bse_disc_*`, status VISUAL_FIRST_PASS). Independent evidence
-review pending (GATE A2). Numeric governed model: <code>bse_canonical_v1_0_2</code> (status: review).</p>
+<p class="src"><span class="a2v">GATE A2 EVIDENCE VERIFIED — NOT PRODUCTION APPROVED</span>
+Source: BSE Integrated Report 2025, batch-05 structured extraction (`bse_disc_*`). GATE A2
+evidence review completed 2026-09-07 (186 rows verified, 13 <code>NOT_APPLICABLE</code>, 0
+findings); <code>bse_disc_release.status</code> = <code>A2_VERIFIED</code>
+(<i>historical: formerly <code>VISUAL_FIRST_PASS</code></i>). GATE B / production authorisation
+outstanding. Numeric governed model: <code>bse_canonical_v1_0_2</code> (status: review).</p>
