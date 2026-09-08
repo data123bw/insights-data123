@@ -53,6 +53,21 @@ Expected: 42 BSE sources, exit 0; `bse_mart_evidence` 357 · `bse_mart_public` 3
 `bse_core_data_release.release_status` `approved` · `bse_disc_release.status`
 `A2_VERIFIED`.
 
+## CI / hosting build
+
+`.github/workflows/deploy.yml` builds the whole hub on push to `main` with
+`npm run sources && npm run build`. Both motherduck-backed sources authenticate
+with the same protected secret:
+
+```yaml
+env:
+  EVIDENCE_SOURCE__insights__token: ${{ secrets.MOTHERDUCK_TOKEN }}
+  EVIDENCE_SOURCE__bse__token: ${{ secrets.MOTHERDUCK_TOKEN }}
+```
+
+A pre-step fails the job closed if `secrets.MOTHERDUCK_TOKEN` is absent. The
+secret value is never printed. `sources/insights/` is unchanged.
+
 ## Governed-model semantics
 
 `bse_mart_canonical` (247) is NOT a superset of `bse_mart_public` (340) — the

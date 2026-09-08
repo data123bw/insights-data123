@@ -37,7 +37,7 @@ remain undisclosed.</p>
 </div>
 
 <Alert status=warning>
-<span class="a2v">GATE A2 EVIDENCE VERIFIED — CORE DATA RELEASE APPROVED — DEPLOYMENT PENDING</span> &nbsp; The risk register,
+<span class="a2v">GATE A2 EVIDENCE VERIFIED — CORE DATA RELEASE APPROVED</span> &nbsp; The risk register,
 emerging risks, opportunities, risk appetite, outage timeline, remediation tracker, board
 composition and activity, committees and assurance records on this page were <b>visually
 verified against the source Integrated Report</b> in the GATE A2 evidence review, completed
@@ -45,9 +45,8 @@ verified against the source Integrated Report</b> in the GATE A2 evidence review
 staging / manifest rows accepted as <code>NOT_APPLICABLE</code>, 0 findings. Two distinct
 statuses: the <b>disclosure layer</b> (<code>bse_disc_release.status = A2_VERIFIED</code>) was
 <b>not</b> given a separate production approval beyond GATE A2; the <b>core data release</b>
-(<code>bse_canonical_v1_0_2</code>) is <b>approved</b> (2026-09-08). <b>Dashboard deployment is
-pending</b> — GATE B deployment authorisation remains <b>outstanding</b> and this dashboard is
-not yet published.
+(<code>bse_canonical_v1_0_2</code>) is <b>approved</b> (2026-09-08). Dashboard deployment and
+publication are governed separately (GATE B, Phase 10–11).
 </Alert>
 
 ## At a glance
@@ -174,11 +173,11 @@ from bse.governance_assurance order by assurance_id
 Grant Thornton's unqualified opinion covers the **financial statements only** — not every
 non-financial metric, risk rating or commitment. King IV is a BSE self-assessment.
 
-<p class="src"><span class="a2v">GATE A2 EVIDENCE VERIFIED — CORE DATA RELEASE APPROVED — DEPLOYMENT PENDING</span>
+<p class="src"><span class="a2v">GATE A2 EVIDENCE VERIFIED — CORE DATA RELEASE APPROVED</span>
 Source: BSE Integrated Report 2025 pp. 80–99, 110, 114 — batch-06 structured extraction
 (`bse_disc_*`). GATE A2 evidence review completed 2026-09-07 (186 rows verified, 13
 <code>NOT_APPLICABLE</code>, 0 findings); <code>bse_disc_release.status</code> =
 <code>A2_VERIFIED</code> (<i>historical: formerly <code>VISUAL_FIRST_PASS</code></i>).
 The disclosure layer was not given a separate production approval beyond GATE A2.
-GATE B deployment authorisation remains <b>outstanding</b> — deployment not authorised.
-Numeric governed model: <code>bse_canonical_v1_0_2</code> — database release approved 2026-09-08.</p>
+Numeric governed model: <code>bse_canonical_v1_0_2</code> — database release approved 2026-09-08.
+Dashboard deployment and publication are governed separately (GATE B, Phase 10–11).</p>

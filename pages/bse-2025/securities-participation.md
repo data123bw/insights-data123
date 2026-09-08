@@ -128,4 +128,4 @@ definitions align. **FY2025 issuer valuation ratios are not tabulated** in the I
 shown as an explicit unavailable state, never zero.
 
 <p class="src">Source: BSE Integrated Report 2025 and Annual Reports 2022–2024. Canonical release
-<code>bse_canonical_v1_0_2</code> — database status approved (2026-09-08); dashboard deployment pending.</p>
+<code>bse_canonical_v1_0_2</code> — database status approved (2026-09-08). Dashboard deployment and publication are governed separately.</p>

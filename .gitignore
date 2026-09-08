@@ -10,3 +10,4 @@ static/data
 .evidence/meta
 *.duckdb
 .bse-local-fixture/
+.claude/          # local Claude Code tool settings (per-developer, not project content)

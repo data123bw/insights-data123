@@ -61,9 +61,7 @@ structured disclosures behind Pages 5 &amp; 6 <b>passed the GATE A2 evidence rev
 staging / manifest rows accepted as <code>NOT_APPLICABLE</code>, 0 findings.
 <code>bse_disc_release.status</code> is now <code>A2_VERIFIED</code> (formerly
 <code>VISUAL_FIRST_PASS</code>) and was not given a separate production approval beyond GATE A2.
-Publishing this dashboard still requires <b>GATE B</b> deployment authorisation, which remains
-<b>outstanding</b> pending an independent Phase 10 readiness review and written owner sign-off —
-deployment is not authorised.
+Dashboard deployment and publication are governed separately, under <b>GATE B</b> (Phase 10–11).
 </Alert>
 
 ## Canonical vs public — what the two views mean
@@ -212,5 +210,4 @@ Provisional and verified data are never mixed without row-level flags.
 
 <p class="src">Canonical release <code>bse_canonical_v1_0_2</code> · database status <b>approved</b> ·
 <code>approved_by = "Thegreat P. Malema"</code> (2026-09-08). Disclosure layer <code>A2_VERIFIED</code>.
-GATE B deployment authorisation outstanding — <b>not deployed</b>; dashboard publication pending an
-independent Phase 10 readiness review and written owner sign-off.</p>
+Dashboard deployment and publication are governed separately, under GATE B (Phase 10–11).</p>
