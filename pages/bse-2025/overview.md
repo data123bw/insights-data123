@@ -32,7 +32,7 @@ sidebar_position: 1
 <p>Botswana's capital market expanded sharply and BSE Group revenue grew, while operating profit
 declined as the Group invested in technology, people and its new strategy. A four-day market
 outage in October made operational resilience a Board-level priority.</p>
-<p class="meta">Reporting period: year ended 31 December 2025 · Data status: published results with governed reconciliation notes · Release: <em>bse_canonical_v1_0_2</em> (under review — not production-approved)</p>
+<p class="meta">Reporting period: year ended 31 December 2025 · Data status: published results with governed reconciliation notes · Release: <em>bse_canonical_v1_0_2</em> — database release approved 2026-09-08; dashboard deployment pending final authorisation</p>
 </div>
 
 <div class="bse-nav">
@@ -140,5 +140,6 @@ Do not combine values whose scope or definition differs.
 <a href="/bse-2025/data-quality">Data Notes</a> carries the complete resolution record.
 
 <p class="src">Sources: BSE Integrated Report 2025 and Annual Reports 2022–2024, visually verified.
-Canonical release <code>bse_canonical_v1_0_2</code> · status <b>review</b> · independent sign-off
-pending. This is a public analytical dashboard, not a trading terminal or investment advice.</p>
+Canonical release <code>bse_canonical_v1_0_2</code> · database status <b>approved</b> (Thegreat P. Malema, 2026-09-08) ·
+dashboard not yet deployed — Phase 10 readiness review pending. This is a public analytical dashboard,
+not a trading terminal or investment advice.</p>

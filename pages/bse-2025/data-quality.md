@@ -52,15 +52,18 @@ select
 ## Release status
 
 <Alert status=warning>
-Canonical release <b><code>bse_canonical_v1_0_2</code></b> — database status <b>review</b>,
-<b>approved_by = null</b>. The <em>input workbook</em> is owner-approved for local implementation;
-the <em>database release</em> stays in review because independent technical / subject-matter
-sign-off (GATE A) and production authorisation (GATE B) are outstanding. The batch-05 / batch-06
+Canonical release <b><code>bse_canonical_v1_0_2</code></b> — database status <b>approved</b>,
+<b>approved_by = "Thegreat P. Malema"</b> (approved 2026-09-08). The release was moved to
+<code>approved</code> in Phase 9B, after the full <code>bse</code> stack was loaded to the
+production database and <b>independently verified there</b>. The batch-05 / batch-06
 structured disclosures behind Pages 5 &amp; 6 <b>passed the GATE A2 evidence review on
 2026-09-07</b> — 186 substantive rows visually verified against the source report, 13 control /
 staging / manifest rows accepted as <code>NOT_APPLICABLE</code>, 0 findings.
 <code>bse_disc_release.status</code> is now <code>A2_VERIFIED</code> (formerly
-<code>VISUAL_FIRST_PASS</code>). Production still requires <b>GATE B</b>.
+<code>VISUAL_FIRST_PASS</code>) and was not given a separate production approval beyond GATE A2.
+Publishing this dashboard still requires <b>GATE B</b> deployment authorisation, which remains
+<b>outstanding</b> pending an independent Phase 10 readiness review and written owner sign-off —
+deployment is not authorised.
 </Alert>
 
 ## Canonical vs public — what the two views mean
@@ -207,6 +210,7 @@ Provisional and verified data are never mixed without row-level flags.
 - **v1.0.1** — metadata correction (5 Sep 2026): seven `MISSING` rows set non-provisional; generic conflict wording removed. No numeric change.
 - **v1.0.2** — controlled augmentation (6 Sep 2026, owner-approved): three directly-reported page-40 total-market-turnover observations added (FY2025 P9.3bn, FY2024 P7.9bn, +18.1%). The 354 v1.0.1 rows are unchanged; v1.0.1 is retained as audit history.
 
-<p class="src">Canonical release <code>bse_canonical_v1_0_2</code> · database status <b>review</b> ·
-<code>approved_by = null</code>. Independent sign-off (GATE A / A2) and production authorisation
-(GATE B) outstanding. Not deployed.</p>
+<p class="src">Canonical release <code>bse_canonical_v1_0_2</code> · database status <b>approved</b> ·
+<code>approved_by = "Thegreat P. Malema"</code> (2026-09-08). Disclosure layer <code>A2_VERIFIED</code>.
+GATE B deployment authorisation outstanding — <b>not deployed</b>; dashboard publication pending an
+independent Phase 10 readiness review and written owner sign-off.</p>

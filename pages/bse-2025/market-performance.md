@@ -136,4 +136,4 @@ appears as an ordinary trend point. See <a href="/bse-2025/data-quality">Data No
 </Alert>
 
 <p class="src">Source: BSE Integrated Report 2025 and Annual Reports 2022–2024, visually verified.
-Canonical release <code>bse_canonical_v1_0_2</code> (status: review).</p>
+Canonical release <code>bse_canonical_v1_0_2</code> — database status approved (2026-09-08); dashboard deployment pending.</p>

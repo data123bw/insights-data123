@@ -112,4 +112,4 @@ P24,938,848 remain linked (R014).
 
 <p class="src">Source: BSE audited consolidated financial statements FY2025 (Grant Thornton
 unqualified opinion) and prior Annual Reports. Canonical release <code>bse_canonical_v1_0_2</code>
-(status: review).</p>
+— database status approved (2026-09-08); dashboard deployment pending.</p>

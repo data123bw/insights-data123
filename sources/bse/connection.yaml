@@ -1,4 +1,5 @@
 name: bse
-type: duckdb
+type: motherduck
 options:
-  filename: ./bse_stack.duckdb
+  database: insights
+  schema: bse

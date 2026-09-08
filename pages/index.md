@@ -818,7 +818,7 @@ COMING SOON
             <span class="soon-pill">In Review</span>
             <div class="pub-icon">📈</div>
             <h3>Botswana Stock Exchange — Integrated Report FY2025</h3>
-            <p>Market performance, securities and participation, Group financials, the 10X by 2030 strategy, governance and the October outage. Canonical release under review — not yet production-approved.</p>
+            <p>Market performance, securities and participation, Group financials, the 10X by 2030 strategy, governance and the October outage. Canonical release approved and loaded to production; dashboard publication pending an independent Phase 10 readiness review and owner sign-off.</p>
         </div>
         </a>
 

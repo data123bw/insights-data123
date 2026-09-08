@@ -10,6 +10,7 @@
     "sources": "evidence sources",
     "sources:strict": "evidence sources --strict",
     "bse:local-review": "node scripts/bse-local-review.mjs",
+    "bse:prod-sources": "node scripts/bse-prod-sources.mjs",
     "preview": "evidence preview",
     "compress-wasm": "node scripts/compress-wasm.cjs"
   },

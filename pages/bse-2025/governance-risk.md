@@ -175,4 +175,6 @@ Source: BSE Integrated Report 2025 pp. 80–99, 110, 114 — batch-06 structured
 (`bse_disc_*`). GATE A2 evidence review completed 2026-09-07 (186 rows verified, 13
 <code>NOT_APPLICABLE</code>, 0 findings); <code>bse_disc_release.status</code> =
 <code>A2_VERIFIED</code> (<i>historical: formerly <code>VISUAL_FIRST_PASS</code></i>).
-GATE B / production authorisation outstanding.</p>
+The disclosure layer was not given a separate production approval beyond GATE A2.
+GATE B deployment authorisation remains <b>outstanding</b> — deployment not authorised.
+Numeric governed model: <code>bse_canonical_v1_0_2</code> — database release approved 2026-09-08.</p>

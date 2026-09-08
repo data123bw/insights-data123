@@ -158,5 +158,7 @@ Management expectations — clearly separated from FY2025 results.
 Source: BSE Integrated Report 2025, batch-05 structured extraction (`bse_disc_*`). GATE A2
 evidence review completed 2026-09-07 (186 rows verified, 13 <code>NOT_APPLICABLE</code>, 0
 findings); <code>bse_disc_release.status</code> = <code>A2_VERIFIED</code>
-(<i>historical: formerly <code>VISUAL_FIRST_PASS</code></i>). GATE B / production authorisation
-outstanding. Numeric governed model: <code>bse_canonical_v1_0_2</code> (status: review).</p>
+(<i>historical: formerly <code>VISUAL_FIRST_PASS</code></i>). The disclosure layer was not given
+a separate production approval beyond GATE A2. GATE B deployment authorisation remains
+<b>outstanding</b> — deployment not authorised. Numeric governed model:
+<code>bse_canonical_v1_0_2</code> — database release approved 2026-09-08; dashboard deployment pending.</p>
