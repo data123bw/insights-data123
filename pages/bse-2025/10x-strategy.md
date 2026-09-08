@@ -36,14 +36,17 @@ completed activity is not the same as a long-term outcome.</p>
 </div>
 
 <Alert status=warning>
-<span class="a2v">GATE A2 EVIDENCE VERIFIED — NOT PRODUCTION APPROVED</span> &nbsp; The strategy
+<span class="a2v">GATE A2 EVIDENCE VERIFIED — CORE DATA RELEASE APPROVED — DEPLOYMENT PENDING</span> &nbsp; The strategy
 register, scorecard, pillars, public-value items, execution horizons and strategy identity on
 this page were <b>visually verified against the source Integrated Report</b> in the GATE A2
 evidence review, completed <b>2026-09-07</b>: 186 substantive disclosure rows verified across
 Pages 5 &amp; 6, 13 control / staging / manifest rows accepted as <code>NOT_APPLICABLE</code>,
-0 findings. <b>GATE B and production authorisation remain outstanding</b> — this layer is not
-yet production-approved. Numeric market / financial figures elsewhere come from the governed
-canonical model.
+0 findings. Two distinct statuses: the <b>disclosure layer</b>
+(<code>bse_disc_release.status = A2_VERIFIED</code>) was <b>not</b> given a separate production
+approval beyond GATE A2; the <b>core data release</b> (<code>bse_canonical_v1_0_2</code>) is
+<b>approved</b> (2026-09-08). <b>Dashboard deployment is pending</b> — GATE B deployment
+authorisation remains <b>outstanding</b> and this dashboard is not yet published. Numeric
+market / financial figures elsewhere come from the governed canonical model.
 </Alert>
 
 ## Commitment status — BSE self-assessment
@@ -154,7 +157,7 @@ from bse.commitments_2026 order by commitment_id
 
 Management expectations — clearly separated from FY2025 results.
 
-<p class="src"><span class="a2v">GATE A2 EVIDENCE VERIFIED — NOT PRODUCTION APPROVED</span>
+<p class="src"><span class="a2v">GATE A2 EVIDENCE VERIFIED — CORE DATA RELEASE APPROVED — DEPLOYMENT PENDING</span>
 Source: BSE Integrated Report 2025, batch-05 structured extraction (`bse_disc_*`). GATE A2
 evidence review completed 2026-09-07 (186 rows verified, 13 <code>NOT_APPLICABLE</code>, 0
 findings); <code>bse_disc_release.status</code> = <code>A2_VERIFIED</code>
