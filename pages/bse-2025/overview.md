@@ -79,6 +79,9 @@ a.bse-card:hover{text-decoration:none}
 <script>
   const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
   const priorYear = curYear - 1;
+  const hm = (id) => headline.find(r => r.metric_id === id) ?? {};
+  const hDelta = (cur, prior) => (cur == null || prior == null || prior === 0) ? null : ((cur - prior) / prior) * 100;
+  const hFmtDelta = (d) => d == null ? null : `${d >= 0 ? '↑' : '↓'} ${d >= 0 ? '+' : ''}${d.toFixed(1)}%`;
 </script>
 
 {#if curYear === 2025}
@@ -113,12 +116,6 @@ select metric_id,
 from bse.financials where metric_id in ('financial.revenue','financial.operating_profit')
 group by metric_id
 ```
-
-<script>
-  const hm = (id) => headline.find(r => r.metric_id === id) ?? {};
-  const hDelta = (cur, prior) => (cur == null || prior == null || prior === 0) ? null : ((cur - prior) / prior) * 100;
-  const hFmtDelta = (d) => d == null ? null : `${d >= 0 ? '↑' : '↓'} ${d >= 0 ? '+' : ''}${d.toFixed(1)}%`;
-</script>
 
 ```sql turnover_move
 select reported_value_numeric as pct, display_note from bse.overview where section = 'turnover_movement'
