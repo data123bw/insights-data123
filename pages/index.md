@@ -369,6 +369,26 @@ FEATURED PUBLICATION (LIVE)
     gap: 14px;
 }
 
+.featured-visual-logo {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -18px auto 6px;
+    padding: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+
+.featured-visual-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .mini-kpi {
     background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.2);
@@ -715,7 +735,7 @@ HERO
     <h1>Intelligence for <span class="accent">decision-makers</span> in Botswana.</h1>
     <p class="hub-hero-summary">Annual reports, live dashboards, and analytical commentary, published openly so that organisations across Botswana can make better decisions.</p>
     <div class="hub-hero-actions">
-        <a class="hub-cta" href="/crime-statistics-2024/overview">Explore the 2024 Crime Intelligence Dashboard →</a>
+        <a class="hub-cta" href="#live-now">Explore our Live Dashboards ↓</a>
         <a class="hub-cta-ghost" href="https://www.data123.online">About Data 123</a>
     </div>
 </div>
@@ -729,8 +749,8 @@ STAT STRIP
 <section class="hub-stats">
     <div class="hub-stats-grid">
         <div class="hub-stat-card">
-            <div class="hub-stat-value">1</div>
-            <div class="hub-stat-label">Live Intelligence Dashboard</div>
+            <div class="hub-stat-value">2</div>
+            <div class="hub-stat-label">Live Intelligence Dashboards</div>
         </div>
         <div class="hub-stat-card">
             <div class="hub-stat-value">5</div>
@@ -753,10 +773,10 @@ LIVE NOW
 ===================================================== -->
 <span class="section-label">Live Now</span>
 
-<section class="featured-section">
+<section class="featured-section" id="live-now">
 
     <div class="section-heading">
-        <span class="section-tag">Our Flagship Publication</span>
+        <span class="section-tag">Our Live Publications</span>
     </div>
 
     <div class="featured-card">
@@ -775,6 +795,9 @@ LIVE NOW
         </div>
 
         <div class="featured-visual">
+            <div class="featured-visual-logo">
+                <img src="/bps-logo.png" alt="Botswana Police Service logo" />
+            </div>
             <div class="mini-kpi">
                 <div class="mini-kpi-value">146,529</div>
                 <div class="mini-kpi-label">Offences Analysed</div>
@@ -797,6 +820,49 @@ LIVE NOW
 
     </div>
 
+    <div style="margin-top: 24px;"></div>
+
+    <div class="featured-card">
+
+        <div class="featured-body">
+            <span class="live-pill"><span class="live-dot"></span> Live</span>
+            <h2>Botswana Stock Exchange — Integrated Report FY2025</h2>
+            <p>A complete interactive analysis of the Botswana Stock Exchange: market performance, securities and participation, Group financials, the 10X by 2030 growth strategy, and governance and risk, including the October 2025 trading outage. Every figure traces to the BSE Integrated Report 2025 and prior Annual Reports, verified page by page.</p>
+            <div class="featured-meta">
+                <span class="featured-tag">7 interactive pages</span>
+                <span class="featured-tag">FY2018–FY2025 historical coverage</span>
+                <span class="featured-tag">26 reconciliation cases governed</span>
+                <span class="featured-tag">Source: BSE Integrated Report 2025</span>
+            </div>
+            <a class="featured-cta" href="/bse-2025/overview">Open the Dashboard →</a>
+        </div>
+
+        <div class="featured-visual" style="background: radial-gradient(ellipse at 20% 20%, rgba(193,154,45,0.3), transparent 60%), linear-gradient(160deg, #14110A, #C19A2D);">
+            <div class="featured-visual-logo">
+                <img src="/bse-logo.png" alt="Botswana Stock Exchange logo" />
+            </div>
+            <div class="mini-kpi">
+                <div class="mini-kpi-value">P9.3bn</div>
+                <div class="mini-kpi-label">Total Market Turnover FY2025</div>
+            </div>
+            <div class="mini-kpi">
+                <div class="mini-kpi-value">P78.8m</div>
+                <div class="mini-kpi-label">Group Revenue FY2025</div>
+            </div>
+            <div class="mini-kpi">
+                <div class="mini-kpi-value">10 of 15</div>
+                <div class="mini-kpi-label">10X Strategy Commitments Achieved</div>
+            </div>
+        </div>
+
+        <div class="featured-currency">
+            <span class="fc-item">📅 <strong>Data vintage: FY2025</strong> — BSE Integrated Report 2025</span>
+            <span class="fc-pending">FY2024 comparative view: in development</span>
+            <span class="fc-item">Every figure verified against its source PDF page</span>
+        </div>
+
+    </div>
+
 </section>
 
 
@@ -812,15 +878,6 @@ COMING SOON
     </div>
 
     <div class="pubs-grid">
-
-        <a class="pub-card-link" href="/bse-2025/overview">
-        <div class="pub-card c-blue">
-            <span class="soon-pill">In Review</span>
-            <div class="pub-icon">📈</div>
-            <h3>Botswana Stock Exchange — Integrated Report FY2025</h3>
-            <p>Market performance, securities and participation, Group financials, the 10X by 2030 strategy, governance and the October outage. Canonical release approved and loaded to production; dashboard deployment and publication are governed separately.</p>
-        </div>
-        </a>
 
         <a class="pub-card-link" href="/tourism-2025/coming-soon">
         <div class="pub-card c-blue">
