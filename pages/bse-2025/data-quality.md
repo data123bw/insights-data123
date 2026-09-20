@@ -107,6 +107,7 @@ sidebar_position: 7
 </div>
 </div>
 <div class="pills">
+<PeriodSelector/>
 <span class="pill">Dashboard version 0.1</span>
 <span class="pill">Scope · All pages, evidence layer</span>
 <span class="pill">Last verified · 8 Sep 2026</span>
@@ -376,6 +377,26 @@ from bse.availability order by metric_family, year
 </details>
 
 Use "not applicable", not "missing", where a series (e.g. the 10X scorecard) did not yet exist.
+
+## How the reporting-period filter uses this data
+
+Market Performance, Securities & Participation and Group Financials carry a reporting-period
+selector (FY2025 default, FY2024 available). 10X Strategy and Governance & Risk show an explicit
+not-applicable state outside FY2025, since those programmes carry no year dimension at all. The
+Overview page shows a lighter, KPI-only view outside FY2025 rather than repointing its FY2025
+narrative.
+
+FY2018-FY2024 observations are not simply read off the FY2025 report's five-year comparative
+tables. Batch 8 of the extraction programme (see the reconciliation register above) independently
+re-verified FY2022-FY2024 market, valuation and Group-financial figures against each year's own
+Annual Report page images, cross-checking them against the FY2025 comparative tables rather than
+substituting for that check. Most FY2024 observations therefore carry the same verification tier
+as FY2025's own figures. Two specific FY2024 values, equity turnover and average daily equity
+turnover, remain flagged "Under review" (R001/R002) pending a second-reviewer sign-off, and the
+dashboard surfaces that per-metric status directly wherever those values are shown, rather than
+applying one blanket "comparative source" badge across every FY2024 figure. FY2018-FY2021 points
+are the exception: they carry BSE's own provisional/placeholder basis and remain marked
+provisional regardless of which reporting period is selected.
 
 ## Metric dictionary
 
