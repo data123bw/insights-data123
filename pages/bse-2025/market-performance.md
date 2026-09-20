@@ -161,8 +161,8 @@ group by metric_id
 ```
 
 <script>
-  const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
-  const priorYear = curYear - 1;
+  $: curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
+  $: priorYear = curYear - 1;
   const m = (id) => period_market.find(r => r.metric_id === id) ?? {};
   const pct = (cur, prior) => (cur == null || prior == null || prior === 0) ? null : ((cur - prior) / prior) * 100;
   const badgeFor = (state) => state === 'VERIFIED_IN_RECONCILIATION_REVIEW' ? 'Under review'

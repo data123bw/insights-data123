@@ -167,8 +167,8 @@ group by metric_id
 ```
 
 <script>
-  const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
-  const priorYear = curYear - 1;
+  $: curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
+  $: priorYear = curYear - 1;
   const fm = (id) => period_financials.find(r => r.metric_id === id) ?? {};
   const pctf = (cur, prior) => (cur == null || prior == null || prior === 0) ? null : ((cur - prior) / prior) * 100;
   const badgeForF = (state) => state == null ? 'Unavailable' : null;

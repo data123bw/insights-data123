@@ -232,7 +232,7 @@ sidebar_position: 5
 </div>
 
 <script>
-  const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
+  $: curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
 </script>
 
 <div class="bse-hero">

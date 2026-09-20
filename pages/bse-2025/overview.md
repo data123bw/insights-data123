@@ -77,8 +77,8 @@ a.bse-card:hover{text-decoration:none}
 </div>
 
 <script>
-  const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
-  const priorYear = curYear - 1;
+  $: curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
+  $: priorYear = curYear - 1;
   const hm = (id) => headline.find(r => r.metric_id === id) ?? {};
   const hDelta = (cur, prior) => (cur == null || prior == null || prior === 0) ? null : ((cur - prior) / prior) * 100;
   const hFmtDelta = (d) => d == null ? null : `${d >= 0 ? '↑' : '↓'} ${d >= 0 ? '+' : ''}${d.toFixed(1)}%`;

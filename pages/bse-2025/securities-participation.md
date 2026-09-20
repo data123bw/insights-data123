@@ -114,7 +114,7 @@ sidebar_position: 3
 </div>
 
 <script>
-  const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
+  $: curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
 </script>
 
 <div class="idstrip">
