@@ -60,7 +60,7 @@ a.bse-card:hover{text-decoration:none}
 </div>
 </div>
 <div class="pills">
-<span class="pill">Reporting period · FY2025</span>
+<PeriodSelector/>
 <span class="pill">Scope · BSE Group</span>
 <span class="pill">Last verified · 8 Sep 2026</span>
 </div>
@@ -76,6 +76,12 @@ a.bse-card:hover{text-decoration:none}
 <a href="/bse-2025/data-quality">Data Notes</a>
 </div>
 
+<script>
+  const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
+  const priorYear = curYear - 1;
+</script>
+
+{#if curYear === 2025}
 <div class="bse-hero">
 <h1>Market growth alongside investment cost and operational risk</h1>
 <p>Botswana's capital market expanded strongly in 2025, with record equity activity and higher
@@ -83,19 +89,36 @@ BSE Group revenue. Operating profit declined as the Group increased investment i
 people and execution of its 10X by 2030 strategy. A four-day trading outage in October sharpened
 the focus on operational resilience and elevated technology risk to Board-level attention.</p>
 </div>
+{:else}
+<div class="bse-hero">
+<h1>FY{curYear} at a glance</h1>
+<p>A lighter, KPI-only view for FY{curYear}. The FY2025 narrative above (hero copy, "Honest
+reading", material developments) is specific to that year's events and is not repointed here -
+switch back to FY2025 above to see it. Turnover, market cap, revenue and operating profit are
+shown below where a governed FY{curYear} figure exists.</p>
+</div>
+{/if}
 
 
 ```sql headline
-select
-  metric_id,
-  max(case when reference_year = 2025 then reported_value_numeric end) as v2025,
-  max(case when reference_year = 2024 then reported_value_numeric end) as v2024,
-  max(reported_unit_code) as unit,
-  max(source_document_title) as source, max(source_pdf_page) as pdf_page
-from bse.overview
-where section = 'headline'
+select metric_id,
+  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2024 : 2025} then reported_value_numeric end) as v2025,
+  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2023 : 2024} then reported_value_numeric end) as v2024
+from bse.market where metric_id in ('market.total.turnover','market.total.market.capitalisation')
+group by metric_id
+union all
+select metric_id,
+  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2024 : 2025} then reported_value_numeric end) / 1e6,
+  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2023 : 2024} then reported_value_numeric end) / 1e6
+from bse.financials where metric_id in ('financial.revenue','financial.operating_profit')
 group by metric_id
 ```
+
+<script>
+  const hm = (id) => headline.find(r => r.metric_id === id) ?? {};
+  const hDelta = (cur, prior) => (cur == null || prior == null || prior === 0) ? null : ((cur - prior) / prior) * 100;
+  const hFmtDelta = (d) => d == null ? null : `${d >= 0 ? '↑' : '↓'} ${d >= 0 ? '+' : ''}${d.toFixed(1)}%`;
+</script>
 
 ```sql turnover_move
 select reported_value_numeric as pct, display_note from bse.overview where section = 'turnover_movement'
@@ -107,34 +130,38 @@ select reported_value_numeric as pct from bse.overview where section = 'profit_m
 select count(*) as n from bse.reconciliation_cases
 ```
 
-## What happened in FY2025
+## What happened in FY{curYear}
 
 <Grid cols=4>
 <div class="bse-card bse-card-kpi">
 <p class="lbl">Total market turnover</p>
-<div class="v">P9.3<span style="font-size:16px">bn</span></div>
-<p class="d"><span class="bse-delta bse-delta-up">↑ +18.1%</span> <span style="color:#667085">FY2024 · P7.9bn</span></p>
+<div class="v">P{hm('market.total.turnover').v2025?.toFixed(1) ?? '—'}<span style="font-size:16px">bn</span></div>
+<p class="d">{#if hFmtDelta(hDelta(hm('market.total.turnover').v2025, hm('market.total.turnover').v2024))}<span class="bse-delta bse-delta-up">{hFmtDelta(hDelta(hm('market.total.turnover').v2025, hm('market.total.turnover').v2024))}</span> <span style="color:#667085">FY{priorYear} · P{hm('market.total.turnover').v2024?.toFixed(1) ?? '—'}bn</span>{:else}<span style="color:#667085">FY{priorYear} not available</span>{/if}</p>
 <div style="margin-top:8px"><span class="bse-badge bse-badge-ok">✓ Verified</span></div>
 </div>
 <div class="bse-card bse-card-kpi">
 <p class="lbl">Equity market capitalisation</p>
-<div class="v">P710.0<span style="font-size:16px">bn</span></div>
-<p class="d"><span class="bse-delta bse-delta-up">↑ +3.4%</span> <span style="color:#667085">FY2024 · P686.8bn</span></p>
+<div class="v">P{(hm('market.total.market.capitalisation').v2025 != null ? hm('market.total.market.capitalisation').v2025/1000 : null)?.toFixed(1) ?? '—'}<span style="font-size:16px">bn</span></div>
+<p class="d">{#if hFmtDelta(hDelta(hm('market.total.market.capitalisation').v2025, hm('market.total.market.capitalisation').v2024))}<span class="bse-delta bse-delta-up">{hFmtDelta(hDelta(hm('market.total.market.capitalisation').v2025, hm('market.total.market.capitalisation').v2024))}</span> <span style="color:#667085">FY{priorYear} · P{(hm('market.total.market.capitalisation').v2024 != null ? hm('market.total.market.capitalisation').v2024/1000 : null)?.toFixed(1) ?? '—'}bn</span>{:else}<span style="color:#667085">FY{priorYear} not available</span>{/if}</p>
 <div style="margin-top:8px"><span class="bse-badge bse-badge-ok">✓ Verified</span></div>
 </div>
 <div class="bse-card bse-card-kpi">
 <p class="lbl">Group revenue</p>
-<div class="v">P78.8<span style="font-size:16px">m</span></div>
-<p class="d"><span class="bse-delta bse-delta-up">↑ +17.1%</span> <span style="color:#667085">FY2024 · P67.3m</span></p>
+<div class="v">P{hm('financial.revenue').v2025?.toFixed(1) ?? '—'}<span style="font-size:16px">m</span></div>
+<p class="d">{#if hFmtDelta(hDelta(hm('financial.revenue').v2025, hm('financial.revenue').v2024))}<span class="bse-delta bse-delta-up">{hFmtDelta(hDelta(hm('financial.revenue').v2025, hm('financial.revenue').v2024))}</span> <span style="color:#667085">FY{priorYear} · P{hm('financial.revenue').v2024?.toFixed(1) ?? '—'}m</span>{:else}<span style="color:#667085">FY{priorYear} not available</span>{/if}</p>
 <div style="margin-top:8px"><span class="bse-badge bse-badge-ok">✓ Audited</span></div>
 </div>
 <div class="bse-card bse-card-kpi">
 <p class="lbl">Operating profit</p>
-<div class="v">P12.2<span style="font-size:16px">m</span></div>
-<p class="d"><span class="bse-delta bse-delta-dn">↓ −33.1%</span> <span style="color:#667085">FY2024 · P18.2m</span></p>
+<div class="v">P{hm('financial.operating_profit').v2025?.toFixed(1) ?? '—'}<span style="font-size:16px">m</span></div>
+<p class="d">{#if hFmtDelta(hDelta(hm('financial.operating_profit').v2025, hm('financial.operating_profit').v2024))}<span class="bse-delta bse-delta-dn">{hFmtDelta(hDelta(hm('financial.operating_profit').v2025, hm('financial.operating_profit').v2024))}</span> <span style="color:#667085">FY{priorYear} · P{hm('financial.operating_profit').v2024?.toFixed(1) ?? '—'}m</span>{:else}<span style="color:#667085">FY{priorYear} not available</span>{/if}</p>
 <div style="margin-top:8px"><span class="bse-badge bse-badge-ok">✓ Audited</span></div>
 </div>
 </Grid>
+
+{#if curYear !== 2025}
+<p style="font-size:12px;color:#667085;margin-top:16px">This is the lighter FY{curYear} view. Market composition, investor participation, financial detail and strategy/governance narrative live on the individual pages above, where each page's own not-applicable rules apply.</p>
+{:else}
 
 <div class="bse-grid2">
 <div class="bse-card">
@@ -284,3 +311,4 @@ Canonical release <code>bse_canonical_v1_0_2</code> · database status <b>approv
 Dashboard deployment and publication are governed separately. This is a public analytical dashboard,
 not a trading terminal or investment advice.</p>
 </div>
+{/if}
