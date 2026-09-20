@@ -167,7 +167,7 @@ from bse.securities where metric_id like 'participation.%' order by year
 ```
 
 {#if curYear !== 2025}
-<PeriodNotApplicable period={"FY" + curYear} pageName="The counter-movement breakdown" reason="Individual counter performance is only reconciled and narratively described in the FY2025 Integrated Report (BSE-IR-2025 p.111). No equivalent per-counter chart or breakdown exists for other reporting periods in the governed dataset."/>
+<PeriodNotApplicable period={"FY" + curYear} pageName="The counter-movement breakdown" reason="Individual counter performance is only reconciled and narratively described in the FY2025 Integrated Report (BSE-IR-2025 p.111). No equivalent per-counter chart or breakdown exists for other reporting periods in the governed dataset." scope="section"/>
 {:else}
 <div class="bse-card">
 <h3 class="bse-secttl" style="margin-bottom:2px;font-size:16px">Which counters moved the market in 2025?</h3>
@@ -214,7 +214,7 @@ This is shown as an explicit unavailable state, never zero.</p>
 ## Listed-product developments &amp; access
 
 {#if curYear !== 2025}
-<PeriodNotApplicable period={"FY" + curYear} pageName="Listed-product developments and access & outreach" reason="Product-universe changes and CSD access/outreach counts are FY2025 events and cumulative-to-date snapshots, not a governed per-year series."/>
+<PeriodNotApplicable period={"FY" + curYear} pageName="Listed-product developments and access & outreach" reason="Product-universe changes and CSD access/outreach counts are FY2025 events and cumulative-to-date snapshots, not a governed per-year series." scope="section"/>
 {:else}
 <div class="two-col" style="margin-top:16px">
 <div class="bse-card">
@@ -290,7 +290,7 @@ This is shown as an explicit unavailable state, never zero.</p>
 institutional concentration is a material concern BSE itself has identified.</p>
 </div>
 {:else}
-<PeriodNotApplicable period={"FY" + curYear} pageName="The FY2025 retail-participation reconciliation" reason="This scoreboard compares two FY2025-specific sources (10X scorecard vs supplementary statistics, R005). It is a live reconciliation for the current reporting period, not a per-year series."/>
+<PeriodNotApplicable period={"FY" + curYear} pageName="The FY2025 retail-participation reconciliation" reason="This scoreboard compares two FY2025-specific sources (10X scorecard vs supplementary statistics, R005). It is a live reconciliation for the current reporting period, not a per-year series." scope="section"/>
 {/if}
 
 <div class="bse-card" style="margin-top:16px">
@@ -301,7 +301,7 @@ institutional concentration is a material concern BSE itself has identified.</p>
 </div>
 
 {#if curYear !== 2025}
-<PeriodNotApplicable period={"FY" + curYear} pageName="The debt-market activity breakdown" reason="This section mixes a current-period snapshot (nominal value, instruments admitted) with a FY2024-referenced five-year statistics table (BSE-IR-2025 p.128); it is not a clean governed per-year series that can be repointed to another single period."/>
+<PeriodNotApplicable period={"FY" + curYear} pageName="The debt-market activity breakdown" reason="This section mixes a current-period snapshot (nominal value, instruments admitted) with a FY2024-referenced five-year statistics table (BSE-IR-2025 p.128); it is not a clean governed per-year series that can be repointed to another single period." scope="section"/>
 {:else}
 <div class="bse-card" style="margin-top:16px">
 <h3 class="bse-secttl" style="font-size:14px">Debt-market activity</h3>

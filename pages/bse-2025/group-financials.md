@@ -230,7 +230,7 @@ order by year
 <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">Higher finance income and a substantially lower tax charge turned an operating-profit decline into a higher final profit for the year. Presented as a sequence so the final-profit increase does not appear to contradict the operating-profit decline. (30.3% comes from exact audited amounts, R018; 30.4% arises from rounded headline figures and is not used.)</p>
 </div>
 {:else}
-<PeriodNotApplicable period={"FY" + curYear} pageName="The revenue-to-profit reconciliation sequence" reason="This step-by-step reconciliation (finance income, tax charge) explains what happened in FY2025 specifically and depends on metrics not tracked as a governed per-year series."/>
+<PeriodNotApplicable period={"FY" + curYear} pageName="The revenue-to-profit reconciliation sequence" reason="This step-by-step reconciliation (finance income, tax charge) explains what happened in FY2025 specifically and depends on metrics not tracked as a governed per-year series." scope="section"/>
 {/if}
 
 <div class="bse-card" style="padding:20px;margin-top:16px">
@@ -311,7 +311,7 @@ select 2025, 'Profit for the year', 20.586
 ## Where the money comes from, and where it goes
 
 {#if curYear !== 2025}
-<PeriodNotApplicable period={"FY" + curYear} pageName="The revenue and cost composition breakdown" reason="Liquid-resources mix, revenue composition by fee line, and employee cost are not tracked as a governed per-year series - only the FY2025 figures are published in this form."/>
+<PeriodNotApplicable period={"FY" + curYear} pageName="The revenue and cost composition breakdown" reason="Liquid-resources mix, revenue composition by fee line, and employee cost are not tracked as a governed per-year series - only the FY2025 figures are published in this form." scope="section"/>
 {:else}
 <div class="comp-row">
 <div class="bse-card comp-card">

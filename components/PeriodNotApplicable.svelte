@@ -6,13 +6,21 @@
 	export let period = 'FY2024';
 	export let pageName = 'this page';
 	export let reason = '';
+	// 'programme': whole page doesn't exist yet for this period (10X, Governance & Risk) -
+	// reason is a fact about programme timing. 'section': the surrounding page has real data
+	// for this period, only this sub-section doesn't - avoid implying a programme-timing gap.
+	export let scope = 'programme';
 </script>
 
 <div class="bse-card bse-na">
 	<span class="bse-badge bse-badge-una">Not applicable · {period}</span>
 	<p class="bse-na-title">{pageName} has no {period} data</p>
 	<p class="bse-na-body">{reason}</p>
+	{#if scope === 'programme'}
 	<p class="bse-na-body bse-na-sub">This is not a data gap - it is a fact about when this programme began. Switch back to FY2025 above to see this page.</p>
+	{:else}
+	<p class="bse-na-body bse-na-sub">Switch back to FY2025 above to see this section.</p>
+	{/if}
 </div>
 
 <style>
