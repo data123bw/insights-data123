@@ -119,7 +119,7 @@ sidebar_position: 4
 </div>
 </div>
 <div class="pills">
-<span class="pill">Reporting period · FY2025</span>
+<PeriodSelector/>
 <span class="pill">Scope · Consolidated Group</span>
 <span class="pill">Last verified · 8 Sep 2026</span>
 </div>
@@ -135,8 +135,8 @@ sidebar_position: 4
 </div>
 </div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<span class="bse-hero-pill">Report period: FY2025</span>
-<span class="bse-hero-pill dim">Audited · comparing to FY2024</span>
+<span class="bse-hero-pill">Report period: FY{curYear}</span>
+<span class="bse-hero-pill dim">Audited · comparing to FY{priorYear}</span>
 <span class="bse-hero-pill dim">Scope: Consolidated Group · Verified 8 Sep 2026</span>
 </div>
 </div>
@@ -152,6 +152,31 @@ sidebar_position: 4
 <a href="/bse-2025/data-quality">Data Notes</a>
 </div>
 
+```sql period_financials
+select metric_id,
+  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2024 : 2025} then reported_value_numeric end) / 1e6 as cur,
+  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2023 : 2024} then reported_value_numeric end) / 1e6 as prior,
+  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2024 : 2025} then verification_state end) as cur_state
+from bse.financials
+where metric_id in (
+  'financial.revenue','financial.operating_profit','financial.profit_after_tax',
+  'financial.total_assets','financial.total_equity','financial.total_liabilities',
+  'financial.cash_resources'
+)
+group by metric_id
+```
+
+<script>
+  const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
+  const priorYear = curYear - 1;
+  const fm = (id) => period_financials.find(r => r.metric_id === id) ?? {};
+  const pctf = (cur, prior) => (cur == null || prior == null || prior === 0) ? null : ((cur - prior) / prior) * 100;
+  const badgeForF = (state) => state == null ? 'Unavailable' : null;
+  const fmtM2 = (v) => v == null ? '—' : `P${v.toFixed(1)}m`;
+  const fmtPct2 = (v) => v == null ? '—' : `${v.toFixed(1)}%`;
+  const fmtDelta2 = (d) => d == null ? '— not available for FY' + priorYear : `${d >= 0 ? '▲' : '▼'} ${d >= 0 ? '+' : ''}${d.toFixed(1)}%`;
+</script>
+
 ```sql position
 select reference_year as year,
   case metric_id
@@ -164,36 +189,33 @@ where metric_id in ('financial.total_assets','financial.total_equity','financial
 order by year
 ```
 
-## Revenue grew, but costs grew faster
+## Revenue, {#if curYear === 2025}costs grew faster{:else}operating profit and net profit, FY{curYear}{/if}
 
 <div class="top-row">
 <div class="block-stack">
 <div class="kpi-block kb1">
 <div class="kb-label">Group revenue</div>
-<div class="kb-val">P78.8m</div>
-<div class="kb-delta" style="color:#7BE0A0">▲ +17.1%</div>
-<div class="kb-note">Commission income led growth, +60.8%</div>
+<div class="kb-val">{fmtM2(fm('financial.revenue').cur)}</div>
+<div class="kb-delta" style="color:#7BE0A0">{fmtDelta2(pctf(fm('financial.revenue').cur, fm('financial.revenue').prior))}</div>
 </div>
 <div class="kpi-block kb2">
 <div class="kb-label">Operating expenses</div>
-<div class="kb-val">P69.3m</div>
-<div class="kb-delta" style="color:#F5C97B">▲ +24.7%</div>
-<div class="kb-note">Grew faster than revenue</div>
+<div class="kb-val">{#if curYear === 2025}P69.3m{:else}—{/if}</div>
+<div class="kb-delta" style="color:#F5C97B">{#if curYear === 2025}▲ +24.7%{:else}<span class="bse-badge bse-badge-una">Unavailable</span>{/if}</div>
 </div>
 <div class="kpi-block kb3">
 <div class="kb-label">Operating profit</div>
-<div class="kb-val">P12.2m</div>
-<div class="kb-delta" style="color:#FBD1D1">▼ −33.1%</div>
-<div class="kb-note">More than offset by finance income</div>
+<div class="kb-val">{fmtM2(fm('financial.operating_profit').cur)}</div>
+<div class="kb-delta" style="color:#FBD1D1">{fmtDelta2(pctf(fm('financial.operating_profit').cur, fm('financial.operating_profit').prior))}</div>
 </div>
 <div class="kpi-block kb4">
 <div class="kb-label">Profit for the year</div>
-<div class="kb-val">P20.6m</div>
-<div class="kb-delta" style="color:#7BE0A0">▲ +30.3%</div>
-<div class="kb-note">Lifted by finance income and lower tax</div>
+<div class="kb-val">{fmtM2(fm('financial.profit_after_tax').cur)}</div>
+<div class="kb-delta" style="color:#7BE0A0">{fmtDelta2(pctf(fm('financial.profit_after_tax').cur, fm('financial.profit_after_tax').prior))}</div>
 </div>
 </div>
 
+{#if curYear === 2025}
 <div class="bse-card" style="padding:20px">
 <h3 class="bse-secttl" style="margin-bottom:2px;font-size:16px">Why did final profit rise while operating profit fell?</h3>
 <p style="font-size:12px;color:var(--text-tertiary);margin:0 0 10px">All figures are true at once: read as a sequence, not a contradiction</p>
@@ -206,8 +228,12 @@ order by year
 <div class="seq-step"><div class="seq-lbl">Profit for the year</div><div class="seq-val" style="color:var(--navy-1)">+30.3%</div></div>
 </div>
 <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">Higher finance income and a substantially lower tax charge turned an operating-profit decline into a higher final profit for the year. Presented as a sequence so the final-profit increase does not appear to contradict the operating-profit decline. (30.3% comes from exact audited amounts, R018; 30.4% arises from rounded headline figures and is not used.)</p>
+</div>
+{:else}
+<PeriodNotApplicable period={"FY" + curYear} pageName="The revenue-to-profit reconciliation sequence" reason="This step-by-step reconciliation (finance income, tax charge) explains what happened in FY2025 specifically and depends on metrics not tracked as a governed per-year series."/>
+{/if}
 
-<div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border)">
+<div class="bse-card" style="padding:20px;margin-top:16px">
 <div style="font-size:13.5px;font-weight:700;margin:0 0 2px">Four-year trend, by metric</div>
 <p style="font-size:12px;color:var(--text-tertiary);margin:0 0 10px">FY2022-FY2025 · P millions · all audited</p>
 
@@ -261,30 +287,32 @@ select 2025, 'Profit for the year', 20.586
 <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px">All four years are audited, published figures; there are no illustrative or placeholder values. Revenue/operating profit/profit for the year: BSE Group financial statements (2022-2025 Annual/Integrated Reports). Operating expenses: FY2022 P41.5m (2022 AR), FY2023 P50.5m (<b>restated</b>: the 2023 Annual Report originally published P49.0m; the 2024 Annual Report restates the FY2023 comparative to P50.5m, which is the value used here, per the same "use the latest audited restatement" principle already governing FY2023 profit-after-tax, see Five-year history below), FY2024 P55.5m, FY2025 P69.3m (Note 20, 2025 Integrated Report).</p>
 </div>
 </div>
-</div>
 
-## Margins and ratios: FY2025
+## Margins and ratios: FY{curYear}
 
 <div class="badge-row">
 <div class="idx-card">
 <span class="idx-pill">Operating margin</span>
-<div class="idx-big" style="color:var(--navy-1)">15.4%</div>
+<div class="idx-big" style="color:var(--navy-1)">{fmtPct2(fm('financial.operating_profit').cur != null && fm('financial.revenue').cur ? (fm('financial.operating_profit').cur / fm('financial.revenue').cur * 100) : null)}</div>
 <div class="idx-note">Operating profit ÷ revenue</div>
 </div>
 <div class="idx-card">
 <span class="idx-pill p2">Profit margin</span>
-<div class="idx-big" style="color:var(--positive)">26.1%</div>
+<div class="idx-big" style="color:var(--positive)">{fmtPct2(fm('financial.profit_after_tax').cur != null && fm('financial.revenue').cur ? (fm('financial.profit_after_tax').cur / fm('financial.revenue').cur * 100) : null)}</div>
 <div class="idx-note">Profit for year ÷ revenue</div>
 </div>
 <div class="idx-card">
 <span class="idx-pill p3">Cost-to-income</span>
-<div class="idx-big" style="color:var(--warning)">≈88%</div>
+<div class="idx-big" style="color:var(--warning)">{#if curYear === 2025}≈88%{:else}<span class="bse-badge bse-badge-una">Unavailable</span>{/if}</div>
 <div class="idx-note">Operating expenses ÷ revenue</div>
 </div>
 </div>
 
 ## Where the money comes from, and where it goes
 
+{#if curYear !== 2025}
+<PeriodNotApplicable period={"FY" + curYear} pageName="The revenue and cost composition breakdown" reason="Liquid-resources mix, revenue composition by fee line, and employee cost are not tracked as a governed per-year series - only the FY2025 figures are published in this form."/>
+{:else}
 <div class="comp-row">
 <div class="bse-card comp-card">
 <h3>Liquid resources mix</h3>
@@ -328,16 +356,17 @@ select 2025, 'Profit for the year', 20.586
 <p style="font-size:11px;color:var(--text-tertiary);margin-top:10px">Largest identifiable cost component; no full functional split is published. P35.7m/+40.8% computed from Note 20's exact audited amounts (P35,695,327 vs P25,355,512); BSE's own p.42 headline rounds this to +40.7%, same dual-rounding pattern as R018.</p>
 </div>
 </div>
+{/if}
 
 <div class="bse-card" style="margin-top:16px">
 <h3 style="font-size:14px;font-weight:700;margin:0 0 10px">Financial position: equity vs liabilities, share of total assets</h3>
 <div class="bar100">
-<div style="width:82.6%;background:var(--navy-2)"></div>
-<div style="width:17.4%;background:var(--slate)"></div>
+<div style="width:{((fm('financial.total_equity').cur ?? 0) / (fm('financial.total_assets').cur || 1) * 100).toFixed(1)}%;background:var(--navy-2)"></div>
+<div style="width:{((fm('financial.total_liabilities').cur ?? 0) / (fm('financial.total_assets').cur || 1) * 100).toFixed(1)}%;background:var(--slate)"></div>
 </div>
 <div class="dleg" style="flex-direction:row;justify-content:space-between;margin-top:8px">
-<span><span class="sw" style="background:var(--navy-2)"></span>Total equity: P176.3m · 82.6%</span>
-<span><span class="sw" style="background:var(--slate)"></span>Total liabilities: P37.1m · 17.4%</span>
+<span><span class="sw" style="background:var(--navy-2)"></span>Total equity: {fmtM2(fm('financial.total_equity').cur)} · {((fm('financial.total_equity').cur ?? 0) / (fm('financial.total_assets').cur || 1) * 100).toFixed(1)}%</span>
+<span><span class="sw" style="background:var(--slate)"></span>Total liabilities: {fmtM2(fm('financial.total_liabilities').cur)} · {((fm('financial.total_liabilities').cur ?? 0) / (fm('financial.total_assets').cur || 1) * 100).toFixed(1)}%</span>
 </div>
 </div>
 
@@ -350,22 +379,23 @@ select 2025, 'Profit for the year', 20.586
 </div>
 
 <div class="bse-card" style="margin-top:16px">
-<h3 style="font-size:14px;font-weight:700;margin:0 0 10px">Financial position: FY2025 vs FY2024</h3>
+<h3 style="font-size:14px;font-weight:700;margin:0 0 10px">Financial position: FY{curYear} vs FY{priorYear}</h3>
 <div class="table-container">
 <table class="fin-table">
-<tr><th>Metric</th><th>FY2025</th><th>FY2024</th><th>Movement</th></tr>
-<tr><td>Total assets</td><td>P213.4m</td><td>P194.2m</td><td class="up">+9.9%</td></tr>
-<tr><td>Total equity</td><td>P176.3m</td><td>P158.2m</td><td class="up">+11.4%</td></tr>
-<tr><td>Total liabilities</td><td>P37.1m</td><td>P36.0m</td><td class="up">+3.1%</td></tr>
-<tr><td>Cash and cash equivalents</td><td>P27.3m</td><td>P10.0m</td><td class="up">+172.2%</td></tr>
-<tr><td>Financial assets at amortised cost</td><td>P125.0m</td><td>P131.4m</td><td class="dn">−4.9%</td></tr>
-<tr><td>Trade and other receivables</td><td>P26.5m</td><td>P22.2m</td><td class="up">+19.5%</td></tr>
+<tr><th>Metric</th><th>FY{curYear}</th><th>FY{priorYear}</th><th>Movement</th></tr>
+<tr><td>Total assets</td><td>{fmtM2(fm('financial.total_assets').cur)}</td><td>{fmtM2(fm('financial.total_assets').prior)}</td><td class="up">{fmtDelta2(pctf(fm('financial.total_assets').cur, fm('financial.total_assets').prior))}</td></tr>
+<tr><td>Total equity</td><td>{fmtM2(fm('financial.total_equity').cur)}</td><td>{fmtM2(fm('financial.total_equity').prior)}</td><td class="up">{fmtDelta2(pctf(fm('financial.total_equity').cur, fm('financial.total_equity').prior))}</td></tr>
+<tr><td>Total liabilities</td><td>{fmtM2(fm('financial.total_liabilities').cur)}</td><td>{fmtM2(fm('financial.total_liabilities').prior)}</td><td class="up">{fmtDelta2(pctf(fm('financial.total_liabilities').cur, fm('financial.total_liabilities').prior))}</td></tr>
+<tr><td>Cash and cash equivalents</td><td>{fmtM2(fm('financial.cash_resources').cur)}</td><td>{fmtM2(fm('financial.cash_resources').prior)}</td><td class="up">{fmtDelta2(pctf(fm('financial.cash_resources').cur, fm('financial.cash_resources').prior))}</td></tr>
+<tr><td>Financial assets at amortised cost</td>{#if curYear === 2025}<td>P125.0m</td><td>P131.4m</td><td class="dn">−4.9%</td>{:else}<td colspan="3"><span class="bse-badge bse-badge-una">Unavailable for FY{curYear}</span></td>{/if}</tr>
+<tr><td>Trade and other receivables</td>{#if curYear === 2025}<td>P26.5m</td><td>P22.2m</td><td class="up">+19.5%</td>{:else}<td colspan="3"><span class="bse-badge bse-badge-una">Unavailable for FY{curYear}</span></td>{/if}</tr>
 </table>
 </div>
-<p style="font-size:11px;color:var(--text-tertiary);margin-top:8px">Statement of Financial Position, 2025 Integrated Report, p.142. A narrower "Trade and other receivables" figure appears separately in Note 28 (categories of financial instruments: P18.8m FY2025 / P16.6m FY2024). That is a different, financial-instrument-scoped population and is not used here; this table uses the full balance-sheet figures.</p>
+<p style="font-size:11px;color:var(--text-tertiary);margin-top:8px">{#if curYear === 2025}Statement of Financial Position, 2025 Integrated Report, p.142. A narrower "Trade and other receivables" figure appears separately in Note 28 (categories of financial instruments: P18.8m FY2025 / P16.6m FY2024). That is a different, financial-instrument-scoped population and is not used here; this table uses the full balance-sheet figures.{:else}Statement of Financial Position line items bound to the governed FY2018-FY2025 dataset; the amortised-cost and receivables breakdowns are only published for FY2025.{/if}</p>
 </div>
 
 <div class="three-col">
+{#if curYear === 2025}
 <div class="resolved-card">
 <div style="font-size:12px;font-weight:700;margin-bottom:6px">Return on equity</div>
 <span class="bse-badge bse-badge-ok">Resolved: R012</span>
@@ -375,6 +405,13 @@ select 2025, 'Profit for the year', 20.586
 </div>
 <p style="font-size:12px;color:var(--text-tertiary);margin-top:8px">PAT ÷ average opening/closing equity reproduces the reported 12.3% and is the resolved primary basis (R012). The 11.7% closing-equity figure is retained only as labelled supporting evidence; the two bases are never blended.</p>
 </div>
+{:else}
+<div class="withheld">
+<div style="font-size:12px;font-weight:700;margin-bottom:6px">Return on equity</div>
+<span class="bse-badge bse-badge-una">Unavailable for FY{curYear}</span>
+<p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">ROE is only computed and governed for FY2025 (R012).</p>
+</div>
+{/if}
 <div class="withheld">
 <div style="font-size:12px;font-weight:700;margin-bottom:6px">Five-year financial history</div>
 <span class="bse-badge bse-badge-una">FY2021 provisional · FY2022-FY2025 verified</span>
