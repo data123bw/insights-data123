@@ -20,7 +20,7 @@
 	function syncNavLinks(period) {
 		if (typeof document === 'undefined') return;
 		const qs = period !== 'FY2025' ? `?period=${period}` : '';
-		document.querySelectorAll('.bse-tabs a, .bse-back').forEach((a) => {
+		document.querySelectorAll('.bse-tabs a, .bse-nav a, .bse-back').forEach((a) => {
 			const base = (a.getAttribute('href') || '').split('?')[0];
 			a.setAttribute('href', base + qs);
 		});
