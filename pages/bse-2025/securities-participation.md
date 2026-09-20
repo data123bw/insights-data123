@@ -107,11 +107,15 @@ sidebar_position: 3
 </div>
 </div>
 <div class="pills">
-<span class="pill">Reporting period · FY2025</span>
+<PeriodSelector/>
 <span class="pill">Scope · Report-bounded issuer universe</span>
 <span class="pill">Last verified · 8 Sep 2026</span>
 </div>
 </div>
+
+<script>
+  const curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
+</script>
 
 <div class="idstrip">
 <div>
@@ -121,14 +125,22 @@ sidebar_position: 3
 <span class="bse-pill">Scope: Report-bounded issuer universe · Verified 8 Sep 2026</span>
 </div>
 </div>
+{#if curYear === 2025}
 <div class="stat-inline">
 <div><div class="si-num">33*</div><div class="si-lbl">Equity counters</div></div>
 <div><div class="si-num">5</div><div class="si-lbl">Listed ETFs</div></div>
 <div><div class="si-num">P40.0bn</div><div class="si-lbl">Bond nominal</div></div>
 <div><div class="si-num">2</div><div class="si-lbl">Secondary listings</div></div>
 </div>
+{:else}
+<span class="bse-badge bse-badge-una">Unavailable for FY{curYear}</span>
+{/if}
 </div>
+{#if curYear === 2025}
 <p style="font-size:12px;color:var(--text-tertiary);margin:6px 0 0 4px">*Equity counter definition reconciliation pending, see Data Notes (R009).</p>
+{:else}
+<p style="font-size:12px;color:var(--text-tertiary);margin:6px 0 0 4px">These snapshot counts (equity counters, ETFs, bond nominal, secondary listings) are point-in-time FY2025 facts, not a governed per-year series - not available for FY{curYear}.</p>
+{/if}
 
 <div class="bse-tabs">
 <a href="/bse-2025/overview">Overview</a>
@@ -154,6 +166,9 @@ select reference_year as year,
 from bse.securities where metric_id like 'participation.%' order by year
 ```
 
+{#if curYear !== 2025}
+<PeriodNotApplicable period={"FY" + curYear} pageName="The counter-movement breakdown" reason="Individual counter performance is only reconciled and narratively described in the FY2025 Integrated Report (BSE-IR-2025 p.111). No equivalent per-counter chart or breakdown exists for other reporting periods in the governed dataset."/>
+{:else}
 <div class="bse-card">
 <h3 class="bse-secttl" style="margin-bottom:2px;font-size:16px">Which counters moved the market in 2025?</h3>
 <p style="font-size:12px;color:var(--text-tertiary);margin:0 0 8px">Of 33 classified counters</p>
@@ -187,6 +202,7 @@ from bse.securities where metric_id like 'participation.%' order by year
 </div>
 <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">These 7 counters are the complete set individually named in the report (BSE-IR-2025 p.111). It is not a full stock screener, and no 2025 chart exists from which additional counters could be visually estimated. Choppies' outsized move dominates the scale; the remaining named counters are far smaller in magnitude.</p>
 </div>
+{/if}
 
 <div class="bse-card">
 <h3 class="bse-secttl" style="font-size:15px">Issuer valuation history</h3>
@@ -197,6 +213,9 @@ This is shown as an explicit unavailable state, never zero.</p>
 
 ## Listed-product developments &amp; access
 
+{#if curYear !== 2025}
+<PeriodNotApplicable period={"FY" + curYear} pageName="Listed-product developments and access & outreach" reason="Product-universe changes and CSD access/outreach counts are FY2025 events and cumulative-to-date snapshots, not a governed per-year series."/>
+{:else}
 <div class="two-col" style="margin-top:16px">
 <div class="bse-card">
 <h3 class="bse-secttl" style="font-size:14px;margin-bottom:4px">Listed-product developments</h3>
@@ -244,9 +263,11 @@ This is shown as an explicit unavailable state, never zero.</p>
 <p style="font-size:12px;color:var(--text-tertiary);margin-top:12px">Cumulative accounts, not a count of active or retail investors, and not limited to 2025.</p>
 </div>
 </div>
+{/if}
 
 ## Investor participation
 
+{#if curYear === 2025}
 <div class="scoreboard" style="margin-top:16px">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
 <h3 class="bse-secttl" style="margin:0;font-size:14px">FY2025 retail participation, two sources disagree</h3>
@@ -268,6 +289,9 @@ This is shown as an explicit unavailable state, never zero.</p>
 <p style="font-size:12px;color:var(--text-tertiary);margin-top:14px;text-align:center">These figures tell opposite stories (R005). Until resolved, the only established fact is that
 institutional concentration is a material concern BSE itself has identified.</p>
 </div>
+{:else}
+<PeriodNotApplicable period={"FY" + curYear} pageName="The FY2025 retail-participation reconciliation" reason="This scoreboard compares two FY2025-specific sources (10X scorecard vs supplementary statistics, R005). It is a live reconciliation for the current reporting period, not a per-year series."/>
+{/if}
 
 <div class="bse-card" style="margin-top:16px">
 <h3 class="bse-secttl" style="font-size:14px">Investor contribution to equity turnover, verified years</h3>
@@ -276,6 +300,9 @@ institutional concentration is a material concern BSE itself has identified.</p>
 (R025), the printed components are preserved, not renormalised. FY2025 is withheld under R005.</p>
 </div>
 
+{#if curYear !== 2025}
+<PeriodNotApplicable period={"FY" + curYear} pageName="The debt-market activity breakdown" reason="This section mixes a current-period snapshot (nominal value, instruments admitted) with a FY2024-referenced five-year statistics table (BSE-IR-2025 p.128); it is not a clean governed per-year series that can be repointed to another single period."/>
+{:else}
 <div class="bse-card" style="margin-top:16px">
 <h3 class="bse-secttl" style="font-size:14px">Debt-market activity</h3>
 <div class="stat-inline" style="justify-content:space-between">
@@ -300,6 +327,7 @@ commercial paper + 7 government) exists but is not shown here; see <a href="/bse
 Maturities are also given as 56 or 57 across sections (R008), no composition chart is published
 until that is separately reconciled.</p>
 </div>
+{/if}
 
 <div class="bse-card" style="margin-top:16px">
 <h3 class="bse-secttl" style="font-size:13px;margin-bottom:8px">Related pages</h3>
