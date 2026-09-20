@@ -65,7 +65,7 @@
 		margin-top: 56px;
 		background:
 			radial-gradient(ellipse at 85% 0%, rgba(81, 173, 223, 0.18), transparent 55%),
-			linear-gradient(135deg, #1c0b28 0%, #3d1b52 60%, #2a1238 100%);
+			linear-gradient(135deg, #171335 0%, #322c66 60%, #221f47 100%);
 		border-radius: 24px 24px 0 0;
 		padding: 56px 32px 28px;
 		text-align: center;
@@ -171,12 +171,12 @@
 		width: 100%;
 		height: 3px;
 		z-index: 99999;
-		background: rgba(108, 44, 144, 0.15);
+		background: rgba(74, 63, 145, 0.15);
 	}
 
 	#nav-loader-bar {
 		height: 100%;
-		background: #6c2c90;
+		background: #4a3f91;
 		animation: nav-progress 1.5s ease-in-out infinite;
 	}
 
@@ -195,7 +195,7 @@
 		height: 38px;
 		border-radius: 50%;
 		background: #fff;
-		box-shadow: 0 2px 12px rgba(108, 44, 144, 0.18);
+		box-shadow: 0 2px 12px rgba(74, 63, 145, 0.18);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -207,7 +207,7 @@
 		position: absolute;
 		inset: -4px;
 		border-radius: 50%;
-		border: 2px solid #6c2c90;
+		border: 2px solid #4a3f91;
 		animation: badge-pulse 1.2s ease-out infinite;
 	}
 
