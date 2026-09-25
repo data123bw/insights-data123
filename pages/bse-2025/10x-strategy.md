@@ -225,15 +225,11 @@ sidebar_position: 5
 </div>
 </div>
 <div class="pills">
-<PeriodSelector/>
+<span class="pill">Reporting period · FY2025</span>
 <span class="pill">Scope · BSE self-assessment</span>
 <span class="pill">Last verified · 8 Sep 2026</span>
 </div>
 </div>
-
-<script>
-  $: curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
-</script>
 
 <div class="bse-hero">
 <div class="bse-hero-top">
@@ -263,10 +259,6 @@ markets.</p>
 <a href="/bse-2025/governance-risk">Governance &amp; Risk</a>
 <a href="/bse-2025/data-quality">Data Notes</a>
 </div>
-
-{#if curYear !== 2025}
-<PeriodNotApplicable period={"FY" + curYear} pageName="The 10X Strategy & Public Value page" reason="The 10X strategy launched in June 2025. There is no FY2024 (or earlier) 10X data because the strategy did not exist yet - this is a fact about when the programme began, not a data gap to backfill."/>
-{:else}
 
 ## Commitment status: BSE self-assessment
 
@@ -568,4 +560,3 @@ a separate production approval beyond GATE A2. Numeric governed model:
 <code>bse_canonical_v1_0_2</code>, database release approved 2026-09-08. Dashboard deployment
 and publication are governed separately (GATE B, Phase 10-11).
 <a class="bse-lnk" style="margin:0" href="/bse-2025/data-quality">Full reconciliation register →</a></p>
-{/if}

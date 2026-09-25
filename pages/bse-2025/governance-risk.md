@@ -122,15 +122,11 @@ sidebar_position: 6
 </div>
 </div>
 <div class="pills">
-<PeriodSelector/>
+<span class="pill">FY2025 · during-year composition</span>
 <span class="pill">Scope · BSE/CSDB Board</span>
 <span class="pill">Last verified · 8 Sep 2026</span>
 </div>
 </div>
-
-<script>
-  $: curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
-</script>
 
 <div class="bse-hero">
 <div class="bse-hero-top">
@@ -158,10 +154,6 @@ sidebar_position: 6
 <a class="on" href="/bse-2025/governance-risk">Governance &amp; Risk</a>
 <a href="/bse-2025/data-quality">Data Notes</a>
 </div>
-
-{#if curYear !== 2025}
-<PeriodNotApplicable period={"FY" + curYear} pageName="The Governance, Risk & Resilience page" reason="Governance disclosures (principal risks, board committees, the outage timeline, assurance, remediation) were never extracted for prior years and carry no year column at all in the governed dataset."/>
-{:else}
 
 ## October 2025 outage
 
@@ -466,4 +458,3 @@ The disclosure layer was not given a separate production approval beyond GATE A2
 Numeric governed model: <code>bse_canonical_v1_0_2</code> — database release approved 2026-09-08.
 Dashboard deployment and publication are governed separately (GATE B, Phase 10–11).
 <a class="bse-lnk" style="margin:0" href="/bse-2025/data-quality">Full reconciliation register →</a></p>
-{/if}

@@ -110,7 +110,7 @@ sidebar_position: 2
 </div>
 </div>
 <div class="pills">
-<PeriodSelector/>
+<span class="pill">Reporting period · FY2025</span>
 <span class="pill">Scope · Aggregate market</span>
 <span class="pill">Last verified · 8 Sep 2026</span>
 </div>
@@ -126,8 +126,8 @@ sidebar_position: 2
 </div>
 </div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<span class="bse-hero-pill">Report period: {curYear}</span>
-<span class="bse-hero-pill dim">Comparing to FY{priorYear}</span>
+<span class="bse-hero-pill">Report period: FY2025</span>
+<span class="bse-hero-pill dim">Comparing to FY2024</span>
 <span class="bse-hero-pill dim">Scope: Aggregate market</span>
 </div>
 </div>
@@ -142,36 +142,6 @@ sidebar_position: 2
 <a href="/bse-2025/governance-risk">Governance &amp; Risk</a>
 <a href="/bse-2025/data-quality">Data Notes</a>
 </div>
-
-```sql period_market
-select metric_id,
-  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2024 : 2025} then reported_value_numeric end) as cur,
-  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2023 : 2024} then reported_value_numeric end) as prior,
-  max(case when reference_year = ${inputs.period.value === 'FY2024' ? 2024 : 2025} then verification_state end) as cur_state
-from bse.market
-where metric_id in (
-  'market.total.turnover','market.equity.turnover','market.total.market.capitalisation',
-  'market.average.daily.turnover','market.shares.traded','market.domestic.market.capitalisation',
-  'market.foreign.market.capitalisation','index.domestic.company.index.change',
-  'index.domestic.company.total.return.index.change','index.foreign.company.index.change',
-  'index.domestic.company.index.level','index.domestic.company.total.return.index.level',
-  'index.foreign.company.index.level'
-)
-group by metric_id
-```
-
-<script>
-  $: curYear = inputs.period.value === 'FY2024' ? 2024 : 2025;
-  $: priorYear = curYear - 1;
-  const m = (id) => period_market.find(r => r.metric_id === id) ?? {};
-  const pct = (cur, prior) => (cur == null || prior == null || prior === 0) ? null : ((cur - prior) / prior) * 100;
-  const badgeFor = (state) => state === 'VERIFIED_IN_RECONCILIATION_REVIEW' ? 'Under review'
-    : (state == null ? 'Unavailable' : null);
-  const fmtBnFromM = (v) => v == null ? '—' : `P${(v/1000).toFixed(2)}bn`;
-  const fmtBn = (v) => v == null ? '—' : `P${v.toFixed(1)}bn`;
-  const fmtM = (v) => v == null ? '—' : `P${v.toFixed(1)}m`;
-  const fmtDelta = (d) => d == null ? '— not available for FY' + priorYear : `${d >= 0 ? '▲' : '▼'} ${d >= 0 ? '+' : ''}${d.toFixed(1)}%`;
-</script>
 
 ```sql equity_turnover
 select reference_year as year, reported_value_numeric/1000 as turnover_bn, is_provisional
@@ -195,32 +165,30 @@ order by year
 <div class="block-stack">
 <div class="kpi-block kb1">
 <div class="kb-label">Total market turnover</div>
-<div class="kb-val">{fmtBn(m('market.total.turnover').cur)}</div>
-<div class="kb-delta" style="color:#7BE0A0">{fmtDelta(pct(m('market.total.turnover').cur, m('market.total.turnover').prior))}</div>
-{#if badgeFor(m('market.total.turnover').cur_state)}<span class="bse-badge bse-badge-una" style="margin-top:4px">{badgeFor(m('market.total.turnover').cur_state)}</span>{/if}
+<div class="kb-val">P9.3bn</div>
+<div class="kb-delta" style="color:#7BE0A0">▲ +18.1%</div>
 </div>
 <div class="kpi-block kb2" id="concentration">
 <div class="kb-label">Equity turnover</div>
-<div class="kb-val">{fmtBnFromM(m('market.equity.turnover').cur)}</div>
-<div class="kb-delta" style="color:#F5C97B">{fmtDelta(pct(m('market.equity.turnover').cur, m('market.equity.turnover').prior))}</div>
-{#if badgeFor(m('market.equity.turnover').cur_state)}<span class="bse-badge bse-badge-una" style="margin-top:4px">{badgeFor(m('market.equity.turnover').cur_state)}</span>{/if}
+<div class="kb-val">P5.91bn</div>
+<div class="kb-delta" style="color:#F5C97B">Record, concentrated</div>
+<div class="kb-note">Large Q2 institutional transition mandate</div>
 </div>
 <div class="kpi-block kb3">
 <div class="kb-label">Total equity market cap</div>
-<div class="kb-val">{fmtBnFromM(m('market.total.market.capitalisation').cur)}</div>
-<div class="kb-delta" style="color:#CFEBD9">{fmtDelta(pct(m('market.total.market.capitalisation').cur, m('market.total.market.capitalisation').prior))}</div>
-{#if badgeFor(m('market.total.market.capitalisation').cur_state)}<span class="bse-badge bse-badge-una" style="margin-top:4px">{badgeFor(m('market.total.market.capitalisation').cur_state)}</span>{/if}
+<div class="kb-val">P710.0bn</div>
+<div class="kb-delta" style="color:#CFEBD9">▲ +3.4%</div>
 </div>
 <div class="kpi-block kb4">
 <div class="kb-label">Avg. daily equity turnover</div>
-<div class="kb-val">{fmtM(m('market.average.daily.turnover').cur)}</div>
-<div class="kb-delta" style="color:#7BE0A0">{fmtDelta(pct(m('market.average.daily.turnover').cur, m('market.average.daily.turnover').prior))}</div>
-{#if badgeFor(m('market.average.daily.turnover').cur_state)}<span class="bse-badge bse-badge-una" style="margin-top:4px">{badgeFor(m('market.average.daily.turnover').cur_state)}</span>{/if}
+<div class="kb-val">P24.0m</div>
+<div class="kb-delta" style="color:#7BE0A0">▲ +258.2%</div>
+<div class="kb-note">FY2024 base confirmed across 4 tables</div>
 </div>
 </div>
 
 <div class="bse-card" style="padding:20px">
-<h3 class="bse-secttl" style="margin-bottom:2px;font-size:16px">How did benchmark indices perform through FY{curYear}?</h3>
+<h3 class="bse-secttl" style="margin-bottom:2px;font-size:16px">How did benchmark indices perform through FY2025?</h3>
 <p style="font-size:12px;color:var(--text-tertiary);margin:0 0 10px">DCI, DCTRI and FCI, year-end index level</p>
 <LineChart data={idx_level} x=year y=level series=idx />
 <p style="font-size:11px;color:var(--text-tertiary);margin-top:10px"><b>DCI</b> Domestic Company Index (price only) &nbsp;·&nbsp; <b>DCTRI</b> Domestic Company Total Return Index (incl. dividends) &nbsp;·&nbsp; <b>FCI</b> Foreign Company Index</p>
@@ -228,67 +196,57 @@ order by year
 </div>
 </div>
 
-## Benchmark index returns: FY{curYear}
+## Benchmark index returns: FY2025
 
 <div class="badge-row">
 <div class="idx-card">
 <span class="idx-pill">DCI</span>
-<div class="idx-big">{fmtDelta(m('index.domestic.company.index.change').cur)}</div>
+<div class="idx-big">+9.8%</div>
 <div class="idx-note">Price only · nominal</div>
 </div>
 <div class="idx-card">
 <span class="idx-pill p2">DCTRI</span>
-<div class="idx-big">{fmtDelta(m('index.domestic.company.total.return.index.change').cur)}</div>
+<div class="idx-big">+16.1%</div>
 <div class="idx-note">Including dividends · nominal</div>
 </div>
 <div class="idx-card">
 <span class="idx-pill p3">FCI</span>
-<div class="idx-big">{fmtDelta(m('index.foreign.company.index.change').cur)}</div>
+<div class="idx-big">+15.6%</div>
 <div class="idx-note">Foreign companies index</div>
 </div>
 </div>
 
-## Market composition: FY{curYear}
+## Market composition: FY2025
 
 <div class="comp-row">
 <div class="bse-card comp-card">
 <h3>Total turnover mix</h3>
-{#if curYear === 2025}
 <div class="donut" style="background:conic-gradient(var(--navy-2) 0% 63.5%, var(--blue-3) 63.5% 69.8%, var(--border) 69.8% 100%)"></div>
 <div class="dleg">
 <span><span class="sw" style="background:var(--navy-2)"></span>Equity: 63.5%</span>
 <span><span class="sw" style="background:var(--blue-3)"></span>ETFs: 6.3%</span>
 </div>
 <p style="font-size:11px;color:var(--text-tertiary);margin-top:8px">Remaining ~30% (bonds and other instruments) has no published FY2025 turnover figure and is not shown as a slice.</p>
-{:else}
-<span class="bse-badge bse-badge-una">Unavailable for FY{curYear}</span>
-<p style="font-size:11px;color:var(--text-tertiary);margin-top:8px">Turnover-mix percentages are not tracked as a governed per-year metric outside FY2025.</p>
-{/if}
 </div>
 
 <div class="bse-card comp-card" style="grid-column:span 2">
 <h3>Market-cap composition: domestic vs foreign</h3>
 <div class="bar100">
-<div style="width:{((m('market.domestic.market.capitalisation').cur ?? 0) / ((m('market.domestic.market.capitalisation').cur ?? 0) + (m('market.foreign.market.capitalisation').cur ?? 1)) * 100).toFixed(1)}%;background:#0d9488"></div>
-<div style="width:{((m('market.foreign.market.capitalisation').cur ?? 0) / ((m('market.domestic.market.capitalisation').cur ?? 0) + (m('market.foreign.market.capitalisation').cur ?? 1)) * 100).toFixed(1)}%;background:var(--slate)"></div>
+<div style="width:8.4%;background:#0d9488"></div>
+<div style="width:91.6%;background:var(--slate)"></div>
 </div>
 <div class="dleg" style="flex-direction:row;justify-content:space-between;margin-top:8px">
-<span><span class="sw" style="background:#0d9488"></span>Domestic: {fmtBnFromM(m('market.domestic.market.capitalisation').cur)} · {((m('market.domestic.market.capitalisation').cur ?? 0) / ((m('market.domestic.market.capitalisation').cur ?? 0) + (m('market.foreign.market.capitalisation').cur ?? 1)) * 100).toFixed(1)}%</span>
-<span><span class="sw" style="background:var(--slate)"></span>Foreign: {fmtBnFromM(m('market.foreign.market.capitalisation').cur)} · {((m('market.foreign.market.capitalisation').cur ?? 0) / ((m('market.domestic.market.capitalisation').cur ?? 0) + (m('market.foreign.market.capitalisation').cur ?? 1)) * 100).toFixed(1)}%</span>
+<span><span class="sw" style="background:#0d9488"></span>Domestic: P59.8bn · 8.4%</span>
+<span><span class="sw" style="background:var(--slate)"></span>Foreign: P650.2bn · 91.6%</span>
 </div>
 <p style="font-size:12px;color:var(--text-tertiary);margin-top:8px">Foreign dual-listed companies dominate the aggregate. This is not a measure of Botswana's domestic market depth. Shown as a bar, not a donut, since the two parts are this uneven.</p>
 </div>
 
 <div class="bse-card comp-card">
 <h3>Domestic returns</h3>
-{#if curYear === 2025}
 <div style="font-size:12px;display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span>DCI real</span><b class="up">+5.9%</b></div>
 <div style="font-size:12px;display:flex;justify-content:space-between;padding:5px 0"><span>DCTRI real</span><b class="up">+12.0%</b></div>
 <p style="font-size:12px;color:var(--text-tertiary);margin-top:8px">Against December 2025 inflation of 3.9%.</p>
-{:else}
-<span class="bse-badge bse-badge-una">Unavailable for FY{curYear}</span>
-<p style="font-size:11px;color:var(--text-tertiary);margin-top:8px">Inflation-adjusted real returns are not tracked as a governed per-year metric outside FY2025.</p>
-{/if}
 </div>
 </div>
 
@@ -306,17 +264,17 @@ provisional point.
 
 <div class="bse-card" style="overflow-x:auto">
 <table class="mkt-table">
-<tr><th>Indicator</th><th>FY{priorYear}</th><th>FY{curYear}</th><th>Movement</th></tr>
-<tr><td>Total market turnover</td><td>{fmtBn(m('market.total.turnover').prior)}</td><td>{fmtBn(m('market.total.turnover').cur)}</td><td class="up">{fmtDelta(pct(m('market.total.turnover').cur, m('market.total.turnover').prior))}</td></tr>
-<tr><td>Equity turnover {#if badgeFor(m('market.equity.turnover').cur_state)}<span class="bse-badge bse-badge-una" style="margin-left:4px">{badgeFor(m('market.equity.turnover').cur_state)}</span>{/if}</td><td>{fmtBnFromM(m('market.equity.turnover').prior)}</td><td>{fmtBnFromM(m('market.equity.turnover').cur)}</td><td class="up">{fmtDelta(pct(m('market.equity.turnover').cur, m('market.equity.turnover').prior))}</td></tr>
-<tr><td>Avg. daily equity turnover {#if badgeFor(m('market.average.daily.turnover').cur_state)}<span class="bse-badge bse-badge-una" style="margin-left:4px">{badgeFor(m('market.average.daily.turnover').cur_state)}</span>{/if}</td><td>{fmtM(m('market.average.daily.turnover').prior)}</td><td>{fmtM(m('market.average.daily.turnover').cur)}</td><td class="up">{fmtDelta(pct(m('market.average.daily.turnover').cur, m('market.average.daily.turnover').prior))}</td></tr>
-<tr><td>Shares traded</td><td>{fmtBnFromM(m('market.shares.traded').prior)}</td><td>{fmtBnFromM(m('market.shares.traded').cur)}</td><td class="up">{fmtDelta(pct(m('market.shares.traded').cur, m('market.shares.traded').prior))}</td></tr>
-<tr><td>ETF turnover</td>{#if curYear === 2025}<td>P449.4m</td><td>P582.5m</td><td class="up">+29.6%</td>{:else}<td colspan="3"><span class="bse-badge bse-badge-una">Unavailable for FY{curYear}</span> not tracked as a governed per-year metric outside FY2025</td>{/if}</tr>
-<tr><td>Total equity market cap</td><td>{fmtBnFromM(m('market.total.market.capitalisation').prior)}</td><td>{fmtBnFromM(m('market.total.market.capitalisation').cur)}</td><td class="up">{fmtDelta(pct(m('market.total.market.capitalisation').cur, m('market.total.market.capitalisation').prior))}</td></tr>
-<tr><td>Domestic market cap</td><td>{fmtBnFromM(m('market.domestic.market.capitalisation').prior)}</td><td>{fmtBnFromM(m('market.domestic.market.capitalisation').cur)}</td><td class="up">{fmtDelta(pct(m('market.domestic.market.capitalisation').cur, m('market.domestic.market.capitalisation').prior))}</td></tr>
+<tr><th>Indicator</th><th>FY2024</th><th>FY2025</th><th>Movement</th></tr>
+<tr><td>Total market turnover</td><td>P7.9bn</td><td>P9.3bn</td><td class="up">+18.1%</td></tr>
+<tr><td>Equity turnover <span class="bse-badge bse-badge-una" style="margin-left:4px">Under review</span></td><td>P1.66bn</td><td>P5.91bn</td><td class="up">+256.1%*</td></tr>
+<tr><td>Avg. daily equity turnover <span class="bse-badge bse-badge-una" style="margin-left:4px">Under review</span></td><td>P6.7m</td><td>P24.0m</td><td class="up">+258.2%*</td></tr>
+<tr><td>Shares traded</td><td>428.6m</td><td>1.38bn</td><td class="up">+222.1%</td></tr>
+<tr><td>ETF turnover</td><td>P449.4m</td><td>P582.5m</td><td class="up">+29.6%</td></tr>
+<tr><td>Total equity market cap</td><td>P686.8bn</td><td>P710.0bn</td><td class="up">+3.4%</td></tr>
+<tr><td>Domestic market cap</td><td>P54.0bn</td><td>P59.8bn</td><td class="up">+10.7%</td></tr>
 </table>
-<p style="font-size:12px;color:var(--text-tertiary);margin-top:8px">{#if curYear === 2024}* FY2023 comparison base reflects the governed original-year values from Batch 8's historical backfill (visually verified against the 2023 and 2024 Annual Reports); see <a href="/bse-2025/data-quality">Data Notes</a>.{:else}* FY2024 comparison base for equity turnover and average daily turnover reflects the governed
-original-year values (R001, R002); see <a href="/bse-2025/data-quality">Data Notes</a>.{/if}</p>
+<p style="font-size:12px;color:var(--text-tertiary);margin-top:8px">* FY2024 comparison base for equity turnover and average daily turnover reflects the governed
+original-year values (R001, R002); see <a href="/bse-2025/data-quality">Data Notes</a>.</p>
 </div>
 
 ## Liquidity ratio and market-cap detail
